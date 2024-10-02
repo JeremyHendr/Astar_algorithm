@@ -5,7 +5,7 @@
 #include <iostream>
 class Vertex {
     public :
-        Vertex(int latitude, int longitude, uint32_t id, int x=none, int y=none);
+        Vertex(int latitude, int longitude, uint32_t id, int x=0, int y=0);
 
         int getX();
         int getY();
@@ -17,8 +17,8 @@ class Vertex {
         int x;
         int y;
         uint32_t id;
-        std::unordered_map<Vertex, Edge > connected_vertices;
-}
+       std::unordered_map<Vertex, Edge > connected_vertices;
+};
 
 
-#define VERTEX_H
+#endif VERTEX_H

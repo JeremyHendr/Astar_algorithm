@@ -3,16 +3,20 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <cstdlib>
+#include <stdexcept>
+#include <iomanip>
+#include <utility>
+#include <unordered_map>
+
 
 #include "Graph.h"
-#include <string>
-#include <unordered_map>
+#include "Vertex.h"
 
 
 using std::string;
 using std::vector;
-using std::stio;
+using std::stoi;
+using std::stof;
 
 Graph::Graph(string graph_data_file) {
     // Read file and store it in a map
@@ -37,7 +41,12 @@ Graph::Graph(string graph_data_file) {
         }
 
         if (row[0] == "V"){
-            Vertex v = new Vertex(std::stio(row[1]), std::stio(row[2]), static_cast<uint32_t>(std::stoi(row[3])));
+            // Create vertex object with arguments: latitude (float) / longitude (float) / id (uint32_t)
+            Vertex v = new Vertex(stof(row[1]), stof(row[2]), static_cast<uint32_t>(stoi(row[3])));
+        }
+        else if (row[0] == "E"){ //# E,source_vid,dest_vid,length,name,extra0,extra1
+            // Create edge object with arguments: source id () / destination id () / length () / name ()
+            //Edge e = new Edge();
         }
     }
 

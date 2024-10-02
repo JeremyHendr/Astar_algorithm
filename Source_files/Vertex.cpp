@@ -2,7 +2,7 @@
 
 #include "Vertex.h"
 
-Vertex::Vertex(int latitude, int longitude, uint32_t id, int x=none, int y=none) {
+Vertex::Vertex(float latitude, float longitude, uint32_t id, int x=0, int y=0) {
     if (x!=none && y!=none){
         this.x = x;
         this.y = y;
