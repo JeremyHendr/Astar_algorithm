@@ -6,6 +6,9 @@
 #include <cstdlib>
 
 #include "Graph.h"
+#include <string>
+#include <unordered_map>
+
 
 using std::string;
 using std::vector;

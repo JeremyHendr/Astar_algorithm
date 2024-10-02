@@ -18,8 +18,8 @@ class Graph {
         void Astar();
     
     private:
-        std::unordered_map<std::int, Vertex > vertices_map;
-        std::unordered_map<std::int, Edge > edge_map;
+        std::unordered_map<std::int, Vertex >* vertices_map;
+        std::unordered_map<std::int, Edge >* edge_map;
 }
 
 
