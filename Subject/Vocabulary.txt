@@ -1,0 +1,2 @@
+vertices    : represent road intersections
+edges       : represent a road segment between two intersections
