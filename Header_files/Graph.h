@@ -11,7 +11,7 @@ using std::string;
 
 class Graph {
     public:
-        Graph(string *gps_data_file);
+        Graph(string graph_data_file);
 
         void BFS();
         void Dijkstra();
