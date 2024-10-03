@@ -1,8 +1,17 @@
+/*
+* Project: A_star algorithm 
+* Group: De Sue Léo - Hendrikse Jeremy - Ortstadt Julius
+* Robo4 - 2024/2025
+*
+* Vertex.cpp file 
+* Contains method definition for the Vertex class
+*/
+
 #include <unordered_map>
 
 #include "Vertex.h"
 
-Vertex::Vertex(float latitude, float longitude, uint32_t id, int x=0, int y=0) {
+Vertex::Vertex(float longitude, float latitude, uint32_t id, int x=0, int y=0) {
     if (x!=none && y!=none){
         this.x = x;
         this.y = y;
