@@ -14,15 +14,17 @@
 
 #include "Edge.h"
 #include "Vertex.h"
+#include "Graph.h"
 
 using namespace std;
 
 // Edge class constructor 
-Edge::Edge(int source_id, int dest_id, double length, string name, bool name_given=false){
+Edge::Edge(double unique_id, int source_id, int dest_id, double length, string name, bool name_given=false){
     if (name_given == true){
         this->name = name;
     }
 
+    this->unique_id = unique_id;
     this->source_id = source_id;
     this->dest_id = dest_id;
     this->length = length;
@@ -36,22 +38,22 @@ void Edge::print() const{
 }
 
 // Method to retrieve source id
-int Edge::get_source(Edge edge){
+int Edge::get_source_id(Edge edge){
     return edge.source_id;
 }
 
 // Method to retrieve destination id
-int Edge::get_destination(Edge edge){
+int Edge::get_destination_id(Edge edge){
     return edge.dest_id;
 }
 
 // Method to retrieve length
-double Edge::get_length(Edge edge){
+const double Edge::get_length(Edge edge){
     return edge.length;
 }
 
 // Method to retrieve name
-string Edge::get_name(Edge edge){
+const string Edge::get_name(Edge edge){
     return edge.name;
 }
 

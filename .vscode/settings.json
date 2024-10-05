@@ -45,5 +45,6 @@
         "iomanip": "cpp",
         "functional": "cpp",
         "iterator": "cpp"
-    }
+    },
+    "C_Cpp.default.compilerPath": "C:\\Users\\Ortst\\Documents\\Arduino\\hardware\\HoRoSim\\redist\\mingw32\\bin\\gcc.exe"
 }

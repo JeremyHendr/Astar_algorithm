@@ -25,18 +25,28 @@ class Graph {
         Graph(string graph_data_file);
 
         void print() const;
+
+        // Create the connections between a vertex and its edges
+        void connect_graph(unordered_map<uint32_t, Vertex*> vertices_map);
+
+        // Path algorithms
         void BFS();
         void Dijkstra();
         void Astar();
 
+        // Make the "edges_map" accessible
+        static const std::unordered_map<double, Edge*>& get_edges_map(); 
+        
+        unordered_multimap<Vertex, Edge> connected_graph;
+        
         
     
     private:
         void add_vertex(vector<string> vec);
         void add_edge(vector<string> vec);
 
-        unordered_map<uint32_t, Vertex*> vertices_map;
-        unordered_map<double, Edge*> edges_map;
+        static unordered_map<uint32_t, Vertex*> vertices_map;
+        static unordered_map<double, Edge*> edges_map;
 
         
 };

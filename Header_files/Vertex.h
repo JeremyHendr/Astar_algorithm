@@ -12,28 +12,34 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <functional> // Necessary for std::hash
+#include <vector>
+//#include <functional> // Necessary for std::hash
 
 using namespace std;
+
 
 class Vertex {
     public :
         uint32_t id;
 
+        // Default constructor
+        //Vertex() : id(0), latitude(0.0), longitude(0.0), x(0), y(0), xy_given(false) {}
+
+        // Parameterized constructor
         Vertex(uint32_t id, float latitude, float longitude, int x=0, int y=0, bool xy_given=false);
 
         // Retrieve characteristics of vertex
-        uint32_t get_vertex_id(Vertex vertex);
-        float get_latitude(Vertex vertex);
-        float get_longitude(Vertex vertex);
-        int get_x(Vertex vertex);
-        int get_y(Vertex vertex);
+        uint32_t get_vertex_id(Vertex vertex) const;
+        const float get_latitude(Vertex vertex);
+        const float get_longitude(Vertex vertex);
+        const int get_x(Vertex vertex);
+        const int get_y(Vertex vertex);
 
         void print() const;
         void mercator();
         
-
-        Vertex getClosestVertex();
+        // Method to add connections to vertex
+        void add_connection(Vertex vertex);
 
         // Equality operator to compare two Vertex objects
         bool operator==(const Vertex& other) const{
@@ -48,7 +54,7 @@ class Vertex {
         bool xy_given;
         
         
-        unordered_map<Vertex, Edge > connected_vertices;
+        pair<Vertex, vector<Edge>> vertex_connection; // Shows to which edges the vertex is connected
 };
 
 // Custom hash function for Vertex to work with unordered_map
@@ -60,6 +66,7 @@ namespace std{
         }
     };
 }
+
 
 
 #endif VERTEX_H
