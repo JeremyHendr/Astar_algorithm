@@ -6,21 +6,23 @@ Vertex: Node aka intersection.\
 Edge: Street.
 
 ## 
-- Create the graph class
+- [ ] Create the graph class
     - Graph class with methods to find path between two vertices
     - One graph object (1 map)
     - Contains:
         - List of all vertices
         - CHOOSE CONTAINER CORRECTLY
         - 
-- Create function to create an unordered map with vertex and edge its connected to
-- Create custom hash and equal methods for vertex class so that it can be used in an unordered map
-- Create a graph from the provided data file
 
-- Code BFS
-- Code Dijkstra
-- Code A star
-- Code visual rep in Qt
+    
+- [ ] Create function to create an unordered map with vertex and edge its connected to
+- [x] Create custom hash and equal methods for vertex class so that it can be used in an unordered map
+- [ ] Create a graph from the provided data file
+
+- [ ] Code BFS
+- [ ] Code Dijkstra
+- [ ] Code A star
+- [ ] Code visual rep in Qt
 
 ## Explanation of BFS pseudo code
 ```c++

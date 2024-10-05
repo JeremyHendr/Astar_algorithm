@@ -26,17 +26,12 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude, int x=0, int y=0, b
     this->y = 0;
     this->xy_given = xy_given;
     
-    //connected_vertices = new std::unordered_map<Vertex, Edge>();
+     std::unordered_map<Vertex, Edge> connected_vertices;
 }
 
 // Print function for vertices
 void Vertex::print() const{
     cout << "Vertex(id=" << id << ", lat=" << latitude << ", lon=" << longitude << ")" << endl; 
-}
-
-// Method to retrieve vertex id
-uint32_t Vertex::get_vertex_id(Vertex vertex){
-    return vertex.id;
 }
 
 // Method to retrieve latitude

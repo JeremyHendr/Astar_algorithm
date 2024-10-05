@@ -12,11 +12,14 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <functional> // Necessary for std::hash
 
 using namespace std;
 
 class Vertex {
     public :
+        uint32_t id;
+
         Vertex(uint32_t id, float latitude, float longitude, int x=0, int y=0, bool xy_given=false);
 
         // Retrieve characteristics of vertex
@@ -31,9 +34,13 @@ class Vertex {
         
 
         Vertex getClosestVertex();
+
+        // Equality operator to compare two Vertex objects
+        bool operator==(const Vertex& other) const{
+            return id == other.id; // Compare by unique id
+        }
     
     private :
-        uint32_t id;
         float latitude;
         float longitude;
         int x;
@@ -41,8 +48,18 @@ class Vertex {
         bool xy_given;
         
         
-        //unordered_map<Vertex, Edge > connected_vertices;
+        unordered_map<Vertex, Edge > connected_vertices;
 };
+
+// Custom hash function for Vertex to work with unordered_map
+namespace std{
+    template<>
+    struct hash<Vertex>{
+        std::size_t operator()(const Vertex& v) const {
+            return std::hash<uint32_t>()(v.id); // Hash based on vertex ID
+        }
+    };
+}
 
 
 #endif VERTEX_H
