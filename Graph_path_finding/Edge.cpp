@@ -16,7 +16,7 @@
 using namespace std;
 
 // Edge class constructor
-Edge::Edge(int source_id, int dest_id, double length, string name, bool name_given){
+Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given){
     if (name_given == true){
         this->name = name;
     }
@@ -54,10 +54,12 @@ const double Edge::get_length(Edge edge){
 const string Edge::get_name(Edge edge){
     return edge.name;
 }
-
-// Method to create a unique edge id
-double Edge::create_edge_id(int source_id, int dest_id){
-    std::ostringstream oss;
-    oss << source_id << "." << dest_id;
-    return std::stod(oss.str());
+const double Edge::getID() const{
+    return id;
 }
+// Method to create a unique edge id
+// double Edge::create_edge_id(int source_id, int dest_id){
+//     std::ostringstream oss;
+//     oss << source_id << "." << dest_id;
+//     return std::stod(oss.str());
+// }

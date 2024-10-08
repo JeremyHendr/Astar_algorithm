@@ -22,10 +22,6 @@ qt_add_executable(Graph_finding_project
     Edge.cpp
     Graph.cpp
     Vertex.cpp
-    # Data.qrc
-
-
-
 )
 
 set_target_properties(Graph_finding_project PROPERTIES
@@ -59,6 +55,7 @@ qt_add_resources(Graph_finding_project "images"
 # Resources:
 set(gps_data_files
     "Data/graph_dc_area_2022-03-11.txt"
+    "Data/vertex_test.txt"
 )
 
 qt_add_resources(Graph_finding_project "gps_data"

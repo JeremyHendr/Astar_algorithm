@@ -20,25 +20,22 @@ using namespace std;
 
 class Edge {
 public :
-    Edge(double unique_id, int source_id, int dest_id, double length, string name, bool name_given=false);
+    Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
     static int get_source_id(Edge edge);
     static int get_destination_id(Edge edge);
     const double get_length(Edge edge);
     const string get_name(Edge name);
-
-    static double create_edge_id(int source_id, int dest_id);
+    const double getID() const;
 
     void print() const;
 
 private :
-    double unique_id;
+    double id;
     int source_id;
     int dest_id;
     double length;
     string name;
-
-
 };
 
 

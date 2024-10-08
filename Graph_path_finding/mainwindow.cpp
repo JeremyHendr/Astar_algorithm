@@ -7,8 +7,7 @@
 
 #include <QHBoxLayout>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QWidget(parent), scene(new QGraphicsScene(this))
+MainWindow::MainWindow(QWidget *parent): QWidget(parent), scene(new QGraphicsScene(this))
 {
     populateScene();
 

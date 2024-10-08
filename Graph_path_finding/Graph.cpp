@@ -41,10 +41,10 @@ Graph::Graph(string graph_data_file) {
         QStringList fields = line.split(",");
 
         if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
-            uint32_t ID=static_cast<uint32_t>(stoul(fields[1]));
-            float lattitude=0;
-            float longitude=0;
-            Vertex* v = new Vertex(ID, lattitude, longitude);
+            uint32_t ID = fields[1].toUInt();
+            float latitude = fields[2].toFloat();
+            float longitude = fields[2].toFloat();
+            Vertex* v = new Vertex(ID, latitude, longitude);
             add_vertex(v);
         }
         else if (fields[0] == "E") {
@@ -75,7 +75,8 @@ void Graph::print() const{
     cout << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges" << endl;
 }
 
-// Method for the BFS algorithm
-void Graph::BFS(){
 
-}
+// vector<Vertex*> Graph::BFS(Vertex* origin, Vertex* destination, bool time){
+//     // Method for the BFS algorithm
+//     //TODO
+// }
