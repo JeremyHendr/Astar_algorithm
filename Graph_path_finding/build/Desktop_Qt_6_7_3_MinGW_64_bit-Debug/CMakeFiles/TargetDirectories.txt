@@ -1,0 +1,9 @@
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/chip.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/install.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/chip_autogen_timestamp_deps.dir
+D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/CMakeFiles/chip_autogen.dir

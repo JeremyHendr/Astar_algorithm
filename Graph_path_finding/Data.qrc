@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/GPS">
+        <file>graph_dc_area_2022-03-11.txt</file>
+        <file>test.txt</file>
+    </qresource>
+</RCC>

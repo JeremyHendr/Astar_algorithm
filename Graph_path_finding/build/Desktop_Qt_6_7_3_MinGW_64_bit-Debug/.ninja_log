@@ -1,0 +1,14 @@
+# ninja log v6
+28	179	7495725085366980	chip_autogen/timestamp	39ad73e1498d3114
+28	179	7495725085366980	chip_autogen/mocs_compilation.cpp	39ad73e1498d3114
+773	951	7494245600958058	.qt/rcc/qrc_images.cpp	85dc5baeae4e212f
+28	179	7495725085366980	D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/chip_autogen/timestamp	39ad73e1498d3114
+2824	3212	7495725113328629	chip.exe	1610b2b9595604e3
+28	179	7495725085366980	D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/chip_autogen/mocs_compilation.cpp	39ad73e1498d3114
+773	951	7494245600958058	D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/.qt/rcc/qrc_images.cpp	85dc5baeae4e212f
+1000	1310	7494245601526756	CMakeFiles/chip.dir/build/Desktop_Qt_6_7_3_MinGW_64_bit-Debug/.qt/rcc/qrc_images.cpp.obj	3cd4e48b5f5bf018
+911	4462	7495661325625583	CMakeFiles/chip.dir/main.cpp.obj	45c5f8f90dcc4208
+183	2498	7495725086918078	CMakeFiles/chip.dir/mainwindow.cpp.obj	f85dd0a68638320a
+906	4649	7495661325575359	CMakeFiles/chip.dir/chip_autogen/mocs_compilation.cpp.obj	85fe32283d64d747
+179	2824	7495725086878199	CMakeFiles/chip.dir/chip.cpp.obj	bf41591529405d81
+990	7914	7494245601421873	CMakeFiles/chip.dir/view.cpp.obj	6860613a351642b2

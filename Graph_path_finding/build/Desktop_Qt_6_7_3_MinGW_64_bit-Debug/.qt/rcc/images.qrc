@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="fileprint.png">D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/fileprint.png</file>
+    <file alias="qt4logo.png">D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/qt4logo.png</file>
+    <file alias="rotateleft.png">D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/rotateleft.png</file>
+    <file alias="rotateright.png">D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/rotateright.png</file>
+    <file alias="zoomin.png">D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/zoomin.png</file>
+    <file alias="zoomout.png">D:/Application/QT/Examples/Qt-6.7.3/widgets/graphicsview/chip/zoomout.png</file>
+  </qresource>
+</RCC>
+
