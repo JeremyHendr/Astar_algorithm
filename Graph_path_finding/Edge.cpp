@@ -16,12 +16,13 @@
 using namespace std;
 
 // Edge class constructor
-Edge::Edge(double unique_id, int source_id, int dest_id, double length, string name, bool name_given){
+Edge::Edge(int source_id, int dest_id, double length, string name, bool name_given){
     if (name_given == true){
         this->name = name;
     }
-
-    this->unique_id = unique_id;
+    std::ostringstream oss;
+    oss << source_id << "." << dest_id;
+    this->id = std::stod(oss.str());
     this->source_id = source_id;
     this->dest_id = dest_id;
     this->length = length;

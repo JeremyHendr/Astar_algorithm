@@ -30,14 +30,14 @@ class Graph {
         void connect_graph(unordered_map<uint32_t, Vertex*> vertices_map);
 
         // Path algorithms
-        void BFS();
+        vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);
         void Dijkstra();
         void Astar();
 
         // Make the "edges_map" accessible
         // static const std::unordered_map<double, Edge*>& get_edges_map();
 
-        unordered_multimap<Vertex, Edge> connected_graph;
+        // unordered_multimap<Vertex, Edge> connected_graph;
 
 
 

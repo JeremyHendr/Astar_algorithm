@@ -8,11 +8,12 @@
 */
 
 
-#include <string>
-#include <vector>
 #include <unordered_map>
 #include <QFile>
 #include <QApplication>
+#include <string>
+#include <cstdint>
+#include <iostream>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -38,14 +39,11 @@ Graph::Graph(string graph_data_file) {
     while(!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
-        // qInfo() << fields;
-        if (fields[0] == "V") {
-            //Create a new Vertex object
 
-            //TODO assign lattitude and longitude
-            uint32_t ID;
-            float lattitude;
-            float longitude;
+        if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
+            uint32_t ID=static_cast<uint32_t>(stoul(fields[1]));
+            float lattitude=0;
+            float longitude=0;
             Vertex* v = new Vertex(ID, lattitude, longitude);
             add_vertex(v);
         }
@@ -67,35 +65,15 @@ void Graph::add_vertex(Vertex* v){
 }
 
 // Method to add edges (Format: E,source_vid,dest_vid,length,name,extra0,extra1)
-void Graph::add_edge(vector<string> row){
-    // // Create edge object with arguments and store it: source id (int) / destination id (int) / length (double) / name (string)
-    // Edge* e;
-
-    // // Create a unique edge id: source_id.dest_id
-    // double unique_id = Edge::create_edge_id(stoi(row[1]), stoi(row[2]));
-
-    // if (row.size() == 5){
-    //     bool name_given = true;
-    //     e = new Edge(unique_id, stoi(row[1]), stoi(row[2]), stod(row[3]), row[4], name_given);
-    // }
-    // else{
-    //     e = new Edge(unique_id, stoi(row[1]), stoi(row[2]), stod(row[3]), row[4]);
-    // }
-
-
-    // // Add created object to unordered map (id, edge object)
-    // edges_map.insert({unique_id, e});
+void Graph::add_edge(Edge* e){
+    //check is not already inside
+    edges_map.insert({e->getID(), e});
 }
 
 // Method to print description of the graph
 void Graph::print() const{
-    // cout << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges" << endl;
+    cout << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges" << endl;
 }
-
-// Method to retrieve the edges_map
-// const std::unordered_map<double, Edge*>& Graph::get_edges_map(){
-//     return edges_map;
-// }
 
 // Method for the BFS algorithm
 void Graph::BFS(){
