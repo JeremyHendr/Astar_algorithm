@@ -46,7 +46,7 @@ void Chip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     pen.setWidth(width);
     painter->setBrush(QBrush(fillColor.darker(option->state & QStyle::State_Sunken ? 120 : 100)));
-    painter->drawEllipse(14,14,10,10);
+    painter->drawEllipse(x,y,50,50);
 }
 
 void Chip::mousePressEvent(QGraphicsSceneMouseEvent *event)

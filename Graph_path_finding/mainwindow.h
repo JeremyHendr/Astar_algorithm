@@ -6,6 +6,8 @@
 
 #include <QWidget>
 
+#include "Graph.h"
+
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 QT_END_NAMESPACE
@@ -13,11 +15,11 @@ QT_END_NAMESPACE
 class MainWindow : public QWidget {
     Q_OBJECT
     public:
-        MainWindow(QWidget *parent = nullptr);
+        MainWindow(Graph* g, QWidget *parent = nullptr);
 
     private:
         void setupMatrix();
-        void populateScene();
+        void populateScene(Graph* graph);
 
         QGraphicsScene *scene;
         // QSplitter *h1Splitter;

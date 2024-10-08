@@ -11,7 +11,6 @@
 #include <unordered_map>
 #include <QFile>
 #include <QApplication>
-#include <string>
 #include <cstdint>
 #include <iostream>
 
@@ -39,14 +38,16 @@ Graph::Graph(QString graph_data_file) {
     while(!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
-        qInfo() << fields;
+        // qInfo() << fields;
+
         if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
             uint32_t ID = fields[1].toUInt();
-            float latitude = fields[2].toFloat();
             float longitude = fields[2].toFloat();
-            Vertex* v = new Vertex(ID, latitude, longitude);
-            add_vertex(v);
+            float latitude = fields[3].toFloat();
+            Vertex* v = new Vertex(ID, longitude, latitude);
+            addVertex(v);
         }
+
         else if (fields[0] == "E") {
             //Create a new Edge object
             //add to the edge map
@@ -60,22 +61,46 @@ Graph::Graph(QString graph_data_file) {
 
 
 // Method to add vertices (Format: V,vertexid,longitude,latitude,x*,y*)
-void Graph::add_vertex(Vertex* v){
+void Graph::addVertex(Vertex* v){
     //check is not already inside
     vertices_map.insert({v->getID(), v});
 }
 
 // Method to add edges (Format: E,source_vid,dest_vid,length,name,extra0,extra1)
-void Graph::add_edge(Edge* e){
+void Graph::addEdge(Edge* e){
     //check is not already inside
     edges_map.insert({e->getID(), e});
 }
 
 // Method to print description of the graph
 void Graph::print() const{
-    cout << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges" << endl;
+    qInfo() << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges";
 }
 
+Vertex* Graph::getVertex(uint32_t id) {
+    // std::vector<uint32_t> keys;
+    // keys.reserve(vertices_map.size());
+
+    // for(auto kv : vertices_map) {
+    //     keys.push_back(kv.first);
+    // }
+    // qInfo() << keys;
+
+    if (vertices_map.find(id) == vertices_map.end()) {
+        qInfo() << "No Vertex with id" << id;
+        return nullptr;
+    }
+    return vertices_map.at(id);
+}
+
+Edge* Graph::getEdge(double id) {
+    auto it = edges_map.find(id);
+    if (it != edges_map.end()) {
+        return it->second;
+    } else {
+        return nullptr; // Return nullptr if the edge is not found
+    }
+}
 
 // vector<Vertex*> Graph::BFS(Vertex* origin, Vertex* destination, bool time){
 //     // Method for the BFS algorithm

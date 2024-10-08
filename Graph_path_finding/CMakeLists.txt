@@ -56,6 +56,7 @@ qt_add_resources(Graph_finding_project "images"
 set(gps_data_files
     "Data/graph_dc_area_2022-03-11.txt"
     "Data/vertex_test.txt"
+    "Data/all_vertices.txt"
 )
 
 qt_add_resources(Graph_finding_project "gps_data"

@@ -19,14 +19,20 @@ using namespace std;
 
 class Vertex {
     public :
-        Vertex(uint32_t id, float latitude, float longitude);
+        Vertex(uint32_t id, float longitude, float latitude);
         Vertex(uint32_t id, int x, int y);
 
+
         const uint32_t getID() const;
+        inline const QPoint* getCoordinate() const{return coordinate;};
         void print() const;
-        void mercator();
+        // static double* getLongitudeZeroReference() {return longitude_zero_reference;}
+        // static double* getLatitudeZeroReference() {return latitude_zero_reference;}
+
 
     private :
+        inline static double* longitude_zero_reference = nullptr;
+        inline static double* latitude_zero_reference = nullptr;
         uint32_t id;
         QPoint* coordinate;
         vector< pair<Vertex*, Edge*> > neighbors;

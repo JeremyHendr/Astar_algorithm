@@ -3,26 +3,32 @@
 
 
 #include <QApplication>
-#include <iostream>
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
 
 #include "mainwindow.h"
 #include "Graph.h"
+#include "Vertex.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 
-    MainWindow window;
+    qInfo() << "Running";
+    // Graph DC_graph(":/Data/vertex_test.txt");
+    Graph DC_graph(":/Data/all_vertices.txt");
+
+    // Vertex* v = DC_graph.getVertex(2);
+    // v->print();
+
+    MainWindow window(&DC_graph);
     window.show();
 
-    qInfo() << "Running";
+
 
     // Graph g(":/Data/graph_dc_area_2022-03-11.txt");
-    Graph g(":/Data/vertex_test.txt");
+
 
     return app.exec();
 }

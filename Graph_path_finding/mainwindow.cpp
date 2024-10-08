@@ -4,12 +4,13 @@
 #include "chip.h"
 #include "mainwindow.h"
 #include "view.h"
+#include "Graph.h"
 
 #include <QHBoxLayout>
+#include <QPainter>
 
-MainWindow::MainWindow(QWidget *parent): QWidget(parent), scene(new QGraphicsScene(this))
-{
-    populateScene();
+MainWindow::MainWindow(Graph* graph, QWidget *parent): QWidget(parent), scene(new QGraphicsScene(this)) {
+    populateScene(graph);
 
     View *view = new View("Top left view");
     view->view()->setScene(scene);
@@ -21,31 +22,15 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent), scene(new QGraphicsSce
     setWindowTitle(tr("Chip Example"));
 }
 
-void MainWindow::populateScene()
-{
-    // QImage image(":/qt4logo.png");
+void MainWindow::populateScene(Graph* graph) {
 
-    // // Populate scene
-    // int xx = 0;
-    // for (int i = -11000; i < 11000; i += 110) {
-    //     ++xx;
-    //     int yy = 0;
-    //     for (int j = -7000; j < 7000; j += 70) {
-    //         ++yy;
-    //         qreal x = (i + 11000) / 22000.0;
-    //         qreal y = (j + 7000) / 14000.0;
-
-    //         QColor color(image.pixel(int(image.width() * x), int(image.height() * y)));
-    //         QGraphicsItem *item = new Chip(color, xx, yy);
-    //         item->setPos(QPointF(i, j));
-    //         scene->addItem(item);
-    //     }
-    // }
-
-    int x = 50;
-    int y = 50;
-    QColor color(255,0,0);
-    QGraphicsItem *item = new Chip(color, x, y);
-    item->setPos(QPointF(x, y));
-    scene->addItem(item);
+    for(auto kv : graph->vertices_map) {
+        int x = kv.second->getCoordinate()->x();
+        int y = kv.second->getCoordinate()->y();
+        // qInfo() << x << " " << y;
+        QColor color(255,0,0);
+        QGraphicsItem *item = new Chip(color, x, y);
+        item->setPos(QPointF(x, y));
+        scene->addItem(item);
+    }
 }

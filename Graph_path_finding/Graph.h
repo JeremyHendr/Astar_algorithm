@@ -24,26 +24,21 @@ class Graph {
     public:
         Graph(QString graph_data_file);
 
+        void addVertex(Vertex* v);
+        void addEdge(Edge* e);
+        Vertex* getVertex(uint32_t id);
+        Edge* getEdge(double id);
         void print() const;
+
+        unordered_map<uint32_t, Vertex*> vertices_map;
+        unordered_map<double, Edge*> edges_map;
 
         // Path algorithms
         // vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);
         // void Dijkstra();
         // void Astar();
 
-        // Make the "edges_map" accessible
-        // static const std::unordered_map<double, Edge*>& get_edges_map();
 
-        // unordered_multimap<Vertex, Edge> connected_graph;
-
-
-
-    private:
-        void add_vertex(Vertex* v);
-        void add_edge(Edge* e);
-
-        unordered_map<uint32_t, Vertex*> vertices_map;
-        unordered_map<double, Edge*>* edges_map;
 
 
 };
