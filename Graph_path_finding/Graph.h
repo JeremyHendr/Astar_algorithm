@@ -13,7 +13,7 @@
 
 // #include <iostream>
 #include <unordered_map>
-#include <string>
+#include <QString>
 
 #include "Vertex.h"
 #include "Edge.h"
@@ -22,7 +22,7 @@ using namespace std;
 
 class Graph {
     public:
-        Graph(string graph_data_file);
+        Graph(QString graph_data_file);
 
         void print() const;
 
@@ -43,7 +43,7 @@ class Graph {
         void add_edge(Edge* e);
 
         unordered_map<uint32_t, Vertex*> vertices_map;
-        unordered_map<double, Edge*> edges_map;
+        unordered_map<double, Edge*>* edges_map;
 
 
 };

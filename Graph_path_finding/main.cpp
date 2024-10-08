@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     qInfo() << "Running";
 
     // Graph g(":/Data/graph_dc_area_2022-03-11.txt");
+    Graph g(":/Data/vertex_test.txt");
 
     return app.exec();
 }

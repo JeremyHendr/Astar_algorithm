@@ -22,9 +22,9 @@
 
 using namespace std;
 
-Graph::Graph(string graph_data_file) {
+Graph::Graph(QString graph_data_file) {
 
-    QFile file(":/Data/graph_dc_area_2022-03-11.txt");
+    QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
         qInfo() << "Could not open file";
         qInfo() << file.errorString();
@@ -39,7 +39,7 @@ Graph::Graph(string graph_data_file) {
     while(!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
-
+        qInfo() << fields;
         if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
             uint32_t ID = fields[1].toUInt();
             float latitude = fields[2].toFloat();
@@ -55,6 +55,7 @@ Graph::Graph(string graph_data_file) {
     }
 
     file.close();
+    print();
 }
 
 
