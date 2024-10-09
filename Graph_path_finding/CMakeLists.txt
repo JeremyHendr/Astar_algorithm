@@ -14,7 +14,6 @@ qt_standard_project_setup()
 qt_add_executable(Graph_finding_project
     chip.cpp chip.h
     main.cpp
-    mainwindow.cpp mainwindow.h
     view.cpp view.h
     Graph.h
     Edge.h

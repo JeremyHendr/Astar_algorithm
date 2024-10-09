@@ -8,29 +8,29 @@
 #include <QMessageBox>
 #include <stdint.h>
 
-#include "mainwindow.h"
 #include "Graph.h"
-#include "Vertex.h"
+#include "view.h"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 
-    qInfo() << "Running";
     // Graph DC_graph(":/Data/vertex_test.txt");
-    Graph DC_graph(":/Data/graph_dc_area_2022-03-11.txt");
-    //Graph DC_graph(":/Data/all_vertices.txt");
+    Graph DC_graph(":/Data/all_vertices.txt");
+    // Graph g(":/Data/graph_dc_area_2022-03-11.txt");
 
-    // Check if neighbor functions work
-    //Vertex* v = DC_graph.getVertex(66034);
-    //v->showNeighbor(v);
+    // QGraphicsScene scene;
+    // scene.setSceneRect( -100.0, -100.0, 200.0, 200.0 );
 
-    MainWindow window(&DC_graph);
-    window.show();
+    // QGraphicsItem *item = new QGraphicsEllipseItem( -50.0, -50.0, 100.0, 100.0, Q_NULLPTR );
+    // scene.addItem(item);
 
+    // QGraphicsView view( &scene );
+    // view.setRenderHints( QPainter::Antialiasing );
+    // view.show();
 
-
-    //Graph g(":/Data/all_vertices.txt");
+    View v(&DC_graph);
+    v.show();
 
 
     return app.exec();
