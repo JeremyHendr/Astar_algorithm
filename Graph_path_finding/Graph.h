@@ -27,11 +27,11 @@ class Graph {
         void addVertex(Vertex* v);
         void addEdge(Edge* e);
         Vertex* getVertex(uint32_t id);
-        Edge* getEdge(double id);
+        Edge* getEdge(string id);
         void print() const;
 
         unordered_map<uint32_t, Vertex*> vertices_map;
-        unordered_map<double, Edge*> edges_map;
+        unordered_map<string, Edge*> edges_map;
 
         // Path algorithms
         // vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);

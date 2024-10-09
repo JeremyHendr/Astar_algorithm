@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <stdint.h>
 
 #include "mainwindow.h"
 #include "Graph.h"
@@ -17,17 +18,19 @@ int main(int argc, char *argv[]) {
 
     qInfo() << "Running";
     // Graph DC_graph(":/Data/vertex_test.txt");
-    Graph DC_graph(":/Data/all_vertices.txt");
+    Graph DC_graph(":/Data/graph_dc_area_2022-03-11.txt");
+    //Graph DC_graph(":/Data/all_vertices.txt");
 
-    // Vertex* v = DC_graph.getVertex(2);
-    // v->print();
+    // Check if neighbor functions work
+    //Vertex* v = DC_graph.getVertex(66034);
+    //v->showNeighbor(v);
 
     MainWindow window(&DC_graph);
     window.show();
 
 
 
-    // Graph g(":/Data/graph_dc_area_2022-03-11.txt");
+    //Graph g(":/Data/all_vertices.txt");
 
 
     return app.exec();

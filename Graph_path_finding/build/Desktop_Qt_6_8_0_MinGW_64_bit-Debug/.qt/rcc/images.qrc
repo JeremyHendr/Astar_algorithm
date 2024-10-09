@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="fileprint.png">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/fileprint.png</file>
+    <file alias="qt4logo.png">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/qt4logo.png</file>
+    <file alias="rotateleft.png">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/rotateleft.png</file>
+    <file alias="rotateright.png">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/rotateright.png</file>
+    <file alias="zoomin.png">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/zoomin.png</file>
+    <file alias="zoomout.png">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/zoomout.png</file>
+  </qresource>
+</RCC>
+

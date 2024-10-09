@@ -12,7 +12,9 @@
 #define EDGE_H
 
 #include <iostream>
-
+#include <stdint.h>
+#include <QPoint>
+#include <QApplication>
 
 
 using namespace std;
@@ -22,16 +24,16 @@ class Edge {
 public :
     Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
-    static int get_source_id(Edge edge);
-    static int get_destination_id(Edge edge);
+    static uint32_t get_source_id(Edge edge);
+    static uint32_t get_destination_id(Edge edge);
     const double get_length(Edge edge);
     const string get_name(Edge name);
-    const double getID() const;
+    const string getID() const;
 
     void print() const;
 
 private :
-    double id;
+    string id;
     int source_id;
     int dest_id;
     double length;

@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="Data/graph_dc_area_2022-03-11.txt">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Data/graph_dc_area_2022-03-11.txt</file>
+    <file alias="Data/vertex_test.txt">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Data/vertex_test.txt</file>
+    <file alias="Data/all_vertices.txt">D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Data/all_vertices.txt</file>
+  </qresource>
+</RCC>
+
