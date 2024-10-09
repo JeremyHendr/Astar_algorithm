@@ -6,7 +6,6 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
-#include <stdint.h>
 
 #include "Graph.h"
 #include "view.h"
@@ -16,8 +15,8 @@ int main(int argc, char *argv[]) {
     app.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 
     // Graph DC_graph(":/Data/vertex_test.txt");
-    Graph DC_graph(":/Data/all_vertices.txt");
-    // Graph g(":/Data/graph_dc_area_2022-03-11.txt");
+    // Graph DC_graph(":/Data/all_vertices.txt");
+    Graph DC_graph(":/Data/graph_dc_area_2022-03-11.txt");
 
     // QGraphicsScene scene;
     // scene.setSceneRect( -100.0, -100.0, 200.0, 200.0 );

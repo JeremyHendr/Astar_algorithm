@@ -25,9 +25,6 @@ using namespace std;
 
 Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) {
 
-    // setSceneRect( 0, 0, 800.0, 800.0 );
-
-
     QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
         qInfo() << "Could not open file";
@@ -89,13 +86,13 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
     }
 
     file.close();
-    print();
+
 
     // Read the edge_map and add the neighbors to the corresponding vertices
     for (const auto& pair: edges_map){
         Edge* e = pair.second;
-        uint32_t source_id = e->get_source_id(*e);
-        uint32_t dest_id = e->get_destination_id(*e);
+        uint32_t source_id = e->get_source_id();
+        uint32_t dest_id = e->get_destination_id();
 
         Vertex* source_v = getVertex(source_id);
         Vertex* dest_v = getVertex(dest_id);
@@ -103,11 +100,8 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
         std::pair<Vertex*, Edge*> neighbor(dest_v, e);
         source_v->addNeighbor(neighbor);
     }
-}
 
-
-// Method to add vertices
-
+    print();
     populateScene();
 
 }
@@ -125,6 +119,23 @@ void Graph::populateScene() {
         int y = pair.second->getCoordinate()->y();
         QGraphicsEllipseItem *item = new QGraphicsEllipseItem( x, y, 20, 20, nullptr);
         item->setBrush(*brush);
+        item->setPen(*pen);
+        addItem(item);
+    }
+
+    pen->setColor(QColor(0,255,0));
+    pen->setWidth(5);
+
+    for (const auto pair : edges_map) {
+        Vertex* origin = getVertex(pair.second->get_source_id());
+        Vertex* destination = getVertex(pair.second->get_destination_id());
+
+        int x_origin = origin->getCoordinate()->x();
+        int y_origin = origin->getCoordinate()->y();
+        int x_destination = destination->getCoordinate()->x();
+        int y_destination = destination->getCoordinate()->y();
+
+        QGraphicsLineItem *item = new QGraphicsLineItem(x_origin,y_origin,x_destination,y_destination);
         item->setPen(*pen);
         addItem(item);
     }

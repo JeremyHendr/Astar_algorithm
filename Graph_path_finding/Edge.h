@@ -21,23 +21,23 @@ using namespace std;
 
 
 class Edge {
-public :
-    Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
+    public :
+        Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
-    static uint32_t get_source_id(Edge edge);
-    static uint32_t get_destination_id(Edge edge);
-    const double get_length(Edge edge);
-    const string get_name(Edge name);
-    const string getID() const;
+        const uint32_t get_source_id() const;
+        const uint32_t get_destination_id() const;
+        const double get_length(Edge edge);
+        const string get_name(Edge name);
+        const string getID() const;
 
-    void print() const;
+        void print() const;
 
-private :
-    string id;
-    int source_id;
-    int dest_id;
-    double length;
-    string name;
+    private :
+        string id;
+        int source_id;
+        int dest_id;
+        double length;
+        string name;
 };
 
 

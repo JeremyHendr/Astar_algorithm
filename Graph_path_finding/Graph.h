@@ -39,14 +39,11 @@ class Graph: public QGraphicsScene {
         // QGraphicsScene *scene;
         unordered_map<uint32_t, Vertex*> vertices_map;
         unordered_map<string, Edge*> edges_map;
-
+        void populateScene();
         // Path algorithms
         // vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);
         // void Dijkstra();
         // void Astar();
-
-
-
 
 };
 

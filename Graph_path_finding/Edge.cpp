@@ -48,23 +48,21 @@ void Edge::print() const{
 }
 
 // Method to retrieve source id
-uint32_t Edge::get_source_id(Edge edge){
+const uint32_t Edge::get_source_id() const{
     /* Retrieve source id of edge
      *
-     * @param edge e
      * @return uint32_t for source id of edge
      */
-    return edge.source_id;
+    return source_id;
 }
 
 // Method to retrieve destination id
-uint32_t Edge::get_destination_id(Edge edge){
+const uint32_t Edge::get_destination_id() const{
     /* Retrieve destination id of edge
      *
-     * @param edge e
      * @return uint32_t for destination id of edge
      */
-    return edge.dest_id;
+    return dest_id;
 }
 
 // Method to retrieve length
