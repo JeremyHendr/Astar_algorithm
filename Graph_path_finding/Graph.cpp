@@ -12,21 +12,20 @@
 #include <QFile>
 #include <QApplication>
 #include <cstdint>
-#include <iostream>
+#include <QGraphicsEllipseItem>
+// #include <iostream>
 
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
-#include "view.h"
-
 
 using namespace std;
 
-Graph::Graph(QString graph_data_file, QWidget *parent): QWidget(parent) {
-    // View *view = new View();
-    // QHBoxLayout *layout = new QHBoxLayout;
-    // layout->addWidget(view);
-    // setLayout(layout);
+
+
+Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) {
+
+    // setSceneRect( 0, 0, 800.0, 800.0 );
 
 
     QFile file(graph_data_file);
@@ -63,6 +62,27 @@ Graph::Graph(QString graph_data_file, QWidget *parent): QWidget(parent) {
 
     file.close();
     print();
+
+    populateScene();
+
+}
+
+void Graph::populateScene() {
+    // QGraphicsItem *item = new QGraphicsEllipseItem( -50.0, -50.0, 100.0, 100.0, Q_NULLPTR );
+    // addItem(item);
+    QBrush* brush = new QBrush(Qt::SolidPattern);
+    brush->setColor(QColor(255,255,255));
+    QPen* pen = new QPen();
+    pen->setColor(QColor(255,255,255));
+
+    for (const auto pair : vertices_map){
+        int x = pair.second->getCoordinate()->x();
+        int y = pair.second->getCoordinate()->y();
+        QGraphicsEllipseItem *item = new QGraphicsEllipseItem( x, y, 20, 20, nullptr);
+        item->setBrush(*brush);
+        item->setPen(*pen);
+        addItem(item);
+    }
 }
 
 

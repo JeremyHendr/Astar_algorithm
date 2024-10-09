@@ -15,20 +15,18 @@
 #include <unordered_map>
 #include <QString>
 #include <QWidget>
+#include <QGraphicsScene>
 
 #include "Vertex.h"
 #include "Edge.h"
 
-QT_BEGIN_NAMESPACE
-class QGraphicsScene;
-QT_END_NAMESPACE
 
 using namespace std;
 
-class Graph: public QWidget {
+class Graph: public QGraphicsScene {
     Q_OBJECT
     public:
-        Graph(QString graph_data_file,  QWidget *parent = nullptr );
+        Graph(QString graph_data_file,  QObject  *parent = nullptr );
 
         void addVertex(Vertex* v);
         void addEdge(Edge* e);
@@ -39,9 +37,10 @@ class Graph: public QWidget {
         void print() const;
 
     private:
-        QGraphicsScene *scene;
+        // QGraphicsScene *scene;
         unordered_map<uint32_t, Vertex*> vertices_map;
         unordered_map<double, Edge*> edges_map;
+        void populateScene();
 
         // Path algorithms
         // vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);
