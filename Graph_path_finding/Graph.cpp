@@ -49,19 +49,64 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
             uint32_t ID = fields[1].toUInt();
             float longitude = fields[2].toFloat();
             float latitude = fields[3].toFloat();
-            Vertex* v = new Vertex(ID, longitude, latitude);
-            addVertex(v);
+            Vertex* v;
+
+            if (fields[4] != ""){ // Check if we have values for x and y
+                int x = fields[4].toInt();
+                int y = fields[5].toInt();
+                v = new Vertex(ID, x, y);
+                addVertex(v);
+
+            }
+            else{
+                Vertex* v = new Vertex(ID, longitude, latitude);
+                addVertex(v);
+            }
+
         }
 
-        else if (fields[0] == "E") {
-            //Create a new Edge object
-            //add to the edge map
-            //add the destination vertex as neighbor of the origin vertex
+        else if (fields[0] == "E") { //E,source_id,dest_id,length,name
+            uint32_t source_ID = fields[1].toUInt();
+            uint32_t dest_ID = fields[2].toUInt();
+            double length = fields[3].toDouble();
+            string name = fields[4].toStdString();
+            Edge* e;
+
+            if (fields[4].toStdString() != "???"){ // A real name has been given
+                bool name_given = true;
+                e = new Edge(source_ID, dest_ID, length, name, name_given);
+            }
+            else{ // No name indicated ("???")
+                bool name_given = false;
+                e = new Edge(source_ID, dest_ID, length, name, name_given);
+            }
+            addEdge(e);
+
+            // Get source vertex
+            // Add to neighbor the dest vertex
+            // Add the edge in the pair
         }
     }
 
     file.close();
     print();
+
+    // Read the edge_map and add the neighbors to the corresponding vertices
+    for (const auto& pair: edges_map){
+        Edge* e = pair.second;
+        uint32_t source_id = e->get_source_id(*e);
+        uint32_t dest_id = e->get_destination_id(*e);
+
+        Vertex* source_v = getVertex(source_id);
+        Vertex* dest_v = getVertex(dest_id);
+
+        std::pair<Vertex*, Edge*> neighbor(dest_v, e);
+        source_v->addNeighbor(neighbor);
+    }
+}
+
+
+// Method to add vertices
 
     populateScene();
 
@@ -88,22 +133,39 @@ void Graph::populateScene() {
 
 // Method to add vertices (Format: V,vertexid,longitude,latitude,x*,y*)
 void Graph::addVertex(Vertex* v){
-    //check is not already inside
+    /* Add vertices to the vertices_map
+     *
+     * @param Takes a vertex v
+     * @return
+     */
     vertices_map.insert({v->getID(), v});
 }
 
-// Method to add edges (Format: E,source_vid,dest_vid,length,name,extra0,extra1)
+// Method to add edges
 void Graph::addEdge(Edge* e){
-    //check is not already inside
+    /* Add edges to the edges_map
+     *
+     * @param Takes an edge e
+     * @return
+     */
     edges_map.insert({e->getID(), e});
 }
 
 // Method to print description of the graph
 void Graph::print() const{
+    /* Print graph description
+     */
     qInfo() << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges";
 }
 
+// Method to retrieve vertex by using its id
 Vertex* Graph::getVertex(uint32_t id) {
+    /* Retrieve vertex by id
+     *
+     * @param id
+     * @return vertex
+     */
+
     // std::vector<uint32_t> keys;
     // keys.reserve(vertices_map.size());
 
@@ -119,11 +181,18 @@ Vertex* Graph::getVertex(uint32_t id) {
     return vertices_map.at(id);
 }
 
-Edge* Graph::getEdge(double id) {
+// Method to retrieve edge by using its id
+Edge* Graph::getEdge(string id) {
+    /* Retrieve edge by id
+     *
+     * @param id
+     * @return edge
+     */
     auto it = edges_map.find(id);
     if (it != edges_map.end()) {
         return it->second;
-    } else {
+    }
+    else {
         return nullptr; // Return nullptr if the edge is not found
     }
 }

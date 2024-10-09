@@ -20,6 +20,8 @@ using namespace std;
 class Vertex {
     public :
         Vertex(uint32_t id, float longitude, float latitude);
+
+        // TODO CREATE THIS CONSTRUCTOR
         Vertex(uint32_t id, int x, int y);
 
 
@@ -29,13 +31,16 @@ class Vertex {
         // static double* getLongitudeZeroReference() {return longitude_zero_reference;}
         // static double* getLatitudeZeroReference() {return latitude_zero_reference;}
 
+        // Manage the neighbors for each vertex object
+        void addNeighbor(pair<Vertex*, Edge*> p);
+        void showNeighbor(Vertex* v);
 
     private :
         inline static double* longitude_zero_reference = nullptr;
         inline static double* latitude_zero_reference = nullptr;
         uint32_t id;
         QPoint* coordinate;
-        vector< pair<Vertex*, Edge*> > neighbors;
+        vector< pair<Vertex*, Edge*> > neighbors; // Pair of vertex that can be reached and with the edge with which it can be reached
 };
 
 #endif

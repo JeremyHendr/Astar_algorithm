@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <stdint.h>
 
 #include "Graph.h"
 #include "view.h"

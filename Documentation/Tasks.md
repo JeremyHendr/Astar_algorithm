@@ -66,3 +66,6 @@ adjacency list = vector holds the adjacents for a vertex (vector of vector for e
 create the adjacency list for a vertex before running the algo ??? 
 
 loop needs to stop when end vertex has been found even if queue isnt empty
+
+
+need to add to the current vertex, the vertex it can reach as well as through what edge
