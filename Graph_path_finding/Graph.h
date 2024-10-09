@@ -14,22 +14,32 @@
 // #include <iostream>
 #include <unordered_map>
 #include <QString>
+#include <QWidget>
 
 #include "Vertex.h"
 #include "Edge.h"
 
+QT_BEGIN_NAMESPACE
+class QGraphicsScene;
+QT_END_NAMESPACE
+
 using namespace std;
 
-class Graph {
+class Graph: public QWidget {
+    Q_OBJECT
     public:
-        Graph(QString graph_data_file);
+        Graph(QString graph_data_file,  QWidget *parent = nullptr );
 
         void addVertex(Vertex* v);
         void addEdge(Edge* e);
+
         Vertex* getVertex(uint32_t id);
         Edge* getEdge(double id);
+
         void print() const;
 
+    private:
+        QGraphicsScene *scene;
         unordered_map<uint32_t, Vertex*> vertices_map;
         unordered_map<double, Edge*> edges_map;
 

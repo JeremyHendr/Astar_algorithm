@@ -17,11 +17,17 @@
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
+#include "view.h"
 
 
 using namespace std;
 
-Graph::Graph(QString graph_data_file) {
+Graph::Graph(QString graph_data_file, QWidget *parent): QWidget(parent) {
+    // View *view = new View();
+    // QHBoxLayout *layout = new QHBoxLayout;
+    // layout->addWidget(view);
+    // setLayout(layout);
+
 
     QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
