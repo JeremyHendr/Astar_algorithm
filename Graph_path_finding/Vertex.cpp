@@ -14,7 +14,6 @@
 
 using namespace std;
 
-// Function to convert degrees to radians
 double degreesToRadians(double degrees) {
     /* Convert degrees to radians
      *
@@ -24,9 +23,6 @@ double degreesToRadians(double degrees) {
     return (degrees * M_PI) / 180.0;
 }
 
-// QPoint* Vertex::polar_zero_reference;
-
-// Constructor for the vertex class
 Vertex::Vertex(uint32_t id, float longitude, float latitude){
     /* Constructor for the vertex class with longitude and latitude
      * Converts those to x and y coordiantes using the mercator projection
@@ -54,7 +50,13 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
     int y = R * log(tan(M_PI / 4 + latRad / 2) / tan(M_PI / 4 + refLatRad / 2));
 
     this->coordinate = new QPoint(x,y);
-    // print();
+
+    //set the cooridnates and size off the QGraphicsEllipseItem
+    node_brush->setColor(node_color);
+    node_pen->setColor(node_color);
+    setBrush(*node_brush);
+    setPen(*node_pen);
+    setRect(x-node_size/2,y-node_size/2,node_size,node_size);
 }
 
 // Constructor for the vertex class with x and y
@@ -106,4 +108,8 @@ void Vertex::showNeighbor(Vertex* v){
     for (const auto& pair: v->neighbors){
         qInfo() << "Vertex: " << pair.first->getID() << " | Edge: " << pair.second->getID();
     }
+}
+
+QPoint* Vertex::getCoordinate() {
+    return coordinate;
 }

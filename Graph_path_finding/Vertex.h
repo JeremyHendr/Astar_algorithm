@@ -11,19 +11,19 @@
 #define VERTEX_H
 
 #include <QPoint>
+#include <QBrush>
+#include <QPen>
 #include <vector>
+#include <QGraphicsEllipseItem>
 
 #include "Edge.h"
 
 using namespace std;
 
-class Vertex {
+class Vertex : public QGraphicsEllipseItem {
     public :
         Vertex(uint32_t id, float longitude, float latitude);
-
-        // TODO CREATE THIS CONSTRUCTOR
         Vertex(uint32_t id, int x, int y);
-
 
         const uint32_t getID() const;
         inline const QPoint* getCoordinate() const{return coordinate;};
@@ -34,8 +34,14 @@ class Vertex {
         // Manage the neighbors for each vertex object
         void addNeighbor(pair<Vertex*, Edge*> p);
         void showNeighbor(Vertex* v);
+        QPoint* getCoordinate();
 
     private :
+        //inline static
+        QBrush* node_brush = new QBrush(Qt::SolidPattern);
+        QPen* node_pen = new QPen();
+        inline static QColor node_color = Qt::white;
+        inline static const int node_size = 20;
         inline static double* longitude_zero_reference = nullptr;
         inline static double* latitude_zero_reference = nullptr;
         uint32_t id;

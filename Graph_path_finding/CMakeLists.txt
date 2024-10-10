@@ -20,6 +20,8 @@ qt_add_executable(Graph_finding_project
     Edge.cpp
     Graph.cpp
     Vertex.cpp
+    GraphPath.h
+    GraphPath.cpp
 )
 
 set_target_properties(Graph_finding_project PROPERTIES

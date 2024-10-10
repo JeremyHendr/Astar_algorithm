@@ -34,8 +34,15 @@ Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, boo
     this->source_id = source_id;
     this->destination_id = dest_id;
     this->length = length;
-}
 
+    line_pen->setColor(line_color);
+    setPen(*line_pen);
+}
+void Edge::setCoordinates(QPoint* source, QPoint* destination) {
+    source_coordinate = source;
+    destination_coordinate = destination;
+    setLine(source->x(),source->y(),destination->x(),destination->y());
+}
 void Edge::print() const{
     /*
      * Print edge description

@@ -13,6 +13,7 @@
 #include <QApplication>
 #include <cstdint>
 #include <QGraphicsEllipseItem>
+#include <QList>
 // #include <iostream>
 
 #include "Graph.h"
@@ -24,6 +25,11 @@ using namespace std;
 
 
 Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) {
+
+    // QGraphicsScene::setItemIndexMethod and QGraphicsScene::setBspTreeDepth.
+    // setItemIndexMethod(NoIndex);
+    // setBspTreeDepth();
+    //createItemGroup
 
     QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
@@ -89,6 +95,7 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
 
         Vertex* source_v = getVertex(source_id);
         Vertex* dest_v = getVertex(dest_id);
+        e->setCoordinates(source_v->getCoordinate(), dest_v->getCoordinate());
 
         std::pair<Vertex*, Edge*> neighbor(dest_v, e);
         source_v->addNeighbor(neighbor);
@@ -100,38 +107,22 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
 }
 
 void Graph::populateScene() {
-    // QGraphicsItem *item = new QGraphicsEllipseItem( -50.0, -50.0, 100.0, 100.0, Q_NULLPTR );
-    // addItem(item);
-    QBrush* brush = new QBrush(Qt::SolidPattern);
-    brush->setColor(QColor(255,255,255));
-    QPen* pen = new QPen();
-    pen->setColor(QColor(255,255,255));
-
-    for (const auto pair : vertices_map){
-        int x = pair.second->getCoordinate()->x();
-        int y = pair.second->getCoordinate()->y();
-        QGraphicsEllipseItem *item = new QGraphicsEllipseItem( x, y, 20, 20, nullptr);
-        item->setBrush(*brush);
-        item->setPen(*pen);
-        addItem(item);
-    }
-
-    pen->setColor(QColor(0,255,0));
-    pen->setWidth(5);
-
+    QList<QGraphicsItem*> edge_list;
     for (const auto pair : edges_map) {
-        Vertex* origin = getVertex(pair.second->getSourceId());
-        Vertex* destination = getVertex(pair.second->getDestinationId());
-
-        int x_origin = origin->getCoordinate()->x();
-        int y_origin = origin->getCoordinate()->y();
-        int x_destination = destination->getCoordinate()->x();
-        int y_destination = destination->getCoordinate()->y();
-
-        QGraphicsLineItem *item = new QGraphicsLineItem(x_origin,y_origin,x_destination,y_destination);
-        item->setPen(*pen);
-        addItem(item);
+        edge_list.append(pair.second);
     }
+    QGraphicsItemGroup *group = createItemGroup(edge_list);
+    // addItem(group);
+
+    // for (const auto pair : vertices_map){
+    //     addItem(pair.second);
+    // }
+
+    // for (const auto pair : edges_map) {
+    //     addItem(pair.second);
+    // }
+
+    qInfo() << "Finished populating scene.";
 }
 
 
