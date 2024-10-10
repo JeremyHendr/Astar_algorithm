@@ -13,30 +13,27 @@
 #include <stdint.h>
 #include <QPoint>
 #include <QApplication>
-#include <QBrush>
-#include <QPen>
-#include <QGraphicsLineItem>
-
 
 using namespace std;
 
 
-class Edge : public QGraphicsLineItem{
+class Edge {
     public :
         Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
-        const uint32_t getSourceId() const;
-        const uint32_t getDestinationId() const;
-        const double getLength()const;
-        const string getName() const;
-        const string getID() const;
+        inline const uint32_t getSourceId() const {return source_id;};
+        inline const uint32_t getDestinationId() const {return destination_id;};
+        inline const double getLength()const {return length;};
+        inline const string getName() const {return name;};
+        inline const string getID() const {return id;};
+        inline QPoint* getSourceCoordinate() const {return source_coordinate;};
+        inline QPoint* getDestinationCoordinate() const {return destination_coordinate;};
+
         void setCoordinates(QPoint* source, QPoint* destination);
         void print() const;
 
+
     private :
-        QPen* line_pen = new QPen();
-        inline static QColor line_color = Qt::green;
-        inline static const int line_width = 5;
         string id;
         int source_id;
         int destination_id;

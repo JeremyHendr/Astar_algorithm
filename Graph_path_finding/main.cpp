@@ -8,7 +8,9 @@
 #include <QMessageBox>
 
 #include "Graph.h"
-#include "view.h"
+#include "View.h"
+#include "Window.h"
+
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
@@ -18,17 +20,12 @@ int main(int argc, char *argv[]) {
     // Graph DC_graph(":/Data/all_vertices.txt");
     Graph DC_graph(":/Data/graph_dc_area_2022-03-11.txt");
 
-    // QGraphicsScene scene;
-    // scene.setSceneRect( -100.0, -100.0, 200.0, 200.0 );
 
-    // QGraphicsItem *item = new QGraphicsEllipseItem( -50.0, -50.0, 100.0, 100.0, Q_NULLPTR );
-    // scene.addItem(item);
+    Window main_window = new Window();
+    main_window.displayGraph(&DC_graph);
 
-    // QGraphicsView view( &scene );
-    // view.setRenderHints( QPainter::Antialiasing );
-    // view.show();
 
-    View v(&DC_graph);
+    View v(&main_window);
     v.show();
 
 

@@ -50,45 +50,19 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
     int y = R * log(tan(M_PI / 4 + latRad / 2) / tan(M_PI / 4 + refLatRad / 2));
 
     this->coordinate = new QPoint(x,y);
-
-    //set the cooridnates and size off the QGraphicsEllipseItem
-    node_brush->setColor(node_color);
-    node_pen->setColor(node_color);
-    setBrush(*node_brush);
-    setPen(*node_pen);
-    setRect(x-node_size/2,y-node_size/2,node_size,node_size);
 }
 
-// Constructor for the vertex class with x and y
+
 Vertex::Vertex(uint32_t id, int x, int y){
     /* Constructor for the vertex class with x and y
      *
      * @param uint32_t id, int x, int y
      */
-
     this->id = id;
     this->coordinate = new QPoint(x,y);
-    // print();
 }
 
 
-// Method to print a vertex description
-void Vertex::print() const{
-    /* Print description of vertex
-     */
-    qInfo() << "Vertex(id=" << id << ", x=" << coordinate->x() << ", y=" << coordinate->y() << ")";
-}
-
-// Method to retrieve id of vertex
-const uint32_t Vertex::getID() const{
-    /* Retrieve vertex id
-     *
-     * @return const uint32_t for vertex id
-     */
-    return id;
-}
-
-// Method to add neighbor to vertex object
 void Vertex::addNeighbor(pair<Vertex*, Edge*> pair){
     /* Add neighbor (vertex and edge) to vertex object
      *
@@ -97,7 +71,7 @@ void Vertex::addNeighbor(pair<Vertex*, Edge*> pair){
     this->neighbors.push_back(pair);
 }
 
-// Method to display the neighbors of a vertex
+
 void Vertex::showNeighbor(Vertex* v){
     /* Show neighbors and connections
      *
@@ -110,6 +84,9 @@ void Vertex::showNeighbor(Vertex* v){
     }
 }
 
-QPoint* Vertex::getCoordinate() {
-    return coordinate;
+
+void Vertex::print() const{
+    /* Print description of vertex
+     */
+    qInfo() << "Vertex(id=" << id << ", x=" << coordinate->x() << ", y=" << coordinate->y() << ")";
 }

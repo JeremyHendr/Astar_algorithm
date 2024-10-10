@@ -7,12 +7,7 @@
 * Contains method definition for the Edge class
 */
 
-// #include <iostream>
-// #include <sstream>
-#include <string>
-#include <stdint.h>
 #include <QPoint>
-#include <QApplication>
 
 #include "Edge.h"
 
@@ -34,15 +29,19 @@ Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, boo
     this->source_id = source_id;
     this->destination_id = dest_id;
     this->length = length;
-
-    line_pen->setColor(line_color);
-    setPen(*line_pen);
 }
+
+
 void Edge::setCoordinates(QPoint* source, QPoint* destination) {
+    /*Set the origin and destination coordinate
+     *
+     *@param QPoint* source, QPoint* destination
+     */
     source_coordinate = source;
     destination_coordinate = destination;
-    setLine(source->x(),source->y(),destination->x(),destination->y());
 }
+
+
 void Edge::print() const{
     /*
      * Print edge description
@@ -51,48 +50,5 @@ void Edge::print() const{
 }
 
 
-const uint32_t Edge::getSourceId() const{
-    /* Retrieve source id of edge
-     *
-     * @return uint32_t for source id of edge
-     */
-    return source_id;
-}
-
-
-const uint32_t Edge::getDestinationId() const{
-    /* Retrieve destination id of edge
-     *
-     * @return uint32_t for destination id of edge
-     */
-    return destination_id;
-}
-
-
-const double Edge::getLength() const{
-    /* Retrieve length of edge
-     *
-     * @return double for length of edge
-     */
-    return length;
-}
-
-
-const string Edge::getName() const{
-    /* Retrieve name of edge
-     *
-     * @return Standard string for edge
-     */
-    return name;
-}
-
-
-const string Edge::getID() const{
-    /* Retrieve the unique edge id
-     *
-     * @return double for edge id
-     */
-    return id;
-}
 
 

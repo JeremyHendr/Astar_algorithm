@@ -12,9 +12,10 @@
 #include <QFile>
 #include <QApplication>
 #include <cstdint>
-#include <QGraphicsEllipseItem>
 #include <QList>
-// #include <iostream>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -24,12 +25,8 @@ using namespace std;
 
 
 
-Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) {
-
-    // QGraphicsScene::setItemIndexMethod and QGraphicsScene::setBspTreeDepth.
-    // setItemIndexMethod(NoIndex);
-    // setBspTreeDepth();
-    //createItemGroup
+Graph::Graph(QString graph_data_file) {
+    setFlags(ItemIsSelectable | ItemIsMovable);
 
     QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
@@ -102,27 +99,26 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
     }
 
     print();
-    populateScene();
-
 }
 
-void Graph::populateScene() {
-    QList<QGraphicsItem*> edge_list;
+QRectF Graph::boundingRect() const
+{
+    return QRectF(-10000, -10000, 50000, 50000);
+}
+
+
+void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    Q_UNUSED(widget);
+    QPen* pen = new QPen();
+    pen->setWidth(5);
+    pen->setColor(Qt::white);
+    painter->setPen(*pen);
+
     for (const auto pair : edges_map) {
-        edge_list.append(pair.second);
+        const QPoint* source = pair.second->getSourceCoordinate();
+        const QPoint* destination = pair.second->getDestinationCoordinate();;
+        painter->drawLine(source->x(),source->y(),destination->x(),destination->y());
     }
-    QGraphicsItemGroup *group = createItemGroup(edge_list);
-    // addItem(group);
-
-    // for (const auto pair : vertices_map){
-    //     addItem(pair.second);
-    // }
-
-    // for (const auto pair : edges_map) {
-    //     addItem(pair.second);
-    // }
-
-    qInfo() << "Finished populating scene.";
 }
 
 
@@ -182,7 +178,54 @@ Edge* Graph::getEdge(string id) {
     }
 }
 
+void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mousePressEvent(event);
+    update();
+}
+
+void Graph::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->modifiers() & Qt::ShiftModifier) {
+        stuff << event->pos();
+        update();
+        return;
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mouseReleaseEvent(event);
+    update();
+}
+
+
 // vector<Vertex*> Graph::BFS(Vertex* origin, Vertex* destination, bool time){
 //     // Method for the BFS algorithm
 //     //TODO
+// }
+
+// void Graph::populateScene() {
+//     GraphPath* g = new GraphPath(&edges_map);
+//     addItem(g);
+
+
+//     // QList<QGraphicsItem*> edge_list;
+//     // for (const auto pair : edges_map) {
+//     //     edge_list.append(pair.second);
+//     // }
+//     // QGraphicsItemGroup *group = createItemGroup(edge_list);
+
+
+
+//     // for (const auto pair : vertices_map){
+//     //     addItem(pair.second);
+//     // }
+
+//     // for (const auto pair : edges_map) {
+//     //     addItem(pair.second);
+//     // }
+
+//     qInfo() << "Finished populating scene.";
 // }
