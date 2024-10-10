@@ -31,27 +31,21 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
         qInfo() << file.errorString();
     }
 
-    //TODO check if all the vertex are read before the edge
-    //Or first store all the vertex and edge and then loop the edge map
-    //and add the destination vertex as neighbor of the origin vertex
-
     QTextStream in(&file);
 
     while(!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
-        // qInfo() << fields;
 
         if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
-            uint32_t ID = fields[1].toUInt();
-            float longitude = fields[2].toFloat();
-            float latitude = fields[3].toFloat();
-            Vertex* v;
+            const uint32_t ID = fields[1].toUInt();
+            const float longitude = fields[2].toFloat();
+            const float latitude = fields[3].toFloat();
 
             if (fields[4] != ""){ // Check if we have values for x and y
-                int x = fields[4].toInt();
-                int y = fields[5].toInt();
-                v = new Vertex(ID, x, y);
+                const int x = fields[4].toInt();
+                const int y = fields[5].toInt();
+                Vertex* v = new Vertex(ID, x, y);
                 addVertex(v);
 
             }
@@ -87,12 +81,11 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
 
     file.close();
 
-
     // Read the edge_map and add the neighbors to the corresponding vertices
     for (const auto& pair: edges_map){
         Edge* e = pair.second;
-        uint32_t source_id = e->get_source_id();
-        uint32_t dest_id = e->get_destination_id();
+        uint32_t source_id = e->getSourceId();
+        uint32_t dest_id = e->getDestinationId();
 
         Vertex* source_v = getVertex(source_id);
         Vertex* dest_v = getVertex(dest_id);
@@ -127,8 +120,8 @@ void Graph::populateScene() {
     pen->setWidth(5);
 
     for (const auto pair : edges_map) {
-        Vertex* origin = getVertex(pair.second->get_source_id());
-        Vertex* destination = getVertex(pair.second->get_destination_id());
+        Vertex* origin = getVertex(pair.second->getSourceId());
+        Vertex* destination = getVertex(pair.second->getDestinationId());
 
         int x_origin = origin->getCoordinate()->x();
         int y_origin = origin->getCoordinate()->y();
@@ -142,7 +135,6 @@ void Graph::populateScene() {
 }
 
 
-// Method to add vertices (Format: V,vertexid,longitude,latitude,x*,y*)
 void Graph::addVertex(Vertex* v){
     /* Add vertices to the vertices_map
      *
@@ -152,7 +144,7 @@ void Graph::addVertex(Vertex* v){
     vertices_map.insert({v->getID(), v});
 }
 
-// Method to add edges
+
 void Graph::addEdge(Edge* e){
     /* Add edges to the edges_map
      *
@@ -162,29 +154,20 @@ void Graph::addEdge(Edge* e){
     edges_map.insert({e->getID(), e});
 }
 
-// Method to print description of the graph
+
 void Graph::print() const{
     /* Print graph description
      */
     qInfo() << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges";
 }
 
-// Method to retrieve vertex by using its id
+
 Vertex* Graph::getVertex(uint32_t id) {
     /* Retrieve vertex by id
      *
      * @param id
      * @return vertex
      */
-
-    // std::vector<uint32_t> keys;
-    // keys.reserve(vertices_map.size());
-
-    // for(auto kv : vertices_map) {
-    //     keys.push_back(kv.first);
-    // }
-    // qInfo() << keys;
-
     if (vertices_map.find(id) == vertices_map.end()) {
         qInfo() << "No Vertex with id" << id;
         return nullptr;
@@ -192,7 +175,7 @@ Vertex* Graph::getVertex(uint32_t id) {
     return vertices_map.at(id);
 }
 
-// Method to retrieve edge by using its id
+
 Edge* Graph::getEdge(string id) {
     /* Retrieve edge by id
      *

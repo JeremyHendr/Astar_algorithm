@@ -7,8 +7,8 @@
 * Contains method definition for the Edge class
 */
 
-#include <iostream>
-#include <sstream>
+// #include <iostream>
+// #include <sstream>
 #include <string>
 #include <stdint.h>
 #include <QPoint>
@@ -18,7 +18,6 @@
 
 using namespace std;
 
-// Edge class constructor
 Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given){
     /* Constructor for edge class
      *
@@ -32,23 +31,20 @@ Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, boo
     // Creation of unique edge id
     //QString("%1.%2").arg(source_id).arg(dest_id);;
     this->id = to_string(source_id) + "." + to_string(dest_id);
-
-
-
     this->source_id = source_id;
-    this->dest_id = dest_id;
+    this->destination_id = dest_id;
     this->length = length;
 }
 
-// Method to print edges
 void Edge::print() const{
-    /* Print edge description
-    */
-    cout << "Edge(Source id=" << source_id << ", dest id=" << dest_id << ", length=" << length << ")" << endl;
+    /*
+     * Print edge description
+     */
+    qInfo() << "Edge(Source id=" << source_id << ", dest id=" << destination_id << ", length=" << length << ")";
 }
 
-// Method to retrieve source id
-const uint32_t Edge::get_source_id() const{
+
+const uint32_t Edge::getSourceId() const{
     /* Retrieve source id of edge
      *
      * @return uint32_t for source id of edge
@@ -56,40 +52,37 @@ const uint32_t Edge::get_source_id() const{
     return source_id;
 }
 
-// Method to retrieve destination id
-const uint32_t Edge::get_destination_id() const{
+
+const uint32_t Edge::getDestinationId() const{
     /* Retrieve destination id of edge
      *
      * @return uint32_t for destination id of edge
      */
-    return dest_id;
+    return destination_id;
 }
 
-// Method to retrieve length
-const double Edge::get_length(Edge edge){
+
+const double Edge::getLength() const{
     /* Retrieve length of edge
      *
-     * @param edge e
      * @return double for length of edge
      */
-    return edge.length;
+    return length;
 }
 
-// Method to retrieve name
-const string Edge::get_name(Edge edge){
+
+const string Edge::getName() const{
     /* Retrieve name of edge
      *
-     * @param edge e
      * @return Standard string for edge
      */
-    return edge.name;
+    return name;
 }
 
-// Method to retrieve id
+
 const string Edge::getID() const{
     /* Retrieve the unique edge id
      *
-     * @param edge e
      * @return double for edge id
      */
     return id;

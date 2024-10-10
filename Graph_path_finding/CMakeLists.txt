@@ -12,7 +12,6 @@ find_package(Qt6
 qt_standard_project_setup()
 
 qt_add_executable(Graph_finding_project
-    chip.cpp chip.h
     main.cpp
     view.cpp view.h
     Graph.h
@@ -37,7 +36,6 @@ target_link_libraries(Graph_finding_project PRIVATE
 # Resources:
 set(images_resource_files
     "fileprint.png"
-    "qt4logo.png"
     "rotateleft.png"
     "rotateright.png"
     "zoomin.png"

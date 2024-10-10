@@ -7,11 +7,9 @@
 * Contains header definition for the Edge class
 */
 
-
 #ifndef EDGE_H
 #define EDGE_H
 
-#include <iostream>
 #include <stdint.h>
 #include <QPoint>
 #include <QApplication>
@@ -24,10 +22,10 @@ class Edge {
     public :
         Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
-        const uint32_t get_source_id() const;
-        const uint32_t get_destination_id() const;
-        const double get_length(Edge edge);
-        const string get_name(Edge name);
+        const uint32_t getSourceId() const;
+        const uint32_t getDestinationId() const;
+        const double getLength()const;
+        const string getName() const;
         const string getID() const;
 
         void print() const;
@@ -35,7 +33,7 @@ class Edge {
     private :
         string id;
         int source_id;
-        int dest_id;
+        int destination_id;
         double length;
         string name;
 };
