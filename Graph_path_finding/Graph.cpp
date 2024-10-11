@@ -13,7 +13,7 @@
 #include <QApplication>
 #include <cstdint>
 #include <QGraphicsEllipseItem>
-// #include <iostream>
+#include <iostream>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -96,6 +96,11 @@ Graph::Graph(QString graph_data_file, QObject *parent) : QGraphicsScene(parent) 
 
     print();
     populateScene();
+
+    uint32_t start = 86771;
+    uint32_t end = 110636;
+    BFS(start,end);
+
 
 }
 
@@ -195,3 +200,109 @@ Edge* Graph::getEdge(string id) {
 //     // Method for the BFS algorithm
 //     //TODO
 // }
+
+void Graph::BFS(uint32_t start, uint32_t end){
+    /* Perform the BFS algorithm on the unweighted graph
+     *
+     * @param Vertex* start, Vertex* end
+     * @return
+     */
+
+    int visited_count = 0;
+    vector<Vertex*> active_queue; // Active queue of nodes to visit
+    unordered_map<uint32_t, bool> visited; // Unordered map with vertex id and bool to indicate visitation status
+
+    // Parent map to store the parent of each visited vertex
+    unordered_map<Vertex*, Vertex*> parent;
+    parent[getVertex(start)] = nullptr;
+
+    for (const auto elem: vertices_map){ // Construct the visited vector with the id of a vertex and set the status for each vector to false
+        visited.insert({elem.first, false});
+    }
+
+    active_queue.push_back(getVertex(start)); // Initialize queue with start vertex
+    visited.find(start)->second = true; // Change the status of the start vertex to visited
+
+    // BFS Loop
+    while (!active_queue.empty()){
+        Vertex* v = active_queue.front(); // Get the first vertex in the queue to visit
+        active_queue.erase(active_queue.begin()); // Remove the current element from the queue as we are visiting it
+
+        // If we have reached the end vertex, stop the search
+        if (v == getVertex(end)){
+            break;
+        }
+
+        auto neighbors = v->getNeighbors(); // Get neighbor of current vertex
+
+        for(const auto& next: neighbors){
+            uint32_t nextID = next.first->getID();
+            if (visited.find(nextID) != visited.end() && visited[nextID] == false){ // Vertex has not been visited yet
+                active_queue.push_back(next.first); // Add the neighbor to the end of the active queue
+                visited[nextID] = true; // Set status to visited
+                visited_count++;
+                parent[next.first] = v; // Add the neighbor and the vertex to the parent map to reconstruct path
+            }
+        }
+    }
+
+    // Reconstruct the path backwards starting from the end
+    for (Vertex* at = getVertex(end); at != nullptr; at = parent[at]){
+        BFS_path.push_back(at);
+    }
+
+    // Reverse the shortest path so it goes from start to end
+    reverse(BFS_path.begin(), BFS_path.end());
+
+    // Return shortest path if start and end are connected
+    if (!BFS_path.empty() && BFS_path.front() == getVertex(start)){
+        printBFSPath(visited_count);
+    }
+    else{ // Start and end are not connected
+        qInfo() << "No connection between start and end vertices";
+    }
+}
+
+vector<Vertex*> Graph::getBFSPath(){
+    /* Retrieve computed BFS shortest path
+     *
+     * @return vector<Vertex*> BFS_path
+     */
+    return BFS_path;
+}
+
+void Graph::printBFSPath(int total_visited_vertex){
+    /* Display the BFS shortest path
+     */
+
+    /* Expected output:
+    * Total visited vertices =
+    * Total vertices on path from start to end =
+    * Vertex[  .] = ...id, length =    cumulated length
+    */
+
+    qInfo() << "Total visited vertex = " << total_visited_vertex;
+    qInfo() << "Total vertex on path from start to end = " << BFS_path.size();
+
+    int cnt = 1; // Vertex counter
+    double length = 0.0;
+    Vertex* prevVertex = nullptr;
+
+    for (const auto& element: BFS_path){
+        if (prevVertex != nullptr){ // Recreate id and get the length
+            string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
+            Edge* e = getEdge(id);
+            length += e->getLength();
+        }
+
+        // Create trace output
+        cout << "Vertex[ " << setw(4) << cnt
+             << "] = " << setw(10) << element->getID()
+             << ", length = " << setw(10) << fixed << setprecision(2) << length << endl;
+
+        //qInfo() << QString("Vertex[%1] = %2, length = %3").arg(cnt,4).arg(element->getID(),6).arg(to_string(length).erase(),8);
+
+        cnt++;
+        prevVertex = element; // Save previous vertex
+    }
+}

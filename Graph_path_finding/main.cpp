@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
     // view.setRenderHints( QPainter::Antialiasing );
     // view.show();
 
+
     View v(&DC_graph);
     v.show();
 

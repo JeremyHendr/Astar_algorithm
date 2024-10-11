@@ -107,3 +107,11 @@ void Vertex::showNeighbor(Vertex* v){
         qInfo() << "Vertex: " << pair.first->getID() << " | Edge: " << pair.second->getID();
     }
 }
+
+vector<pair<Vertex*, Edge*>> Vertex::getNeighbors(){
+    /* Retrieve the neighbors of the vertex
+     *
+     * @return vector<pair<Vertex*, Edge*>>
+     */
+    return this->neighbors;
+}

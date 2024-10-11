@@ -69,3 +69,5 @@ loop needs to stop when end vertex has been found even if queue isnt empty
 
 
 need to add to the current vertex, the vertex it can reach as well as through what edge
+
+https://www.youtube.com/watch?v=oDqjPvD54Ss
