@@ -21,12 +21,17 @@ int main(int argc, char *argv[]) {
     Graph DC_graph(":/Data/graph_dc_area_2022-03-11.txt");
 
 
-    Window main_window = new Window();
-    main_window.displayGraph(&DC_graph);
+    // Window main_window = new Window();
+    // main_window.displayGraph(&DC_graph);
+    // View v(&main_window);
+    // v.show();
+
+    MainWindow window;
+    window.show();
+    window.setGraph(&DC_graph);
 
 
-    View v(&main_window);
-    v.show();
+
 
 
     return app.exec();

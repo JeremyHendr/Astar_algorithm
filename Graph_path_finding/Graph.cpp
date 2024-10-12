@@ -27,7 +27,7 @@ using namespace std;
 
 Graph::Graph(QString graph_data_file) {
     setFlags(ItemIsSelectable | ItemIsMovable);
-
+    graph_name = graph_data_file;
     QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
         qInfo() << "Could not open file";

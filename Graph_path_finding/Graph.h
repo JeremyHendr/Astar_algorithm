@@ -23,7 +23,7 @@
 
 using namespace std;
 
-class Graph: public QGraphicsItem {
+class Graph : public QGraphicsItem {
     public:
         Graph(QString graph_data_file);
 
@@ -33,6 +33,7 @@ class Graph: public QGraphicsItem {
         Vertex* getVertex(uint32_t id);
         Edge* getEdge(string id);
         void print() const;
+        inline QString getName() {return graph_name;};
 
         QRectF boundingRect() const override;
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
@@ -47,6 +48,7 @@ class Graph: public QGraphicsItem {
         // void Dijkstra();
         // void Astar();
         QList<QPointF> stuff;
+        QString graph_name;
 
     protected:
         void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
