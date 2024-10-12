@@ -31,6 +31,7 @@ class Vertex {
         void print() const;
         void addNeighbor(pair<Vertex*, Edge*> p);
         void showNeighbor(Vertex* v);
+        vector<pair<Vertex*, Edge*>> getNeighbors();
 
     private :
         inline static double* longitude_zero_reference = nullptr;

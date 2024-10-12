@@ -84,6 +84,12 @@ void Vertex::showNeighbor(Vertex* v){
     }
 }
 
+vector<pair<Vertex*, Edge*>> Vertex::getNeighbors(){
+    /* Retrieve the neighbors of the vertex
+     *
+     * @return vector<pair<Vertex*, Edge*>>
+     */
+    return this->neighbors;
 
 void Vertex::print() const{
     /* Print description of vertex
