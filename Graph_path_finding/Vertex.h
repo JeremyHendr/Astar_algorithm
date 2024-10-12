@@ -20,18 +20,15 @@ using namespace std;
 class Vertex {
     public :
         Vertex(uint32_t id, float longitude, float latitude);
-
-        // TODO CREATE THIS CONSTRUCTOR
         Vertex(uint32_t id, int x, int y);
 
-
-        const uint32_t getID() const;
-        inline const QPoint* getCoordinate() const{return coordinate;};
-        void print() const;
-        // static double* getLongitudeZeroReference() {return longitude_zero_reference;}
-        // static double* getLatitudeZeroReference() {return latitude_zero_reference;}
+        inline const uint32_t getID() const {return id;};
+        inline QPoint* getCoordinate() const {return coordinate;};
+        inline static double* getLongitudeZeroReference() {return longitude_zero_reference;}
+        inline static double* getLatitudeZeroReference() {return latitude_zero_reference;}
 
         // Manage the neighbors for each vertex object
+        void print() const;
         void addNeighbor(pair<Vertex*, Edge*> p);
         void showNeighbor(Vertex* v);
         vector<pair<Vertex*, Edge*>> getNeighbors();

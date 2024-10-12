@@ -14,7 +14,6 @@
 
 using namespace std;
 
-// Function to convert degrees to radians
 double degreesToRadians(double degrees) {
     /* Convert degrees to radians
      *
@@ -24,9 +23,6 @@ double degreesToRadians(double degrees) {
     return (degrees * M_PI) / 180.0;
 }
 
-// QPoint* Vertex::polar_zero_reference;
-
-// Constructor for the vertex class
 Vertex::Vertex(uint32_t id, float longitude, float latitude){
     /* Constructor for the vertex class with longitude and latitude
      * Converts those to x and y coordiantes using the mercator projection
@@ -54,39 +50,19 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
     int y = R * log(tan(M_PI / 4 + latRad / 2) / tan(M_PI / 4 + refLatRad / 2));
 
     this->coordinate = new QPoint(x,y);
-    // print();
 }
 
-// Constructor for the vertex class with x and y
+
 Vertex::Vertex(uint32_t id, int x, int y){
     /* Constructor for the vertex class with x and y
      *
      * @param uint32_t id, int x, int y
      */
-
     this->id = id;
     this->coordinate = new QPoint(x,y);
-    // print();
 }
 
 
-// Method to print a vertex description
-void Vertex::print() const{
-    /* Print description of vertex
-     */
-    qInfo() << "Vertex(id=" << id << ", x=" << coordinate->x() << ", y=" << coordinate->y() << ")";
-}
-
-// Method to retrieve id of vertex
-const uint32_t Vertex::getID() const{
-    /* Retrieve vertex id
-     *
-     * @return const uint32_t for vertex id
-     */
-    return id;
-}
-
-// Method to add neighbor to vertex object
 void Vertex::addNeighbor(pair<Vertex*, Edge*> pair){
     /* Add neighbor (vertex and edge) to vertex object
      *
@@ -95,7 +71,7 @@ void Vertex::addNeighbor(pair<Vertex*, Edge*> pair){
     this->neighbors.push_back(pair);
 }
 
-// Method to display the neighbors of a vertex
+
 void Vertex::showNeighbor(Vertex* v){
     /* Show neighbors and connections
      *
@@ -114,4 +90,9 @@ vector<pair<Vertex*, Edge*>> Vertex::getNeighbors(){
      * @return vector<pair<Vertex*, Edge*>>
      */
     return this->neighbors;
+
+void Vertex::print() const{
+    /* Print description of vertex
+     */
+    qInfo() << "Vertex(id=" << id << ", x=" << coordinate->x() << ", y=" << coordinate->y() << ")";
 }

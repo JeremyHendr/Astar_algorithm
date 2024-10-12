@@ -13,13 +13,17 @@ qt_standard_project_setup()
 
 qt_add_executable(Graph_finding_project
     main.cpp
-    view.cpp view.h
+    View.cpp View.h
     Graph.h
     Edge.h
     Vertex.h
     Edge.cpp
     Graph.cpp
     Vertex.cpp
+
+
+    Window.h
+    Window.cpp
 )
 
 set_target_properties(Graph_finding_project PROPERTIES

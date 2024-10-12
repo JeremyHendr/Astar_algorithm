@@ -15,7 +15,7 @@
 #include <unordered_map>
 #include <QString>
 #include <QWidget>
-#include <QGraphicsScene>
+#include <QGraphicsItem>
 
 #include "Vertex.h"
 #include "Edge.h"
@@ -23,10 +23,9 @@
 
 using namespace std;
 
-class Graph: public QGraphicsScene {
-    Q_OBJECT
+class Graph: public QGraphicsItem {
     public:
-        Graph(QString graph_data_file,  QObject  *parent = nullptr );
+        Graph(QString graph_data_file);
 
         // Add element to corresponding map
         void addVertex(Vertex* v);
@@ -43,6 +42,8 @@ class Graph: public QGraphicsScene {
         void BFS(uint32_t start, uint32_t end);
         vector<Vertex*> getBFSPath();
         void printBFSPath(int total_visited_vertex);
+        QRectF boundingRect() const override;
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
 
     private:
         // QGraphicsScene *scene;
@@ -57,6 +58,12 @@ class Graph: public QGraphicsScene {
         // vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);
         // void Dijkstra();
         // void Astar();
+        QList<QPointF> stuff;
+
+    protected:
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 };
 
