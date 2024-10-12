@@ -90,8 +90,9 @@ vector<pair<Vertex*, Edge*>> Vertex::getNeighbors(){
      * @return vector<pair<Vertex*, Edge*>>
      */
     return this->neighbors;
+}
 
-void Vertex::print() const{
+void Vertex::print() const {
     /* Print description of vertex
      */
     qInfo() << "Vertex(id=" << id << ", x=" << coordinate->x() << ", y=" << coordinate->y() << ")";

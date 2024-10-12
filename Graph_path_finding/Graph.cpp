@@ -101,7 +101,6 @@ Graph::Graph(QString graph_data_file) {
     }
 
     print();
-    populateScene();
 
     uint32_t start = 86771;
     uint32_t end = 110636;
