@@ -13,11 +13,15 @@
 #include <stdint.h>
 #include <QPoint>
 #include <QApplication>
+#include <unordered_map>
+#include <QPen>
 
 using namespace std;
 
+enum EdgeState { normal, visited, mainpath};
 
-class Edge {
+
+class Edge : public QLine{
     public :
         Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
@@ -26,10 +30,13 @@ class Edge {
         inline const double getLength()const {return length;};
         inline const string getName() const {return name;};
         inline const string getID() const {return id;};
-        inline QPoint* getSourceCoordinate() const {return source_coordinate;};
-        inline QPoint* getDestinationCoordinate() const {return destination_coordinate;};
+        // inline QPoint* getSourceCoordinate() const {return source_coordinate;};
+        // inline QPoint* getDestinationCoordinate() const {return destination_coordinate;};
+        inline EdgeState getState(){return state;};
+        inline QPen* getPen(){return pen;};
 
-        void setCoordinates(QPoint* source, QPoint* destination);
+        // void setCoordinates(QPoint* source, QPoint* destination);
+        void inline setState(EdgeState s){state=s;pen=state_associated_pen.at(s);};
         void print() const;
 
         QColor color = Qt::white;
@@ -41,8 +48,13 @@ class Edge {
         int destination_id;
         double length;
         string name;
-        QPoint* source_coordinate;
-        QPoint* destination_coordinate;
+        // QPoint* source_coordinate;
+        // QPoint* destination_coordinate;
+
+        static unordered_map<EdgeState, QPen*> state_associated_pen;
+        EdgeState state = EdgeState::normal;
+        QPen* pen;
+
 };
 
 

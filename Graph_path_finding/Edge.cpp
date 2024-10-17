@@ -13,6 +13,8 @@
 
 using namespace std;
 
+unordered_map<EdgeState, QPen*> Edge::state_associated_pen;
+
 Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given){
     /* Constructor for edge class
      *
@@ -29,17 +31,30 @@ Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, boo
     this->source_id = source_id;
     this->destination_id = dest_id;
     this->length = length;
+
+    QPen* normal_pen = new QPen(Qt::white);
+    normal_pen->setWidth(5);
+    state_associated_pen[EdgeState::normal] = normal_pen;
+
+    QPen* visited_pen = new QPen(Qt::green);
+    normal_pen->setWidth(5);
+    state_associated_pen[EdgeState::visited] = visited_pen;
+
+    QPen* mainpath_pen = new QPen(Qt::red);
+    mainpath_pen->setWidth(50);
+    state_associated_pen[EdgeState::mainpath] = mainpath_pen;
+    this->pen = state_associated_pen.at(state);
 }
 
 
-void Edge::setCoordinates(QPoint* source, QPoint* destination) {
-    /*Set the origin and destination coordinate
-     *
-     *@param QPoint* source, QPoint* destination
-     */
-    source_coordinate = source;
-    destination_coordinate = destination;
-}
+// void Edge::setCoordinates(QPoint* source, QPoint* destination) {
+//     /*Set the origin and destination coordinate
+//      *
+//      *@param QPoint* source, QPoint* destination
+//      */
+//     source_coordinate = source;
+//     destination_coordinate = destination;
+// }
 
 
 void Edge::print() const{

@@ -8,7 +8,6 @@
 #include <QMessageBox>
 
 #include "Graph.h"
-#include "View.h"
 #include "Window.h"
 
 

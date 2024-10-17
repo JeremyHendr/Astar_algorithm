@@ -42,25 +42,11 @@ class View : public QFrame {
         QGraphicsView *view() const;
         inline void setGraph(Graph* graph) {displayed_graph=graph;};
 
-    public slots:
-        void zoomIn();
-        void zoomOut();
-        void zoomInBy(int level);
-        void zoomOutBy(int level);
 
     private slots:
         void calculate_path();
         void reset_graph();
 
-
-        void resetView();
-        void setResetButtonEnabled();
-        void setupMatrix();
-        void togglePointerMode();
-        void toggleAntialiasing();
-        void print();
-        void rotateLeft();
-        void rotateRight();
 
     private:
         Graph* displayed_graph;

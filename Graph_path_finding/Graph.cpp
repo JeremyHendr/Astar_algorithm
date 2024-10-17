@@ -94,7 +94,7 @@ Graph::Graph(QString graph_data_file) {
 
         Vertex* source_v = getVertex(source_id);
         Vertex* dest_v = getVertex(dest_id);
-        e->setCoordinates(source_v->getCoordinate(), dest_v->getCoordinate());
+        e->setPoints(*source_v->getCoordinate(), *dest_v->getCoordinate());
 
         std::pair<Vertex*, Edge*> neighbor(dest_v, e);
         source_v->addNeighbor(neighbor);
@@ -103,37 +103,42 @@ Graph::Graph(QString graph_data_file) {
     print();
 }
 
-QRectF Graph::boundingRect() const
-{
+QRectF Graph::boundingRect() const {
     return QRectF(-10000, -10000, 50000, 50000);
 }
 
 
 void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     Q_UNUSED(widget);
-    QPen* pen = new QPen();
-    pen->setWidth(5);
-    pen->setColor(Qt::white);
-    painter->setPen(*pen);
+
+
+    //We first draw the standart lines and finally
+    //the visited one and then the mainpath.
+    //this is done to avoid white lines overlaying the red or green ones
+    QList<Edge*> mainpath_edges;
+    QList<Edge*> visited_edges;
     for (const auto pair : edges_map) {
-        if (pair.second->color == Qt::white){
-            const QPoint* source = pair.second->getSourceCoordinate();
-            const QPoint* destination = pair.second->getDestinationCoordinate();
-            pen->setColor(pair.second->color);
-            painter->setPen(*pen);
-            painter->drawLine(source->x(),source->y(),destination->x(),destination->y());
+        Edge* e = pair.second;
+        switch (e->getState()) {
+        case EdgeState::normal:
+            painter->setPen(*e->getPen());
+            painter->drawLine(*e);
+            break;
+        case EdgeState::visited:
+            mainpath_edges.append(e);
+            break;
+        case EdgeState::mainpath:
+            visited_edges.append(e);
+            break;
         }
     }
-    for (const auto pair : edges_map) {
-        if (pair.second->color == Qt::green){
-            const QPoint* source = pair.second->getSourceCoordinate();
-            const QPoint* destination = pair.second->getDestinationCoordinate();
-            pen->setColor(pair.second->color);
-            pen->setWidth(20);
-            painter->setPen(*pen);
-            painter->drawLine(source->x(),source->y(),destination->x(),destination->y());
-            pen->setWidth(5);
-        }
+    for (const auto e : visited_edges) {
+        painter->setPen(*e->getPen());
+        painter->drawLine(*e);
+    }
+    for (const auto e : mainpath_edges) {
+         painter->setPen(*e->getPen());
+         painter->drawLine(*e);
     }
 }
 
@@ -289,7 +294,7 @@ void Graph::BFS(uint32_t start, uint32_t end){
         if (prevVertex != nullptr){ // Recreate id and get the length
             string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
             Edge* e = getEdge(id);
-            e->color = Qt::green;
+            e->setState(EdgeState::mainpath);
         }
         prevVertex = element; // Save previous vertex
     }
