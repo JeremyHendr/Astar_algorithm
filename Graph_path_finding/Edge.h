@@ -39,8 +39,6 @@ class Edge : public QLine{
         void inline setState(EdgeState s){state=s;pen=state_associated_pen.at(s);};
         void print() const;
 
-        QColor color = Qt::white;
-
 
     private :
         string id;

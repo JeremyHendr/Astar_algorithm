@@ -123,6 +123,7 @@ void View::calculate_path() {
 void View::reset_graph(){
     //Rest the graph to its original state
     qInfo()<<"Reset graph";
+    displayed_graph->reset();
     reset_graph_button->setChecked(false);
 }
 

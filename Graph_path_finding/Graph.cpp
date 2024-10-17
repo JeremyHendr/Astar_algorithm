@@ -142,7 +142,11 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     }
 }
 
-
+void Graph::reset(){
+    for (const auto pair : edges_map) {
+        pair.second->setState(EdgeState::normal);
+    }
+}
 void Graph::addVertex(Vertex* v){
     /* Add vertices to the vertices_map
      *
