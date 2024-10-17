@@ -32,6 +32,8 @@ class Edge {
         void setCoordinates(QPoint* source, QPoint* destination);
         void print() const;
 
+        QColor color = Qt::white;
+
 
     private :
         string id;

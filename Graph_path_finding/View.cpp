@@ -147,7 +147,7 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     vertex_selection->addWidget(calculate_path_button);
 
 
-    input_range = new QIntValidator(0,100000);
+    input_range = new QIntValidator(0,999999);
     origin_input = new QLineEdit;
     origin_input->setPlaceholderText("Origin");
     origin_input->setMaxLength(6);
@@ -206,10 +206,14 @@ void View::calculate_path() {
         calculate_path_button->setChecked(false);
         return;
     }
+
+    uint32_t start = origin_input->text().toUInt(); //86771;
+    uint32_t end = destination_input->text().toUInt(); //110636;81615
+
     switch(algorithm_selection->currentIndex()) {
         case 0: //call BFS algotithm
             qInfo() << "Algorithm: BFS, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
-
+            displayed_graph->BFS(start,end);
 
 
             break;
@@ -236,6 +240,7 @@ void View::calculate_path() {
 }
 void View::reset_graph(){
     //Rest the graph to its original state
+    qInfo()<<"Reset graph";
     reset_graph_button->setChecked(false);
 }
 

@@ -101,12 +101,6 @@ Graph::Graph(QString graph_data_file) {
     }
 
     print();
-
-    uint32_t start = 86771;
-    uint32_t end = 110636;
-    BFS(start,end);
-
-
 }
 
 QRectF Graph::boundingRect() const
@@ -121,11 +115,25 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     pen->setWidth(5);
     pen->setColor(Qt::white);
     painter->setPen(*pen);
-
     for (const auto pair : edges_map) {
-        const QPoint* source = pair.second->getSourceCoordinate();
-        const QPoint* destination = pair.second->getDestinationCoordinate();;
-        painter->drawLine(source->x(),source->y(),destination->x(),destination->y());
+        if (pair.second->color == Qt::white){
+            const QPoint* source = pair.second->getSourceCoordinate();
+            const QPoint* destination = pair.second->getDestinationCoordinate();
+            pen->setColor(pair.second->color);
+            painter->setPen(*pen);
+            painter->drawLine(source->x(),source->y(),destination->x(),destination->y());
+        }
+    }
+    for (const auto pair : edges_map) {
+        if (pair.second->color == Qt::green){
+            const QPoint* source = pair.second->getSourceCoordinate();
+            const QPoint* destination = pair.second->getDestinationCoordinate();
+            pen->setColor(pair.second->color);
+            pen->setWidth(20);
+            painter->setPen(*pen);
+            painter->drawLine(source->x(),source->y(),destination->x(),destination->y());
+            pen->setWidth(5);
+        }
     }
 }
 
@@ -273,6 +281,17 @@ void Graph::BFS(uint32_t start, uint32_t end){
     }
     else{ // Start and end are not connected
         qInfo() << "No connection between start and end vertices";
+    }
+
+    //chnaging color of visited vertex
+    Vertex* prevVertex = nullptr;
+    for (const auto& element: BFS_path){
+        if (prevVertex != nullptr){ // Recreate id and get the length
+            string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
+            Edge* e = getEdge(id);
+            e->color = Qt::green;
+        }
+        prevVertex = element; // Save previous vertex
     }
 }
 
