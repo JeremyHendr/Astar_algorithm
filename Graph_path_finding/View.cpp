@@ -81,10 +81,10 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
 
 void View::calculate_path() {
     if (origin_input->hasAcceptableInput() && destination_input->hasAcceptableInput()) {
-        qInfo()<<"acceptable input";
+        qInfo()<<"Acceptable input";
     }
     else {
-        qInfo()<<"not acceptable input";
+        qInfo()<<"Not acceptable input";
         calculate_path_button->setChecked(false);
         return;
     }

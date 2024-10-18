@@ -112,12 +112,12 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     Q_UNUSED(widget);
 
 
-    //We first draw the standart lines and finally
+    //We first draw the standard lines and finally
     //the visited one and then the mainpath.
     //this is done to avoid white lines overlaying the red or green ones
     QList<Edge*> mainpath_edges;
     QList<Edge*> visited_edges;
-    for (const auto pair : edges_map) {
+    for (const auto &pair : edges_map) {
         Edge* e = pair.second;
         switch (e->getState()) {
         case EdgeState::normal:
@@ -226,10 +226,6 @@ void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 
-// vector<Vertex*> Graph::BFS(Vertex* origin, Vertex* destination, bool time){
-//     // Method for the BFS algorithm
-//     //TODO
-// }
 
 void Graph::BFS(uint32_t start, uint32_t end){
     /* Perform the BFS algorithm on the unweighted graph
@@ -272,13 +268,28 @@ void Graph::BFS(uint32_t start, uint32_t end){
                 visited[nextID] = true; // Set status to visited
                 visited_count++;
                 parent[next.first] = v; // Add the neighbor and the vertex to the parent map to reconstruct path
+
+                // Set status of edge to visited
+                string id = to_string(v->getID()) + "." + to_string(next.first->getID());
+                Edge* e = getEdge(id);
+                e->setState(EdgeState::visited);
             }
         }
     }
 
     // Reconstruct the path backwards starting from the end
+    Vertex* prevVertex = nullptr;
     for (Vertex* at = getVertex(end); at != nullptr; at = parent[at]){
-        BFS_path.push_back(at);
+        if (prevVertex != nullptr){
+            // If we create id like usual, it will be inverted since we go from the end vertex to start
+            // We therefore need to create the id the from end vertex id to start vertex id to have the correct edge
+            string id = to_string(at->getID()) + "." + to_string(prevVertex->getID());
+            Edge* e = getEdge(id);
+            e->setState(EdgeState::mainpath);
+        }
+        prevVertex = at; // Set the previous vertex to the current one as we have already used it
+
+        BFS_path.push_back(at); // Create the shortest path
     }
 
     // Reverse the shortest path so it goes from start to end
@@ -290,17 +301,6 @@ void Graph::BFS(uint32_t start, uint32_t end){
     }
     else{ // Start and end are not connected
         qInfo() << "No connection between start and end vertices";
-    }
-
-    //chnaging color of visited vertex
-    Vertex* prevVertex = nullptr;
-    for (const auto& element: BFS_path){
-        if (prevVertex != nullptr){ // Recreate id and get the length
-            string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
-            Edge* e = getEdge(id);
-            e->setState(EdgeState::mainpath);
-        }
-        prevVertex = element; // Save previous vertex
     }
 }
 
@@ -319,7 +319,7 @@ void Graph::printBFSPath(int total_visited_vertex){
     /* Expected output:
     * Total visited vertices =
     * Total vertices on path from start to end =
-    * Vertex[  .] = ...id, length =    cumulated length
+    * Vertex[...] = ...id, length =    cumulated length
     */
 
     qInfo() << "Total visited vertex = " << total_visited_vertex;

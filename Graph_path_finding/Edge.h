@@ -18,7 +18,7 @@
 
 using namespace std;
 
-enum EdgeState { normal, visited, mainpath};
+enum EdgeState {normal, visited, mainpath};
 
 
 class Edge : public QLine{
