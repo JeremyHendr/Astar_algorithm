@@ -124,6 +124,7 @@ void View::reset_graph(){
     //Rest the graph to its original state
     qInfo()<<"Reset graph";
     displayed_graph->reset();
+    displayed_graph->update();
     reset_graph_button->setChecked(false);
 }
 

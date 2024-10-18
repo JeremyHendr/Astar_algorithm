@@ -18,10 +18,10 @@
 
 using namespace std;
 
-enum EdgeState {normal, visited, mainpath};
+enum class EdgeState {normal, visited, mainpath};
 
 
-class Edge : public QLine{
+class Edge : public QLine {
     public :
         Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
@@ -49,6 +49,8 @@ class Edge : public QLine{
         // QPoint* source_coordinate;
         // QPoint* destination_coordinate;
 
+
+        //Members needed to draw the Edge
         static unordered_map<EdgeState, QPen*> state_associated_pen;
         EdgeState state = EdgeState::normal;
         QPen* pen;

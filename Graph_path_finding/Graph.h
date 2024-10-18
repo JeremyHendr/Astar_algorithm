@@ -23,6 +23,8 @@
 
 using namespace std;
 
+
+
 class Graph : public QGraphicsItem {
     public:
         Graph(QString graph_data_file);

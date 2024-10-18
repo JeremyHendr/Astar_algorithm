@@ -37,7 +37,7 @@ Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, boo
     state_associated_pen[EdgeState::normal] = normal_pen;
 
     QPen* visited_pen = new QPen(Qt::green);
-    normal_pen->setWidth(5);
+    visited_pen->setWidth(20);
     state_associated_pen[EdgeState::visited] = visited_pen;
 
     QPen* mainpath_pen = new QPen(Qt::red);

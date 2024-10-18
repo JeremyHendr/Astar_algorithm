@@ -14,8 +14,7 @@ class QGraphicsScene;
 // class QSplitter;
 QT_END_NAMESPACE
 
-class MainWindow : public QWidget
-{
+class MainWindow : public QWidget {
     Q_OBJECT
     public:
         MainWindow(QWidget *parent = nullptr);

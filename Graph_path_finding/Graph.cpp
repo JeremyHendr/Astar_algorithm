@@ -110,8 +110,6 @@ QRectF Graph::boundingRect() const {
 
 void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     Q_UNUSED(widget);
-
-
     //We first draw the standard lines and finally
     //the visited one and then the mainpath.
     //this is done to avoid white lines overlaying the red or green ones
@@ -125,10 +123,10 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
             painter->drawLine(*e);
             break;
         case EdgeState::visited:
-            mainpath_edges.append(e);
+            visited_edges.append(e);
             break;
         case EdgeState::mainpath:
-            visited_edges.append(e);
+            mainpath_edges.append(e);
             break;
         }
     }
@@ -139,6 +137,21 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     for (const auto e : mainpath_edges) {
          painter->setPen(*e->getPen());
          painter->drawLine(*e);
+    }
+
+
+    for (const auto pair : vertices_map) {
+        Vertex* v = pair.second;
+        // // painter->setPen(QPen(Qt::red));
+        // QBrush* b = new QBrush(Qt::SolidLine);
+        // b->setColor(Qt::red);
+        // painter->setBrush(*b);
+        // painter->drawEllipse(*v->getCoordinate(),10,10);
+
+
+        painter->setPen(*v->getPen());
+        painter->setBrush(*v->getBrush());
+        painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
     }
 }
 
@@ -203,27 +216,7 @@ Edge* Graph::getEdge(string id) {
     }
 }
 
-void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsItem::mousePressEvent(event);
-    update();
-}
 
-void Graph::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (event->modifiers() & Qt::ShiftModifier) {
-        stuff << event->pos();
-        update();
-        return;
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsItem::mouseReleaseEvent(event);
-    update();
-}
 
 
 
@@ -347,6 +340,33 @@ void Graph::printBFSPath(int total_visited_vertex){
         prevVertex = element; // Save previous vertex
     }
 }
+
+
+
+void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mousePressEvent(event);
+    update();
+}
+
+void Graph::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->modifiers() & Qt::ShiftModifier) {
+        stuff << event->pos();
+        update();
+        return;
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mouseReleaseEvent(event);
+    update();
+}
+
+
+
 // void Graph::populateScene() {
 //     GraphPath* g = new GraphPath(&edges_map);
 //     addItem(g);

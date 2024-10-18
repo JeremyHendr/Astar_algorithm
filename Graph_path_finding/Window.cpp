@@ -3,7 +3,7 @@
 
 
 #include "Window.h"
-#include "view.h"
+#include "View.h"
 #include "Graph.h"
 
 #include <QHBoxLayout>
@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     setLayout(layout);
 
     setWindowTitle(tr("Chip Example"));
+    setWindowState(Qt::WindowActive | Qt::WindowMaximized);
+
 }
 
 void MainWindow::setGraph(Graph* graph) {
