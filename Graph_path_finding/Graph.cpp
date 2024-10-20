@@ -18,6 +18,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <regex>
+#include <queue>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -58,7 +60,6 @@ Graph::Graph(QString graph_data_file) {
                 Vertex* v = new Vertex(ID, longitude, latitude);
                 addVertex(v);
             }
-
         }
 
         else if (fields[0] == "E") { //E,source_id,dest_id,length,name
@@ -68,7 +69,10 @@ Graph::Graph(QString graph_data_file) {
             string name = fields[4].toStdString();
             Edge* e;
 
-            if (fields[4].toStdString() != "???"){ // A real name has been given
+            regex question_mark_pattern(R"(\?+)");
+
+            // fields[4].toStdString() != "???"
+            if (!regex_match(fields[4].toStdString(), question_mark_pattern)){ // A real name has been given
                 bool name_given = true;
                 e = new Edge(source_ID, dest_ID, length, name, name_given);
             }
@@ -77,10 +81,6 @@ Graph::Graph(QString graph_data_file) {
                 e = new Edge(source_ID, dest_ID, length, name, name_given);
             }
             addEdge(e);
-
-            // Get source vertex
-            // Add to neighbor the dest vertex
-            // Add the edge in the pair
         }
     }
 
@@ -217,9 +217,6 @@ Edge* Graph::getEdge(string id) {
 }
 
 
-
-
-
 void Graph::BFS(uint32_t start, uint32_t end){
     /* Perform the BFS algorithm on the unweighted graph
      *
@@ -228,46 +225,60 @@ void Graph::BFS(uint32_t start, uint32_t end){
      */
 
     int visited_count = 0;
-    vector<Vertex*> active_queue; // Active queue of nodes to visit
+    queue<Vertex*> active_queue; // Active queue of nodes to visit ( O(1) complexity for insertion)
     unordered_map<uint32_t, bool> visited; // Unordered map with vertex id and bool to indicate visitation status
-
-    // Parent map to store the parent of each visited vertex
-    unordered_map<Vertex*, Vertex*> parent;
+    unordered_map<Vertex*, Vertex*> parent; // Parent map to store the parent of each visited vertex
     parent[getVertex(start)] = nullptr;
 
     for (const auto elem: vertices_map){ // Construct the visited vector with the id of a vertex and set the status for each vector to false
         visited.insert({elem.first, false});
     }
 
-    active_queue.push_back(getVertex(start)); // Initialize queue with start vertex
+    active_queue.push(getVertex(start)); // Initialize queue with start vertex
     visited.find(start)->second = true; // Change the status of the start vertex to visited
 
     // BFS Loop
     while (!active_queue.empty()){
         Vertex* v = active_queue.front(); // Get the first vertex in the queue to visit
-        active_queue.erase(active_queue.begin()); // Remove the current element from the queue as we are visiting it
+        active_queue.pop(); // Remove the current element from the queue as we are visiting it
 
         // If we have reached the end vertex, stop the search
         if (v == getVertex(end)){
             break;
         }
 
-        auto neighbors = v->getNeighbors(); // Get neighbor of current vertex
+        bool isDeadEnd = true; // Assume vertex is a dead end unless proven otherwise
 
-        for(const auto& next: neighbors){
+        for(const auto& next: v->getNeighbors()){
             uint32_t nextID = next.first->getID();
             if (visited.find(nextID) != visited.end() && visited[nextID] == false){ // Vertex has not been visited yet
-                active_queue.push_back(next.first); // Add the neighbor to the end of the active queue
+                active_queue.push(next.first); // Add the neighbor to the end of the active queue
                 visited[nextID] = true; // Set status to visited
                 visited_count++;
                 parent[next.first] = v; // Add the neighbor and the vertex to the parent map to reconstruct path
 
                 // Set status of edge to visited
                 string id = to_string(v->getID()) + "." + to_string(next.first->getID());
-                Edge* e = getEdge(id);
-                e->setState(EdgeState::visited);
+                getEdge(id)->setState(EdgeState::visited);
+
+                // Set state of vertex to visited
+                next.first->setState(VertexState::visited);
+
+                // Since we found an unvisited neighbor, this vertex is not a dead end
+                isDeadEnd = false;
             }
         }
+
+        // After checking all neighbors, if no unvisited neighbors were found, mark the vertex as a dead end
+        if (isDeadEnd){
+            v->setState(VertexState::deadend);
+        }
+    }
+
+    // Mark the remaining vertices as dead ends (in the case of the search although on the map they may not appear to be dead ends
+    while(!active_queue.empty()){
+        active_queue.front()->setState(VertexState::deadend);
+        active_queue.pop();
     }
 
     // Reconstruct the path backwards starting from the end
@@ -277,16 +288,20 @@ void Graph::BFS(uint32_t start, uint32_t end){
             // If we create id like usual, it will be inverted since we go from the end vertex to start
             // We therefore need to create the id the from end vertex id to start vertex id to have the correct edge
             string id = to_string(at->getID()) + "." + to_string(prevVertex->getID());
-            Edge* e = getEdge(id);
-            e->setState(EdgeState::mainpath);
+            getEdge(id)->setState(EdgeState::mainpath);
+            // Set state of vertex which is on the mainpath
+            at->setState(VertexState::mainpath);
         }
         prevVertex = at; // Set the previous vertex to the current one as we have already used it
-
         BFS_path.push_back(at); // Create the shortest path
     }
 
     // Reverse the shortest path so it goes from start to end
     reverse(BFS_path.begin(), BFS_path.end());
+
+    // Set state of start and end vertices
+    BFS_path.front()->setState(VertexState::start);
+    BFS_path.back()->setState(VertexState::end);
 
     // Return shortest path if start and end are connected
     if (!BFS_path.empty() && BFS_path.front() == getVertex(start)){
@@ -315,8 +330,8 @@ void Graph::printBFSPath(int total_visited_vertex){
     * Vertex[...] = ...id, length =    cumulated length
     */
 
-    qInfo() << "Total visited vertex = " << total_visited_vertex;
-    qInfo() << "Total vertex on path from start to end = " << BFS_path.size();
+    cout << "Total visited vertex = " << total_visited_vertex << endl;
+    cout << "Total vertex on path from start to end = " << BFS_path.size() << endl;
 
     int cnt = 1; // Vertex counter
     double length = 0.0;
@@ -325,8 +340,7 @@ void Graph::printBFSPath(int total_visited_vertex){
     for (const auto& element: BFS_path){
         if (prevVertex != nullptr){ // Recreate id and get the length
             string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
-            Edge* e = getEdge(id);
-            length += e->getLength();
+            length += getEdge(id)->getLength();
         }
 
         // Create trace output
@@ -334,11 +348,12 @@ void Graph::printBFSPath(int total_visited_vertex){
              << "] = " << setw(10) << element->getID()
              << ", length = " << setw(10) << fixed << setprecision(2) << length << endl;
 
-        //qInfo() << QString("Vertex[%1] = %2, length = %3").arg(cnt,4).arg(element->getID(),6).arg(to_string(length).erase(),8);
-
         cnt++;
         prevVertex = element; // Save previous vertex
     }
+
+    cout << "Path total length: " << length << " m" << endl;
+    cout << "INFO: path calculated in " << endl;
 }
 
 
