@@ -7,23 +7,25 @@
 * Contains method definition for the Graph class
 */
 
-
-#include <unordered_map>
 #include <QFile>
 #include <QApplication>
-#include <cstdint>
 #include <QGraphicsEllipseItem>
-#include <iostream>
 #include <QList>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+
+#include <unordered_map>
+#include <iostream>
 #include <regex>
 #include <queue>
+#include <chrono>
+#include <cstdint>
 
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
+#include "Commify.h"
 
 using namespace std;
 
@@ -224,6 +226,10 @@ void Graph::BFS(uint32_t start, uint32_t end){
      * @return
      */
 
+    // Start time measurement
+    auto start_time = chrono::high_resolution_clock::now();
+
+
     int visited_count = 0;
     queue<Vertex*> active_queue; // Active queue of nodes to visit ( O(1) complexity for insertion)
     unordered_map<uint32_t, bool> visited; // Unordered map with vertex id and bool to indicate visitation status
@@ -303,9 +309,14 @@ void Graph::BFS(uint32_t start, uint32_t end){
     BFS_path.front()->setState(VertexState::start);
     BFS_path.back()->setState(VertexState::end);
 
+
+    // End time measurement
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double, std::micro> BFS_duration = end_time - start_time;
+
     // Return shortest path if start and end are connected
     if (!BFS_path.empty() && BFS_path.front() == getVertex(start)){
-        printBFSPath(visited_count);
+        printBFSPath(visited_count, BFS_duration);
     }
     else{ // Start and end are not connected
         qInfo() << "No connection between start and end vertices";
@@ -320,7 +331,7 @@ vector<Vertex*> Graph::getBFSPath(){
     return BFS_path;
 }
 
-void Graph::printBFSPath(int total_visited_vertex){
+void Graph::printBFSPath(int total_visited_vertex, chrono::duration<double, std::micro> duration){
     /* Display the BFS shortest path
      */
 
@@ -353,7 +364,7 @@ void Graph::printBFSPath(int total_visited_vertex){
     }
 
     cout << "Path total length: " << length << " m" << endl;
-    cout << "INFO: path calculated in " << endl;
+    cout << "INFO: path calculated in " << Commify(duration.count()) << "us" << endl;
 }
 
 

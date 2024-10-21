@@ -44,7 +44,7 @@ class Graph : public QGraphicsItem {
         // BFS
         void BFS(uint32_t start, uint32_t end);
         vector<Vertex*> getBFSPath();
-        void printBFSPath(int total_visited_vertex);
+        void printBFSPath(int total_visited_vertex, chrono::duration<double, std::micro> duration);
 
         //GraphicsItem
         void reset();
