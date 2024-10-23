@@ -26,6 +26,7 @@
 #include "Vertex.h"
 #include "Edge.h"
 #include "Commify.h"
+#include "Ipq.h"
 
 using namespace std;
 
@@ -332,7 +333,7 @@ void Graph::BFS(uint32_t start, uint32_t end){
 
     // Return shortest path if start and end are connected
     if (!BFS_path.empty() && BFS_path.front() == getVertex(start)){
-        printBFSPath(visited_count, BFS_duration);
+        printShortestPath(BFS_path, visited_count, BFS_duration, "BFS");
     }
     else{ // Start and end are not connected
         qInfo() << "No connection between start and end vertices";
@@ -347,41 +348,6 @@ vector<Vertex*> Graph::getBFSPath(){
     return BFS_path;
 }
 
-void Graph::printBFSPath(int total_visited_vertex, chrono::duration<double, std::micro> duration){
-    /* Display the BFS shortest path
-     */
-
-    /* Expected output:
-    * Total visited vertices =
-    * Total vertices on path from start to end =
-    * Vertex[...] = ...id, length =    cumulated length
-    */
-
-    cout << "Total visited vertex = " << total_visited_vertex << endl;
-    cout << "Total vertex on path from start to end = " << BFS_path.size() << endl;
-
-    int cnt = 1; // Vertex counter
-    double length = 0.0;
-    Vertex* prevVertex = nullptr;
-
-    for (const auto& element: BFS_path){
-        if (prevVertex != nullptr){ // Recreate id and get the length
-            string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
-            length += getEdge(id)->getLength();
-        }
-
-        // Create trace output
-        cout << "Vertex[ " << setw(4) << cnt
-             << "] = " << setw(10) << element->getID()
-             << ", length = " << setw(10) << fixed << setprecision(2) << length << endl;
-
-        cnt++;
-        prevVertex = element; // Save previous vertex
-    }
-
-    cout << "Path total length: " << length << " m" << endl;
-    cout << "INFO: path calculated in " << Commify(duration.count()) << "us" << endl;
-}
 
 //--------------------------------------- Dijkstra ---------------------------------------//
 
@@ -509,7 +475,7 @@ void Graph::Dijkstra(uint32_t start, uint32_t end){
 
     // Return shortest path if start and end are connected
     if (!dijkstra_path.empty() && dijkstra_path.front() == getVertex(start)){
-        printDijkstraPath(visited_count, dijkstra_duration);
+        printShortestPath(dijkstra_path, visited_count, dijkstra_duration, "Dijkstra");
     }
     else{ // Start and end are not connected
         qInfo() << "No connection between start and end vertices";
@@ -524,24 +490,164 @@ vector<Vertex*> Graph::getDijkstraPath(){
     return dijkstra_path;
 }
 
-void Graph::printDijkstraPath(int total_visited_vertex, chrono::duration<double, std::micro> duration){
-    /* Display the BFS shortest path
+
+void Graph::Dijkstra_IPQ(uint32_t start, uint32_t end){
+    /* Perform the Dijkstra algorithm on the weighted graph
+     *
+     * @param Vertex* start, Vertex* end
+     * @return
      */
 
-    /* Expected output:
-    * Total visited vertices =
-    * Total vertices on path from start to end =
-    * Vertex[...] = ...id, length =    cumulated length
-    */
+    // Start time measurement
+    auto start_time = chrono::high_resolution_clock::now();
 
-    cout << "Total visited vertex = " << total_visited_vertex << endl;
-    cout << "Total vertex on path from start to end = " << dijkstra_path.size() << endl;
+
+    int visited_count = 0; // Keep track of the number of visited vertices
+
+    unordered_map<uint32_t, bool> visited; // Unordered map with vertex id and bool to indicate visitation status
+    unordered_map<uint32_t, double> dist; // Keeps track of the distance for each vertex
+    unordered_map<uint32_t, uint32_t> parent; // Stores the parents to reconstruct the path
+
+    // Populate the maps
+    for (const auto& elem: vertices_map){
+        visited[elem.first] = false; // Set the visited status of all vertices in the graph to false
+        dist[elem.first] = numeric_limits<double>::infinity(); // Set the distance/weight to infinity for each vertex
+        parent[elem.first] = -1; // Initialize parent to -1 (undefined)
+    }
+
+    dist[start] = 0; // Set the distance for the start vertex to 0
+
+    // Define the priority queue and its elements
+    //typedef pair<uint32_t, double> pii; // First: vertex id / Second: distance
+    //priority_queue<pii, vector<pii>, CompareDist> pq; // Create the priority queue with a custom Compare method to get a Min-Heap
+    //pq.push({start, 0}); // Add the start vector with the 0 distance to the pq
+
+    Ipq ipq(vertices_map.size());
+    ipq.insert(start, 0);
+
+    // Dijkstra's loop
+    while (!ipq.isEmpty()){
+        // Remove the next most promising vertex / min distance pair
+        uint32_t current_v_id = ipq.popMin();
+        double current_v_dist = dist[current_v_id];
+        //pq.pop(); // Remove the current vertex from the pq since we visited it
+
+        if (visited[current_v_id]) continue; // Skip the vertex if already visited
+        visited[current_v_id] = true; // Mark current vertex as visited
+
+        if (current_v_id == end) break; // The end vertex has been found
+
+        bool isDeadEnd = true;
+        // Explore the neighbors
+        for (const auto& neighbor: getVertex(current_v_id)->getNeighbors()){
+            uint32_t neighborID = neighbor.first->getID();
+
+            if (visited[neighborID]) continue;
+
+            // Recreate edge id to get the weight
+            string id = to_string(current_v_id) + "." + to_string(neighborID);
+            double edge_weight = getEdge(id)->getLength();
+
+            // Get the weight of the path to the current vertex and add the weight from the current vertex to its neighbor to get the total distance to start
+            double new_dist = current_v_dist + edge_weight;
+
+            if (new_dist < dist[neighborID]){ // If new distance is less than the distance of the neighbor to the start
+                dist[neighborID] = new_dist; // Update value to vertex if it is better
+                //pq.push({neighborID, new_dist}); // Insert new key - value pair into to queue so that we visit this vertex in the future
+                parent[neighborID] = current_v_id;
+
+                if (ipq.contains(neighborID)){
+                    ipq.decreaseKey(neighborID, new_dist);
+                }
+                else {
+                    ipq.insert(neighborID, new_dist);
+                }
+
+                visited_count++;
+
+                // Set edge status to visited
+                string id = to_string(getVertex(current_v_id)->getID()) + "." + to_string(neighbor.first->getID());
+                getEdge(id)->setState(EdgeState::visited);
+
+                // Set vertex status
+                getVertex(neighborID)->setState(VertexState::visited);
+
+                // Unvisited neighbor found = not a dead end
+                isDeadEnd = false;
+            }
+        }
+
+        // After checking all neighbors, if no unvisited neighbors were found, mark the vertex as a dead end
+        if (isDeadEnd){
+            getVertex(current_v_id)->setState(VertexState::deadend);
+        }
+    }
+
+    // Mark the remaining vertices as dead ends (in the case of the search although on the map they may not appear to be dead ends
+    while(!ipq.isEmpty()){
+        getVertex(ipq.popMin())->setState(VertexState::deadend);
+        //pq.pop();
+    }
+
+    // Reconstruct the path from end to start
+    Vertex* prevVertex = nullptr;
+    for (uint32_t at = end; at != -1; at = parent[at]){
+        if (prevVertex != nullptr){
+            // If we create id like usual, it will be inverted since we go from the end vertex to start
+            // We therefore need to create the id the from end vertex id to start vertex id to have the correct edge
+            string id = to_string(getVertex(at)->getID()) + "." + to_string(prevVertex->getID());
+            getEdge(id)->setState(EdgeState::mainpath);
+            // Set state of vertex which is on the mainpath
+            getVertex(at)->setState(VertexState::mainpath);
+        }
+        prevVertex = getVertex(at);
+        dijkstra_path.push_back(getVertex(at));
+    }
+
+    // Reverse the shortest path so it goes from start to end
+    reverse(dijkstra_path.begin(), dijkstra_path.end());
+
+    // Set state of start and end vertices
+    dijkstra_path.front()->setState(VertexState::start);
+    dijkstra_path.back()->setState(VertexState::end);
+
+    // End time measurement
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double, std::micro> dijkstra_duration = end_time - start_time;
+
+    // Return shortest path if start and end are connected
+    if (!dijkstra_path.empty() && dijkstra_path.front() == getVertex(start)){
+        printShortestPath(dijkstra_path, visited_count, dijkstra_duration, "Dijkstra");
+    }
+    else{ // Start and end are not connected
+        qInfo() << "No connection between start and end vertices";
+    }
+}
+
+
+//--------------------------------------- A* ---------------------------------------//
+
+
+
+
+
+
+
+
+//--------------------------------------- Path Printing ---------------------------------------//
+void Graph::printShortestPath(vector<Vertex*> path,int total_visited_vertex, chrono::duration<double, std::micro> duration, string algorithm){
+    /* Display the shortest path computed with the choosen algorithm
+     */
+
+    cout << "Shortest path computed with " << algorithm << endl;
+    cout << "Total visited vertices = " << total_visited_vertex << endl;
+    cout << "Total vertices on path from start to end = " << path.size() << endl;
 
     int cnt = 1; // Vertex counter
     double length = 0.0;
     Vertex* prevVertex = nullptr;
 
-    for (const auto& element: dijkstra_path){
+    for (const auto& element: path){
         if (prevVertex != nullptr){ // Recreate id and get the length
             string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
             length += getEdge(id)->getLength();
@@ -560,7 +666,9 @@ void Graph::printDijkstraPath(int total_visited_vertex, chrono::duration<double,
     cout << "INFO: path calculated in " << Commify(duration.count()) << "us" << endl;
 }
 
-//--------------------------------------- A* ---------------------------------------//
+
+
+
 
 
 

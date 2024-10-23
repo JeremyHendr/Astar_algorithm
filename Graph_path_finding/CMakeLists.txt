@@ -25,6 +25,7 @@ qt_add_executable(Graph_finding_project
     Window.cpp
 
     Commify.h Commify.cpp
+    Ipq.h Ipq.cpp
 
 )
 
