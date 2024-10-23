@@ -8,6 +8,7 @@
 */
 
 #include <QPoint>
+#include <math.h>
 
 #include "Edge.h"
 
@@ -31,6 +32,7 @@ Edge::Edge(uint32_t source_id, uint32_t dest_id, double length, string name, boo
     this->source_id = source_id;
     this->destination_id = dest_id;
     this->length = length;
+
 
     QPen* normal_pen = new QPen(Qt::white);
     normal_pen->setWidth(5);

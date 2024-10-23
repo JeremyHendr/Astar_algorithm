@@ -25,6 +25,7 @@ qt_add_executable(Graph_finding_project
     Window.cpp
 
     Commify.h Commify.cpp
+
 )
 
 set_target_properties(Graph_finding_project PROPERTIES

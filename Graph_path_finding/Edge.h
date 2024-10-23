@@ -23,7 +23,7 @@ enum class EdgeState {normal, visited, mainpath};
 
 class Edge : public QLine {
     public :
-        Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
+    Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
         inline const uint32_t getSourceId() const {return source_id;};
         inline const uint32_t getDestinationId() const {return destination_id;};

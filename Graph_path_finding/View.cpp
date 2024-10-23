@@ -102,7 +102,7 @@ void View::calculate_path() {
 
         case 1: //call Dijkstra algorithm
             qInfo() << "Algorithm: Dijkstra, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
-
+            displayed_graph->Dijkstra(start,end);
 
 
             break;

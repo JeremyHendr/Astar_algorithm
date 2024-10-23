@@ -67,21 +67,36 @@ Graph::Graph(QString graph_data_file) {
         else if (fields[0] == "E") { //E,source_id,dest_id,length,name
             uint32_t source_ID = fields[1].toUInt();
             uint32_t dest_ID = fields[2].toUInt();
-            double length = fields[3].toDouble();
             string name = fields[4].toStdString();
             Edge* e;
+            double length = 0;
+            bool name_given;
+
+            if (fields[3] == ""){ // No length was provided / needs to be computed from projected source and destination
+                double x_source = getVertex(source_ID)->getCoordinate()->x(); // Get x coordinate of source vertex which is stored in a QPoint
+                double y_source = getVertex(source_ID)->getCoordinate()->y();
+                double x_dest = getVertex(dest_ID)->getCoordinate()->x();
+                double y_dest = getVertex(dest_ID)->getCoordinate()->y();
+                length = sqrt(pow((x_source-x_dest),2) + pow((y_source-y_dest),2)); // Compute length i.e. weight
+            }
+            else{ // Length was provided
+                length = fields[3].toDouble();
+            }
 
             regex question_mark_pattern(R"(\?+)");
 
             // fields[4].toStdString() != "???"
             if (!regex_match(fields[4].toStdString(), question_mark_pattern)){ // A real name has been given
-                bool name_given = true;
-                e = new Edge(source_ID, dest_ID, length, name, name_given);
+                name_given = true;
+                //e = new Edge(source_ID, dest_ID, length, name, name_given, length_given);
             }
             else{ // No name indicated ("???")
-                bool name_given = false;
-                e = new Edge(source_ID, dest_ID, length, name, name_given);
+                name_given = false;
+                //e = new Edge(source_ID, dest_ID, length, name, name_given, length_given);
             }
+
+            e = new Edge(source_ID, dest_ID, length, name, name_given);
+
             addEdge(e);
         }
     }
@@ -158,7 +173,7 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 }
 
 void Graph::reset(){
-    for (const auto pair : edges_map) {
+    for (const auto& pair : edges_map) {
         pair.second->setState(EdgeState::normal);
     }
 }
@@ -218,6 +233,7 @@ Edge* Graph::getEdge(string id) {
     }
 }
 
+//--------------------------------------- BFS ---------------------------------------//
 
 void Graph::BFS(uint32_t start, uint32_t end){
     /* Perform the BFS algorithm on the unweighted graph
@@ -236,12 +252,12 @@ void Graph::BFS(uint32_t start, uint32_t end){
     unordered_map<Vertex*, Vertex*> parent; // Parent map to store the parent of each visited vertex
     parent[getVertex(start)] = nullptr;
 
-    for (const auto elem: vertices_map){ // Construct the visited vector with the id of a vertex and set the status for each vector to false
+    for (const auto& elem: vertices_map){ // Construct the visited vector with the id of a vertex and set the status for each vector to false
         visited.insert({elem.first, false});
     }
 
     active_queue.push(getVertex(start)); // Initialize queue with start vertex
-    visited.find(start)->second = true; // Change the status of the start vertex to visited
+    visited[start] = true; // Change the status of the start vertex to visited
 
     // BFS Loop
     while (!active_queue.empty()){
@@ -255,20 +271,20 @@ void Graph::BFS(uint32_t start, uint32_t end){
 
         bool isDeadEnd = true; // Assume vertex is a dead end unless proven otherwise
 
-        for(const auto& next: v->getNeighbors()){
-            uint32_t nextID = next.first->getID();
-            if (visited.find(nextID) != visited.end() && visited[nextID] == false){ // Vertex has not been visited yet
-                active_queue.push(next.first); // Add the neighbor to the end of the active queue
-                visited[nextID] = true; // Set status to visited
+        for(const auto& neighbor: v->getNeighbors()){
+            uint32_t neighborID = neighbor.first->getID();
+            if (visited.find(neighborID) != visited.end() && visited[neighborID] == false){ // Vertex has not been visited yet
+                active_queue.push(neighbor.first); // Add the neighbor to the end of the active queue
+                visited[neighborID] = true; // Set status to visited
                 visited_count++;
-                parent[next.first] = v; // Add the neighbor and the vertex to the parent map to reconstruct path
+                parent[neighbor.first] = v; // Add the neighbor and the vertex to the parent map to reconstruct path
 
                 // Set status of edge to visited
-                string id = to_string(v->getID()) + "." + to_string(next.first->getID());
+                string id = to_string(v->getID()) + "." + to_string(neighbor.first->getID());
                 getEdge(id)->setState(EdgeState::visited);
 
                 // Set state of vertex to visited
-                next.first->setState(VertexState::visited);
+                neighbor.first->setState(VertexState::visited);
 
                 // Since we found an unvisited neighbor, this vertex is not a dead end
                 isDeadEnd = false;
@@ -366,6 +382,190 @@ void Graph::printBFSPath(int total_visited_vertex, chrono::duration<double, std:
     cout << "Path total length: " << length << " m" << endl;
     cout << "INFO: path calculated in " << Commify(duration.count()) << "us" << endl;
 }
+
+//--------------------------------------- Dijkstra ---------------------------------------//
+
+// Custom Comparator for Min-Heap for Dijkstra
+struct CompareDist {
+    bool operator()(const std::pair<uint32_t, double>& p1, const std::pair<uint32_t, double>& p2) {
+        // We want the smallest distance to have the highest priority (min-heap behavior)
+        return p1.second > p2.second;
+    }
+};
+
+void Graph::Dijkstra(uint32_t start, uint32_t end){
+    /* Perform the Dijkstra algorithm on the weighted graph
+     *
+     * @param Vertex* start, Vertex* end
+     * @return
+     */
+
+    // Start time measurement
+    auto start_time = chrono::high_resolution_clock::now();
+
+
+    int visited_count = 0; // Keep track of the number of visited vertices
+
+    unordered_map<uint32_t, bool> visited; // Unordered map with vertex id and bool to indicate visitation status
+    unordered_map<uint32_t, double> dist; // Keeps track of the distance for each vertex
+    unordered_map<uint32_t, uint32_t> parent; // Stores the parents to reconstruct the path
+
+    // Populate the maps
+    for (const auto& elem: vertices_map){
+        visited[elem.first] = false; // Set the visited status of all vertices in the graph to false
+        dist[elem.first] = numeric_limits<double>::infinity(); // Set the distance/weight to infinity for each vertex
+        parent[elem.first] = -1; // Initialize parent to -1 (undefined)
+    }
+
+    dist[start] = 0; // Set the distance for the start vertex to 0
+
+    // Define the priority queue and its elements
+    typedef pair<uint32_t, double> pii; // First: vertex id / Second: distance
+    priority_queue<pii, vector<pii>, CompareDist> pq; // Create the priority queue with a custom Compare method to get a Min-Heap
+    pq.push({start, 0}); // Add the start vector with the 0 distance to the pq
+
+
+    // Dijkstra's loop
+    while (!pq.empty()){
+        // Remove the next most promising vertex / min distance pair
+        uint32_t current_v_id = pq.top().first;
+        double current_v_dist = pq.top().second;
+        pq.pop(); // Remove the current vertex from the pq since we visited it
+
+        if (visited[current_v_id]) continue; // Skip the vertex if already visited
+        visited[current_v_id] = true; // Mark current vertex as visited
+
+        if (current_v_id == end) break; // The end vertex has been found
+
+        bool isDeadEnd = true;
+        // Explore the neighbors
+        for (const auto& neighbor: getVertex(current_v_id)->getNeighbors()){
+            uint32_t neighborID = neighbor.first->getID();
+
+            if (visited[neighborID]) continue;
+
+            // Recreate edge id to get the weight
+            string id = to_string(current_v_id) + "." + to_string(neighborID);
+            double edge_weight = getEdge(id)->getLength();
+
+            // Get the weight of the path to the current vertex and add the weight from the current vertex to its neighbor to get the total distance to start
+            double new_dist = current_v_dist + edge_weight;
+
+            if (new_dist < dist[neighborID]){ // If new distance is less than the distance of the neighbor to the start
+                dist[neighborID] = new_dist; // Update value to vertex if it is better
+                pq.push({neighborID, new_dist}); // Insert new key - value pair into to queue so that we visit this vertex in the future
+                parent[neighborID] = current_v_id;
+                visited_count++;
+
+                // Set edge status to visited
+                string id = to_string(getVertex(current_v_id)->getID()) + "." + to_string(neighbor.first->getID());
+                getEdge(id)->setState(EdgeState::visited);
+
+                // Set vertex status
+                getVertex(neighborID)->setState(VertexState::visited);
+
+                // Unvisited neighbor found = not a dead end
+                isDeadEnd = false;
+            }
+        }
+
+        // After checking all neighbors, if no unvisited neighbors were found, mark the vertex as a dead end
+        if (isDeadEnd){
+            getVertex(current_v_id)->setState(VertexState::deadend);
+        }
+    }
+
+    // Mark the remaining vertices as dead ends (in the case of the search although on the map they may not appear to be dead ends
+    while(!pq.empty()){
+        getVertex(pq.top().first)->setState(VertexState::deadend);
+        pq.pop();
+    }
+
+    // Reconstruct the path from end to start
+    Vertex* prevVertex = nullptr;
+    for (uint32_t at = end; at != -1; at = parent[at]){
+        if (prevVertex != nullptr){
+            // If we create id like usual, it will be inverted since we go from the end vertex to start
+            // We therefore need to create the id the from end vertex id to start vertex id to have the correct edge
+            string id = to_string(getVertex(at)->getID()) + "." + to_string(prevVertex->getID());
+            getEdge(id)->setState(EdgeState::mainpath);
+            // Set state of vertex which is on the mainpath
+            getVertex(at)->setState(VertexState::mainpath);
+        }
+        prevVertex = getVertex(at);
+        dijkstra_path.push_back(getVertex(at));
+    }
+
+    // Reverse the shortest path so it goes from start to end
+    reverse(dijkstra_path.begin(), dijkstra_path.end());
+
+    // Set state of start and end vertices
+    dijkstra_path.front()->setState(VertexState::start);
+    dijkstra_path.back()->setState(VertexState::end);
+
+    // End time measurement
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double, std::micro> dijkstra_duration = end_time - start_time;
+
+    // Return shortest path if start and end are connected
+    if (!dijkstra_path.empty() && dijkstra_path.front() == getVertex(start)){
+        printDijkstraPath(visited_count, dijkstra_duration);
+    }
+    else{ // Start and end are not connected
+        qInfo() << "No connection between start and end vertices";
+    }
+}
+
+vector<Vertex*> Graph::getDijkstraPath(){
+    /* Retrieve computed Dijkstra shortest path
+     *
+     * @return vector<Vertex*> dijkstra_path
+     */
+    return dijkstra_path;
+}
+
+void Graph::printDijkstraPath(int total_visited_vertex, chrono::duration<double, std::micro> duration){
+    /* Display the BFS shortest path
+     */
+
+    /* Expected output:
+    * Total visited vertices =
+    * Total vertices on path from start to end =
+    * Vertex[...] = ...id, length =    cumulated length
+    */
+
+    cout << "Total visited vertex = " << total_visited_vertex << endl;
+    cout << "Total vertex on path from start to end = " << dijkstra_path.size() << endl;
+
+    int cnt = 1; // Vertex counter
+    double length = 0.0;
+    Vertex* prevVertex = nullptr;
+
+    for (const auto& element: dijkstra_path){
+        if (prevVertex != nullptr){ // Recreate id and get the length
+            string id = to_string(prevVertex->getID()) + "." + to_string(element->getID());
+            length += getEdge(id)->getLength();
+        }
+
+        // Create trace output
+        cout << "Vertex[ " << setw(4) << cnt
+             << "] = " << setw(10) << element->getID()
+             << ", length = " << setw(10) << fixed << setprecision(2) << length << endl;
+
+        cnt++;
+        prevVertex = element; // Save previous vertex
+    }
+
+    cout << "Path total length: " << length << " m" << endl;
+    cout << "INFO: path calculated in " << Commify(duration.count()) << "us" << endl;
+}
+
+//--------------------------------------- A* ---------------------------------------//
+
+
+
+
+
 
 
 

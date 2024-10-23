@@ -46,6 +46,11 @@ class Graph : public QGraphicsItem {
         vector<Vertex*> getBFSPath();
         void printBFSPath(int total_visited_vertex, chrono::duration<double, std::micro> duration);
 
+        // Dijkstra
+        void Dijkstra(uint32_t start, uint32_t end);
+        vector<Vertex*> getDijkstraPath();
+        void printDijkstraPath(int total_visited_vertex, chrono::duration<double, std::micro> duration);
+
         //GraphicsItem
         void reset();
         QRectF boundingRect() const override;
@@ -57,6 +62,9 @@ class Graph : public QGraphicsItem {
 
         // Elements for the BFS
         vector<Vertex*> BFS_path;
+
+        // Elements for Dijkstra
+        vector<Vertex*> dijkstra_path;
 
         void populateScene();
         // Path algorithms
