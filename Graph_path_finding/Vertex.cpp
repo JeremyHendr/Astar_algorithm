@@ -61,7 +61,7 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
     normal_brush->setColor(Qt::red);
     state_associated_pen[VertexState::normal] = normal_pen;
     state_associated_brush[VertexState::normal] = normal_brush;
-    ellipse_size = 5;
+    ellipse_size = 3;
 
     //green circle filled green
     QPen* visited_pen = new QPen(Qt::green);

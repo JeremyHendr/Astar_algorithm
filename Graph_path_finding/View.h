@@ -20,6 +20,17 @@ class QSlider;
 class QToolButton;
 QT_END_NAMESPACE
 
+class VertexValidator : public QValidator {
+    Q_OBJECT
+    public:
+        inline VertexValidator(QObject *parent = 0){};
+        virtual QValidator::State validate(QString &input, int &pos) const;
+        inline void setGraph(Graph* g){graph=g;};
+
+    private:
+        Graph* graph=nullptr;
+};
+
 class View;
 
 class GraphicsView : public QGraphicsView {
@@ -40,7 +51,7 @@ class View : public QFrame {
     public:
         explicit View(const QString &name, QWidget *parent = nullptr);
         QGraphicsView *view() const;
-        inline void setGraph(Graph* graph) {displayed_graph=graph;};
+        inline void setGraph(Graph* graph) {displayed_graph=graph;input_range->setGraph(graph);};
 
 
     private slots:
@@ -55,7 +66,7 @@ class View : public QFrame {
         QToolButton *calculate_path_button;
         QLineEdit *origin_input;
         QLineEdit *destination_input;
-        QValidator *input_range;
+        VertexValidator *input_range;
         QComboBox *algorithm_selection;
 
 

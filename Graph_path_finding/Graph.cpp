@@ -142,13 +142,6 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     for (const auto pair : vertices_map) {
         Vertex* v = pair.second;
-        // // painter->setPen(QPen(Qt::red));
-        // QBrush* b = new QBrush(Qt::SolidLine);
-        // b->setColor(Qt::red);
-        // painter->setBrush(*b);
-        // painter->drawEllipse(*v->getCoordinate(),10,10);
-
-
         painter->setPen(*v->getPen());
         painter->setBrush(*v->getBrush());
         painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
@@ -158,6 +151,9 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 void Graph::reset(){
     for (const auto pair : edges_map) {
         pair.second->setState(EdgeState::normal);
+    }
+    for (const auto pair : vertices_map) {
+        pair.second->setState(VertexState::normal);
     }
 }
 void Graph::addVertex(Vertex* v){
@@ -193,6 +189,7 @@ Vertex* Graph::getVertex(uint32_t id) {
      * @param id
      * @return vertex
      */
+
     if (vertices_map.find(id) == vertices_map.end()) {
         qInfo() << "No Vertex with id" << id;
         return nullptr;
