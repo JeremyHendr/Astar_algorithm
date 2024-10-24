@@ -41,10 +41,17 @@ class Graph : public QGraphicsItem {
         void print() const;
         inline QString getName() {return graph_name;};
 
+        //----------- Path finding algorithms -----------//
         // BFS
         void BFS(uint32_t start, uint32_t end);
         vector<Vertex*> getBFSPath();
-        void printBFSPath(int total_visited_vertex);
+
+        // Dijkstra
+        void Dijkstra(uint32_t start, uint32_t end);
+        void Dijkstra_IPQ(uint32_t start, uint32_t end);
+        vector<Vertex*> getDijkstraPath();
+
+        void printShortestPath(vector<Vertex*> path, int total_visited_vertex, chrono::duration<double, std::micro> duration, string algorithm);
 
         //GraphicsItem
         void reset();
@@ -57,6 +64,9 @@ class Graph : public QGraphicsItem {
 
         // Elements for the BFS
         vector<Vertex*> BFS_path;
+
+        // Elements for Dijkstra
+        vector<Vertex*> dijkstra_path;
 
         void populateScene();
         // Path algorithms

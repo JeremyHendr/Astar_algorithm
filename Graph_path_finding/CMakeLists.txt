@@ -21,9 +21,12 @@ qt_add_executable(Graph_finding_project
     Graph.cpp
     Vertex.cpp
 
-
     Window.h
     Window.cpp
+
+    Commify.h Commify.cpp
+    Ipq.h Ipq.cpp
+
 )
 
 set_target_properties(Graph_finding_project PROPERTIES
