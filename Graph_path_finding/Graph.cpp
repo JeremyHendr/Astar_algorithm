@@ -120,8 +120,6 @@ Graph::Graph(QString graph_data_file) {
     }
 
     print();
-
-    BFS(86771,110636);
 }
 
 QRectF Graph::boundingRect() const {
