@@ -121,7 +121,7 @@ Graph::Graph(QString graph_data_file) {
 
     print();
 
-    //A_star(86771,110636);
+    BFS(86771,110636);
 }
 
 QRectF Graph::boundingRect() const {
@@ -267,7 +267,8 @@ void Graph::BFS(uint32_t start, uint32_t end){
 
     for (const auto& elem: vertices_map){ // Construct the visited vector with the id of a vertex and set the status for each vector to false
         visited[elem.first] = false;
-        parent[elem.first] = -1;
+        //parent[elem.first] = -1;
+        parent[elem.first] = numeric_limits<uint32_t>::infinity();
     }
 
     active_queue.push(getVertex(start)); // Initialize queue with start vertex
