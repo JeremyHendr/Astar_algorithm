@@ -2,6 +2,24 @@
 #include <QtMath>
 
 #include "view.h"
+#include "Graph.h"
+
+
+QValidator::State VertexValidator::validate(QString &input, int &pos) const {
+    // qInfo() << input <<  "  "  << input.toUInt();
+    if (graph == nullptr) {
+        qInfo() << "Graph was not initialized in Validator";
+        return Invalid;
+    }
+    else {
+        if (input.toUInt() and graph->getVertex(input.toUInt()) != nullptr){
+            qInfo() << "acceptable";
+            return Acceptable;
+        }
+        qInfo() << "not acceptable";
+        return Intermediate;
+    }
+}
 
 void GraphicsView::wheelEvent(QWheelEvent *event) {
     if(event->angleDelta().y() > 0)
@@ -44,7 +62,8 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     vertex_selection->addWidget(calculate_path_button);
 
     //VERTEX INPUT
-    input_range = new QIntValidator(0,999999);
+    // input_range = new QIntValidator(0,999999);
+    input_range = new VertexValidator();
     origin_input = new QLineEdit;
     origin_input->setPlaceholderText("Origin");
     origin_input->setMaxLength(6);
