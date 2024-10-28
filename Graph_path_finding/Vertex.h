@@ -46,6 +46,9 @@ class Vertex {
         void showNeighbor(Vertex* v);
         vector<pair<Vertex*, Edge*>> getNeighbors();
 
+
+        float longitude, latitude;
+
     private :
         inline static double* longitude_zero_reference = nullptr;
         inline static double* latitude_zero_reference = nullptr;

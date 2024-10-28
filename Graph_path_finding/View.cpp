@@ -109,7 +109,7 @@ void View::calculate_path() {
 
         case 2: //call Astar algotithm
             qInfo() << "Algorithm: Astar, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
-
+            displayed_graph->A_star(start,end);
 
 
             break;
