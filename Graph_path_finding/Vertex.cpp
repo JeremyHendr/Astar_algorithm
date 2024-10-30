@@ -55,7 +55,7 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
     // Mercator projection formulas
     // qInfo() << lonRad << " " << refLonRad << " " << *longitude_zero_reference << " " << longitude;
     int x = R * (lonRad - refLonRad);
-    int y = R * log(tan(M_PI / 4 + latRad / 2) / tan(M_PI / 4 + refLatRad / 2));
+    int y = R * log(tan(M_PI / 4 + refLatRad / 2) / tan(M_PI / 4 + latRad / 2));
 
     this->x = R * (lonRad - refLonRad);
     this->y = R * log(tan(M_PI / 4 + latRad / 2) / tan(M_PI / 4 + refLatRad / 2));

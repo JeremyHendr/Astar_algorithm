@@ -68,6 +68,8 @@ class Graph : public QGraphicsItem {
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
 
     private:
+        QPoint* top_left_coord = new QPoint();
+        QPoint* bottom_right_coord = new QPoint();
         unordered_map<uint32_t, Vertex*> vertices_map;
         unordered_map<string, Edge*> edges_map;
 
@@ -81,10 +83,6 @@ class Graph : public QGraphicsItem {
         vector<Vertex*> astar_path;
 
         void populateScene();
-        // Path algorithms
-        // vector<Vertex*> BFS(Vertex* origin, Vertex* destination, bool time=false);
-        // void Dijkstra();
-        // void Astar();
         QList<QPointF> stuff;
         QString graph_name;
 
