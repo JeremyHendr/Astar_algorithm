@@ -383,10 +383,11 @@ void Graph::Dijkstra(uint32_t start, uint32_t end){
         double current_v_dist = pq.top().second;
         pq.pop(); // Remove the current vertex from the pq since we visited it
 
+        if (current_v_id == end) break; // The end vertex has been found
+
         if (visited[current_v_id]) continue; // Skip the vertex if already visited
         visited[current_v_id] = true; // Mark current vertex as visited
-
-        if (current_v_id == end) break; // The end vertex has been found
+        ++visited_count;
 
         bool isDeadEnd = true;
         // Explore the neighbors
@@ -406,7 +407,7 @@ void Graph::Dijkstra(uint32_t start, uint32_t end){
                 dist[neighborID] = new_dist; // Update value to vertex if it is better
                 pq.push({neighborID, new_dist}); // Insert new key - value pair into to queue so that we visit this vertex in the future
                 parent[neighborID] = current_v_id;
-                visited_count++;
+                //visited_count++;
 
                 // Set edge status to visited
                 string id = to_string(getVertex(current_v_id)->getID()) + "." + to_string(neighbor.first->getID());
@@ -438,6 +439,13 @@ void Graph::Dijkstra(uint32_t start, uint32_t end){
     // End time measurement
     auto end_time = chrono::high_resolution_clock::now();
     chrono::duration<double, std::micro> dijkstra_duration = end_time - start_time;
+
+    // REMOVE AFTER TEST
+    int counter = 0;
+    for (const auto& elem: visited){
+        if (elem.second) ++counter;
+        else continue;
+    }
 
     // Return shortest path if start and end are connected
     if (!dijkstra_path.empty() && dijkstra_path.front() == getVertex(start)){
@@ -487,6 +495,8 @@ void Graph::Dijkstra_IPQ(uint32_t start, uint32_t end){
 
         if (visited[current_v_id]) continue; // Skip the vertex if already visited
         visited[current_v_id] = true; // Mark current vertex as visited
+        ++visited_count;
+
         if (current_v_id == end) break; // The end vertex has been found
 
         bool isDeadEnd = true;
@@ -514,8 +524,6 @@ void Graph::Dijkstra_IPQ(uint32_t start, uint32_t end){
                 else {
                     ipq.insert(neighborID, new_dist);
                 }
-
-                visited_count++;
 
                 // Set edge status to visited
                 string id = to_string(getVertex(current_v_id)->getID()) + "." + to_string(neighbor.first->getID());
@@ -566,30 +574,38 @@ vector<Vertex*> Graph::getDijkstraPath(){
 }
 
 //--------------------------------------- A* ---------------------------------------//
-double Graph::heuristic(uint32_t a, uint32_t b) {
-    /* Heuristic for the A* algorithm
+double Graph::heuristic(uint32_t vertexA, uint32_t vertexB) {
+    /* Heuristic for the A* algorithm.
+     * In this case we use the Haversine formula which uses the longitude and latitude coordinates of the vertices
      *
      * @param uint32_t a, uint32_t b (2 vertex ids)
      * @return double (distance estimation)
      */
 
-    // Get the x and y coordinates for vertices a and b
-    double x1 = getVertex(a)->getCoordinate()->x();
-    double y1 = getVertex(a)->getCoordinate()->y();
+    // Get the longitude and lattitude for each vertex and convert them to radians
+    double lat1 = (getVertex(vertexA)->latitude)* M_PI / 180.0;
+    double lon1 = (getVertex(vertexA)->longitude)* M_PI / 180.0;
+    double lat2 = (getVertex(vertexB)->latitude)* M_PI / 180.0;
+    double lon2 = (getVertex(vertexB)->longitude)* M_PI / 180.0;
 
-    double x2 = getVertex(b)->getCoordinate()->x();
-    double y2 = getVertex(b)->getCoordinate()->y();
+    // Haversine formula
+    double dLat = lat2 - lat1; // Delta Latitude
+    double dLon = lon2 - lon1; // Delta Longitude
 
-    // Calculate Euclidian Distance
-    //return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
-    return std::fmax(std::abs(x1 - x2), std::abs(y1 - y2));
-    //return std::abs(x1 - x2) + std::abs(y1 - y2);
+    double e = std::sin(dLat / 2) * std::sin(dLat / 2) +
+               std::cos(lat1) * std::cos(lat2) *
+               std::sin(dLon / 2) * std::sin(dLon / 2);
+
+    double c = 2 * std::atan2(std::sqrt(e), std::sqrt(1 - e));
+
+    double R = 6371.0; // Radius of Earth in kilometers
+    return R * c; // Distance in kilometers between the two vertices
 }
 
 
 void Graph::A_star(uint32_t start, uint32_t end){
-    /* Perform the A* algorithm on the weighted graph using a Priority Queue and a heuristic function (Euclidian Distance) and print the result in the console
-     * We used the Euclidian distance for the heuristic since we have the local map with x and y coordinates in a 2D plane
+    /* Perform the A* algorithm on the weighted graph using a Priority Queue and a heuristic function (Haversine Formula Distance) and print the result in the console
+     * We used the Haversine formula since it uses the latitude and longitude of the vertices and is therefore invariant to the mercator projection
      *
      * @param uint32_t start, uint32_t end
      */
@@ -629,17 +645,23 @@ void Graph::A_star(uint32_t start, uint32_t end){
     // A* loop
     while (!openSet.empty()){
         uint32_t current = openSet.top().first; // Get the next most promising vertex based on cost
+        openSet.pop(); // Remove the current vertex from the queue
+
+        if (closed_set.find(current) != closed_set.end()) continue;
+
+        closed_set.insert(current); // Add the current vertex to the visited ones
+        ++visited_count;
 
         if (current == end) break; // If the end vertex was found, we stop
 
-        openSet.pop(); // Remove the current vertex from the queue
-        closed_set.insert(current); // Add the current vertex to the visited ones
 
         bool isDeadEnd = true;
 
         // Explore the neighbors of the current vertex
         for (const auto& neighbor: getVertex(current)->getNeighbors()){
             uint32_t neighborID = neighbor.first->getID();
+
+            if (closed_set.find(neighborID) != closed_set.end()) continue;
 
             // Get the edge from the current vertex to the neighbor and compute the tentative g score
             string id = to_string(getVertex(current)->getID()) + "." + to_string(neighbor.first->getID());
@@ -652,7 +674,6 @@ void Graph::A_star(uint32_t start, uint32_t end){
 
                 openSet.push({neighborID, fScore[neighborID]});
 
-                visited_count++;
 
                 // Set edge and vertex status
                 getEdge(id)->setState(EdgeState::visited);
@@ -672,6 +693,112 @@ void Graph::A_star(uint32_t start, uint32_t end){
     while (!openSet.empty()){
         getVertex(openSet.top().first)->setState(VertexState::deadend);
         openSet.pop();
+    }
+
+    // Reconstruct the path from end to start
+    astar_path = reconstructShortestPath(start, end, parent);
+
+    // End time measurement
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double, std::micro> astar_duration = end_time - start_time;
+
+    // Return the path if connected
+    if (!astar_path.empty() && astar_path.front() == getVertex(start)){
+        printShortestPath(astar_path, visited_count, astar_duration, "A*");
+    } else {
+        qInfo() << "No connection between start and end vertices";
+    }
+}
+
+void Graph::A_star_IPQ(uint32_t start, uint32_t end){
+    /* Perform the A* algorithm on the weighted graph using an Indexed Priority Queue and a heuristic function (Haversine Formula) and print the result in the console
+     * We used the Haversine formula since it uses the latitude and longitude of the vertices and is therefore invariant to the mercator projection
+     *
+     * @param uint32_t start, uint32_t end
+     */
+
+    // Start time measurement
+    auto start_time = chrono::high_resolution_clock::now();
+
+    // Free the memory so that the old path is overridden
+    astar_path.clear();
+
+    int visited_count = 0; // Track the number of visited vertices
+
+    // Set (log(N) complexity) for visited vertices
+    std::set<uint32_t> closed_set;
+
+    // Define and populate the maps
+    unordered_map<uint32_t, double> gScore;
+    unordered_map<uint32_t, double> fScore;
+    unordered_map<uint32_t, uint32_t> parent; // Parent map to record the best path (Key: neighbor vertex ; Value: current vertex) O(1) complexity
+
+    for (const auto& elem: vertices_map){
+        gScore[elem.first] = numeric_limits<double>::infinity();
+        fScore[elem.first] = numeric_limits<double>::infinity();
+        parent[elem.first] = numeric_limits<uint32_t>::infinity();
+    }
+
+    gScore[start] = 0; // The start node has a g cost of 0
+    fScore[start] = heuristic(start,end); // The start node has a f cost of the heuristic from start to end (h = f + g but g = 0 in this case)
+
+    // Define the Indexed Priority Queue for A*
+    Ipq openSet(vertices_map.size()); // Create the Index Priority Queue object
+    openSet.insert(start, fScore[start]); // Add the start vertex
+
+    // A* loop
+    while (!openSet.isEmpty()){
+        uint32_t current = openSet.popMin(); // Get the next most promising vertex based on cost
+
+        if (current == end) break; // If the end vertex was found, we stop
+
+        if (closed_set.find(current) != closed_set.end()) continue; // Continue if the current vertex has already been visited
+        closed_set.insert(current); // Add the current vertex to the visited ones
+        ++visited_count;
+
+        bool isDeadEnd = true;
+
+        // Explore the neighbors of the current vertex
+        for (const auto& neighbor: getVertex(current)->getNeighbors()){
+            uint32_t neighborID = neighbor.first->getID();
+
+            // Skip already visited neighbors
+            if (closed_set.find(neighborID) != closed_set.end()) continue;
+
+            // Get the edge from the current vertex to the neighbor and compute the tentative g score
+            string id = to_string(getVertex(current)->getID()) + "." + to_string(neighbor.first->getID());
+            auto tentative_gScore = gScore[current] + getEdge(id)->getLength();
+
+            if (tentative_gScore < gScore[neighborID]){ // If the score is less than the current one saved for the neighbor, update everything accordingly
+                parent[neighborID] = current; // New shortest node found, add to saved path
+                gScore[neighborID] = tentative_gScore;
+                fScore[neighborID] = tentative_gScore + heuristic(neighborID, end);
+
+                // Check if the neighbor is already in the IPQ and treat the corresponding case
+                if (openSet.contains(neighborID)){
+                    openSet.decreaseKey(neighborID, fScore[neighborID]);
+                }
+                else {
+                    openSet.insert(neighborID, fScore[neighborID]);
+                }
+
+                // Set edge and vertex status
+                getEdge(id)->setState(EdgeState::visited);
+                getVertex(neighborID)->setState(VertexState::visited);
+
+                isDeadEnd = false;
+            }
+        }
+
+        // Mark dead end if no unvisited neighbors found
+        if (isDeadEnd){
+            getVertex(current)->setState(VertexState::deadend);
+        }
+    }
+
+    // Mark the remaining vertices in the queue as dead ends
+    while (!openSet.isEmpty()){
+        getVertex(openSet.popMin())->setState(VertexState::deadend);
     }
 
     // Reconstruct the path from end to start
@@ -753,7 +880,8 @@ void Graph::printShortestPath(vector<Vertex*> path,int total_visited_vertex, chr
         // Create trace output
         cout << "Vertex[ " << setw(4) << cnt
              << "] = " << setw(10) << element->getID()
-             << ", length = " << setw(10) << fixed << setprecision(2) << length << endl;
+             << ", length = " << setw(10) << fixed << setprecision(2) << length
+             << ", (x, y) = (" << setw(10) << element->x << ", " << setw(10) << element->y << ")" << endl;
 
         cnt++;
         prevVertex = element; // Save previous vertex

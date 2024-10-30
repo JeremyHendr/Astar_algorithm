@@ -48,6 +48,7 @@ class Vertex {
 
 
         float longitude, latitude;
+        float x, y;
 
     private :
         inline static double* longitude_zero_reference = nullptr;

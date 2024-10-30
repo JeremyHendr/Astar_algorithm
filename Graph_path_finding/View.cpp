@@ -112,21 +112,21 @@ void View::calculate_path() {
     uint32_t end = destination_input->text().toUInt(); //110636;81615
 
     switch(algorithm_selection->currentIndex()) {
-        case 0: //call BFS algotithm
+        case 0: // Call BFS algorithm
             qInfo() << "Algorithm: BFS, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
             displayed_graph->BFS(start,end);
 
 
             break;
 
-        case 1: //call Dijkstra algorithm
+        case 1: // Call Dijkstra algorithm
             qInfo() << "Algorithm: Dijkstra, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
             displayed_graph->Dijkstra(start,end);
 
 
             break;
 
-        case 2: //call Astar algotithm
+        case 2: // Call Astar algotithm
             qInfo() << "Algorithm: Astar, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
             displayed_graph->A_star(start,end);
 
