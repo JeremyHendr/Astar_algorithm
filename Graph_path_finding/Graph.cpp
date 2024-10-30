@@ -49,19 +49,31 @@ Graph::Graph(QString graph_data_file) {
 
         if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
             const uint32_t ID = fields[1].toUInt();
-            const float longitude = fields[2].toFloat();
-            const float latitude = fields[3].toFloat();
-
+            Vertex* v;
             if (fields[4] != ""){ // Check if we have values for x and y
                 const int x = fields[4].toInt();
                 const int y = fields[5].toInt();
-                Vertex* v = new Vertex(ID, x, y);
+                v = new Vertex(ID, x, y);
                 addVertex(v);
 
             }
             else{
-                Vertex* v = new Vertex(ID, longitude, latitude);
+                const float longitude = fields[2].toFloat();
+                const float latitude = fields[3].toFloat();
+                v = new Vertex(ID, longitude, latitude);
                 addVertex(v);
+            }
+            if (v->getCoordinate()->x() < top_left_coord->x()) {
+                top_left_coord->setX(v->getCoordinate()->x());
+            }
+            if (v->getCoordinate()->y() < top_left_coord->y()) {
+                top_left_coord->setY(v->getCoordinate()->y());
+            }
+            if (v->getCoordinate()->x() > bottom_right_coord->x()) {
+                bottom_right_coord->setX(v->getCoordinate()->x());
+            }
+            if (v->getCoordinate()->y() > bottom_right_coord->y()) {
+                bottom_right_coord->setY(v->getCoordinate()->y());
             }
         }
 
@@ -122,7 +134,10 @@ Graph::Graph(QString graph_data_file) {
 }
 
 QRectF Graph::boundingRect() const {
-    return QRectF(-10000, -10000, 50000, 50000);
+    return QRectF(  top_left_coord->x(),
+                    top_left_coord->y(),
+                    bottom_right_coord->x()-top_left_coord->x(),
+                    bottom_right_coord->y()-top_left_coord->y());
 }
 
 
@@ -164,6 +179,11 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         painter->setBrush(*v->getBrush());
         painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
     }
+    painter->setBrush(QBrush());
+    painter->drawRect(  top_left_coord->x(),
+                        top_left_coord->y(),
+                        bottom_right_coord->x()-top_left_coord->x(),
+                        bottom_right_coord->y()-top_left_coord->y());
 }
 
 void Graph::reset(){
