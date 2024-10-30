@@ -41,6 +41,11 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
     }
 
     this->id = id;
+
+
+    this->longitude = longitude;
+    this->latitude = latitude;
+
     double latRad = degreesToRadians(latitude);
     double lonRad = degreesToRadians(longitude);
     static double refLonRad = degreesToRadians(*longitude_zero_reference);
