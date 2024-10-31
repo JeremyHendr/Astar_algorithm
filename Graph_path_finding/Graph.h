@@ -57,7 +57,6 @@ class Graph : public QGraphicsItem {
         double heuristic(uint32_t a, uint32_t b);
         vector<Vertex*> getAStarPath();
 
-
         vector<Vertex*> reconstructShortestPath(uint32_t start, uint32_t end, unordered_map<uint32_t, uint32_t> parent);
         void printShortestPath(vector<Vertex*> path, int total_visited_vertex, chrono::duration<double, std::micro> duration, string algorithm);
 

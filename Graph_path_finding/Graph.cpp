@@ -22,6 +22,7 @@
 #include <chrono>
 #include <cstdint>
 #include <set>
+#include <unordered_set>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -309,7 +310,7 @@ void Graph::BFS(uint32_t start, uint32_t end){
             if (visited.find(neighborID) != visited.end() && visited[neighborID] == false){ // Vertex has not been visited yet
                 active_queue.push(neighbor.first); // Add the neighbor to the end of the active queue
                 visited[neighborID] = true; // Set status to visited
-                visited_count++;
+                ++visited_count;
                 parent[neighborID] = v->getID(); // Add the neighbor and the vertex to the parent map to reconstruct path
 
                 // Set status of edge to visited
@@ -427,7 +428,6 @@ void Graph::Dijkstra(uint32_t start, uint32_t end){
                 dist[neighborID] = new_dist; // Update value to vertex if it is better
                 pq.push({neighborID, new_dist}); // Insert new key - value pair into to queue so that we visit this vertex in the future
                 parent[neighborID] = current_v_id;
-                //visited_count++;
 
                 // Set edge status to visited
                 string id = to_string(getVertex(current_v_id)->getID()) + "." + to_string(neighbor.first->getID());
@@ -459,13 +459,6 @@ void Graph::Dijkstra(uint32_t start, uint32_t end){
     // End time measurement
     auto end_time = chrono::high_resolution_clock::now();
     chrono::duration<double, std::micro> dijkstra_duration = end_time - start_time;
-
-    // REMOVE AFTER TEST
-    int counter = 0;
-    for (const auto& elem: visited){
-        if (elem.second) ++counter;
-        else continue;
-    }
 
     // Return shortest path if start and end are connected
     if (!dijkstra_path.empty() && dijkstra_path.front() == getVertex(start)){
@@ -653,7 +646,6 @@ void Graph::A_star(uint32_t start, uint32_t end){
     for (const auto& elem: vertices_map){
         gScore[elem.first] = numeric_limits<double>::infinity();
         fScore[elem.first] = numeric_limits<double>::infinity();
-        //parent[elem.first] = -1;
         parent[elem.first] = numeric_limits<uint32_t>::infinity();
     }
 
@@ -674,7 +666,6 @@ void Graph::A_star(uint32_t start, uint32_t end){
 
         if (current == end) break; // If the end vertex was found, we stop
 
-
         bool isDeadEnd = true;
 
         // Explore the neighbors of the current vertex
@@ -693,7 +684,6 @@ void Graph::A_star(uint32_t start, uint32_t end){
                 fScore[neighborID] = tentative_gScore + heuristic(neighborID, end);
 
                 openSet.push({neighborID, fScore[neighborID]});
-
 
                 // Set edge and vertex status
                 getEdge(id)->setState(EdgeState::visited);
@@ -729,6 +719,7 @@ void Graph::A_star(uint32_t start, uint32_t end){
         qInfo() << "No connection between start and end vertices";
     }
 }
+
 
 void Graph::A_star_IPQ(uint32_t start, uint32_t end){
     /* Perform the A* algorithm on the weighted graph using an Indexed Priority Queue and a heuristic function (Haversine Formula) and print the result in the console
