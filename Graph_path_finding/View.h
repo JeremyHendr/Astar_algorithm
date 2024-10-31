@@ -36,14 +36,17 @@ class View;
 class GraphicsView : public QGraphicsView {
     Q_OBJECT
     public:
-        GraphicsView(View *v) : QGraphicsView(), view(v) { }
+        GraphicsView(View *v) : QGraphicsView(), view(v) { };
+        inline void setGraph(Graph* graph) {displayed_graph=graph;};
 
     protected Q_SLOTS:
         void wheelEvent(QWheelEvent *event);
         void keyPressEvent(QKeyEvent *event);
+        void mousePressEvent(QMouseEvent *event);
 
     private:
         View *view;
+        Graph* displayed_graph;
 };
 
 class View : public QFrame {
@@ -51,8 +54,11 @@ class View : public QFrame {
     public:
         explicit View(const QString &name, QWidget *parent = nullptr);
         QGraphicsView *view() const;
-        inline void setGraph(Graph* graph) {displayed_graph=graph;input_range->setGraph(graph);};
-
+        inline void setGraph(Graph* graph) {displayed_graph=graph;input_range->setGraph(graph);graphicsView->setGraph(graph);};
+        inline QLineEdit* getOriginInput() {return origin_input;};
+        inline QLineEdit* getDestinationInput() {return destination_input;};
+        inline QToolButton* getOriginSelectionButton() {return origin_selection_button;};
+        inline QToolButton* getDestinationSelectionButton() {return destination_selection_button;};
 
     private slots:
         void calculate_path();
@@ -68,6 +74,8 @@ class View : public QFrame {
         QLineEdit *destination_input;
         VertexValidator *input_range;
         QComboBox *algorithm_selection;
+        QToolButton *origin_selection_button;
+        QToolButton *destination_selection_button;
 
 
         QLabel *label;
@@ -79,6 +87,7 @@ class View : public QFrame {
         QToolButton *resetButton;
         QSlider *zoomSlider;
         QSlider *rotateSlider;
+
 };
 
 #endif // VIEW_H

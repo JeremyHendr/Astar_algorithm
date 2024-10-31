@@ -35,6 +35,7 @@ class Graph : public QGraphicsItem {
 
         // Retrieve element by id
         Vertex* getVertex(uint32_t id);
+        Vertex* getVertex(QPoint p);
         Edge* getEdge(string id);
 
         // Print graph description
