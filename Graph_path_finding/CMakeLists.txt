@@ -47,6 +47,10 @@ set(images_resource_files
     "rotateright.png"
     "zoomin.png"
     "zoomout.png"
+    "start_flag.png"
+    "end_flag.png"
+    "start_flag.jpg"
+    "end_flag.jpg"
 )
 
 qt_add_resources(Graph_finding_project "images"

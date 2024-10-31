@@ -134,6 +134,12 @@ Graph::Graph(QString graph_data_file) {
     print();
 }
 
+// void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+//     QGraphicsItem::mousePressEvent(event);
+//     qInfo() << deviceTransform(viewportTransform()).inverted().map(QPointF(100, 100));
+
+// }
+
 QRectF Graph::boundingRect() const {
     return QRectF(  top_left_coord->x(),
                     top_left_coord->y(),
@@ -152,16 +158,16 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     for (const auto &pair : edges_map) {
         Edge* e = pair.second;
         switch (e->getState()) {
-        case EdgeState::normal:
-            painter->setPen(*e->getPen());
-            painter->drawLine(*e);
-            break;
-        case EdgeState::visited:
-            visited_edges.append(e);
-            break;
-        case EdgeState::mainpath:
-            mainpath_edges.append(e);
-            break;
+            case EdgeState::normal:
+                painter->setPen(*e->getPen());
+                painter->drawLine(*e);
+                break;
+            case EdgeState::visited:
+                visited_edges.append(e);
+                break;
+            case EdgeState::mainpath:
+                mainpath_edges.append(e);
+                break;
         }
     }
     for (const auto e : visited_edges) {
@@ -179,7 +185,27 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         painter->setPen(*v->getPen());
         painter->setBrush(*v->getBrush());
         painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
+
+        if (v->getState() == VertexState::start) {
+            // QPen p(Qt::yellow);
+            // QBrush b(Qt::SolidLine);
+            // painter->setPen(p);
+            // painter->setBrush(b);
+            // painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
+
+            QPixmap start_flag(":/start_flag.jpg");
+            painter->drawPixmap(*v->getCoordinate(), start_flag);
+
+        }
+        else if (v->getState() == VertexState::end) {
+            QPen p(Qt::blue);
+            QBrush b(Qt::SolidLine);
+            painter->setPen(p);
+            painter->setBrush(b);
+            painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
+        }
     }
+    //Draw the selection of the graph
     painter->setBrush(QBrush());
     painter->drawRect(  top_left_coord->x(),
                         top_left_coord->y(),
@@ -236,6 +262,42 @@ Vertex* Graph::getVertex(uint32_t id) {
     return vertices_map.at(id);
 }
 
+
+Vertex* Graph::getVertex(QPoint p) {
+    QPoint z;
+    Vertex* closestVertex = nullptr;
+    int minDistanceSquared = 500 * 500; // Square of the range limit to avoid calculating square roots
+
+    for (auto pair : vertices_map) {
+        z = *pair.second->getCoordinate() - p;
+
+        // Check if the vertex is within the 100x100 range
+        if (abs(z.x()) < 500 && abs(z.y()) < 500) {
+            int distanceSquared = z.x() * z.x() + z.y() * z.y();
+
+            // Update closestVertex if this vertex is closer
+            if (distanceSquared < minDistanceSquared) {
+                minDistanceSquared = distanceSquared;
+                closestVertex = pair.second;
+            }
+        }
+    }
+
+    return closestVertex;
+}
+
+// Vertex* Graph::getVertex(QPoint p){
+//     QPoint z;
+//     for (auto pair : vertices_map) {
+//         z  = *pair.second->getCoordinate();
+//         z -= p;
+//         if (abs(z.x()) < 100 and abs(z.y()) < 100) {
+//             qInfo() << "z=" << z;
+//             return pair.second;
+//         }
+//     }
+//     return nullptr;
+// }
 
 Edge* Graph::getEdge(string id) {
     /* Retrieve edge by id

@@ -27,11 +27,58 @@ void GraphicsView::wheelEvent(QWheelEvent *event) {
     else
         scale(0.9, 0.9);
 }
+
 void GraphicsView::keyPressEvent(QKeyEvent *event) {
     if(event->key() == Qt::Key_Left)
         rotate(3);
     else if(event->key() == Qt::Key_Right)
         rotate(-3);
+}
+
+void GraphicsView::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::RightButton) {
+        qInfo() << "Mouse position:" << QCursor::pos();
+
+        QPoint mouse_pos_screen = QCursor::pos() - QPoint(20,70);
+        // mouse_pos_screen -= QPoint(20,70); //correction applied to the position
+        QPoint mouse_pos_graph = displayed_graph->deviceTransform(viewportTransform()).inverted().map(mouse_pos_screen);
+        qInfo() << "Corresponding graph position:" << mouse_pos_graph;
+        Vertex* vertex_at_mouse = displayed_graph->getVertex(mouse_pos_graph);
+        if (vertex_at_mouse != nullptr) {
+            if (view->getOriginSelectionButton()->isChecked()) {
+                qInfo() << "origin selection";
+                QString previous_origin  = view->getOriginInput()->text();
+                if (previous_origin != "") {
+                    displayed_graph->getVertex(previous_origin.toUInt())->setState(VertexState::normal);
+                }
+                vertex_at_mouse->setState(VertexState::start);
+                view->getOriginInput()->clear();
+                view->getOriginInput()->insert(QString::number(vertex_at_mouse->getID()));
+                view->getOriginSelectionButton()->setChecked(false);
+                view->getDestinationSelectionButton()->setChecked(true);
+            }
+            else {
+                qInfo() << "destination selection";
+                QString previous_destination  = view->getDestinationInput()->text();
+                if (previous_destination != "") {
+                    displayed_graph->getVertex(previous_destination.toUInt())->setState(VertexState::normal);
+                }
+                vertex_at_mouse->setState(VertexState::end);
+                view->getDestinationInput()->clear();
+                view->getDestinationInput()->insert(QString::number(vertex_at_mouse->getID()));
+                view->getOriginSelectionButton()->setChecked(true);
+                view->getDestinationSelectionButton()->setChecked(false);
+            }
+            displayed_graph->update();
+            update();
+        }
+        else {
+            qInfo() << "no vertex at this pos";
+        }
+    }
+    else {
+         QGraphicsView::mousePressEvent(event);
+    }
 }
 
 
@@ -43,6 +90,7 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     // graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
 
 
     QHBoxLayout *vertex_selection = new QHBoxLayout;
@@ -76,13 +124,26 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     destination_input->setValidator(input_range);
     vertex_selection->addWidget(destination_input);
 
+    //ORIGIN SELECTION BUTTON
+    origin_selection_button = new QToolButton;
+    origin_selection_button->setText(tr("Origin selection"));
+    origin_selection_button->setCheckable(true);
+    origin_selection_button->setChecked(true);
+    vertex_selection->addWidget(origin_selection_button);
+
+    //DESTINATION SELECTION BUTTON
+    destination_selection_button = new QToolButton;
+    destination_selection_button->setText(tr("Destination selection"));
+    destination_selection_button->setCheckable(true);
+    destination_selection_button->setChecked(false);
+    vertex_selection->addWidget(destination_selection_button);
+
     //ALGORITHM SELECTION
     algorithm_selection = new QComboBox;
     algorithm_selection->addItem(tr("BFS"));
     algorithm_selection->addItem(tr("Dijkstra"));
     algorithm_selection->addItem(tr("Astar"));
     vertex_selection->addWidget(algorithm_selection);
-
 
 
     QGridLayout *topLayout = new QGridLayout;
@@ -95,6 +156,8 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
 
     connect(reset_graph_button, &QAbstractButton::clicked, this, &View::reset_graph);
     connect(calculate_path_button, &QAbstractButton::clicked, this, &View::calculate_path);
+    // connect(origin_selection_button, &QAbstractButton::clicked, this, &View::calculate_path);
+    // connect(destination_selection_button, &QAbstractButton::clicked, this, &View::calculate_path);
 }
 
 
