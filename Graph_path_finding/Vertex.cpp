@@ -14,9 +14,11 @@
 
 using namespace std;
 
-unordered_map<VertexState, QPen*> Vertex::state_associated_pen;
-unordered_map<VertexState, QBrush*> Vertex::state_associated_brush;
-unordered_map<VertexState, int> Vertex::state_associated_ellipse_size;
+// unordered_map<VertexState, QPen> Vertex::state_associated_pen;
+// unordered_map<VertexState, QBrush> Vertex::state_associated_brush;
+// unordered_map<VertexState, int> Vertex::state_associated_ellipse_size;
+
+unordered_map<VertexState, VertexStyle> Vertex::state_associated_style;
 
 double degreesToRadians(double degrees) {
     /* Convert degrees to radians
@@ -60,63 +62,47 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
 
     this->coordinate = new QPoint(x,y);
 
-    //white circle filled red
-    QPen* normal_pen = new QPen(Qt::white);
-    QBrush* normal_brush = new QBrush(Qt::SolidLine);
-    normal_pen->setWidth(5);
-    normal_brush->setColor(Qt::red);
-    state_associated_pen[VertexState::normal] = normal_pen;
-    state_associated_brush[VertexState::normal] = normal_brush;
-    state_associated_ellipse_size[VertexState::visited] = 5;
+    // Initialize only once
+    static bool initialized = false;
+    if (!initialized) {
+        state_associated_style[VertexState::normal] = {
+            QPen(Qt::white, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),               // Pen: white, width 5
+            QBrush(Qt::white, Qt::SolidPattern), // Brush: red
+            5                                 // Ellipse size
+        };
+        state_associated_style[VertexState::visited] = {
+            QPen(Qt::green, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),                   // Pen: green
+            QBrush(Qt::green, Qt::SolidPattern), // Brush: green
+            10                                  // Ellipse size
+        };
+        state_associated_style[VertexState::mainpath] = {
+            QPen(Qt::red, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),                     // Pen: red
+            QBrush(Qt::red, Qt::SolidPattern), // Brush: red
+            30                                 // Ellipse size
+        };
+        state_associated_style[VertexState::start] = {
+            QPen(Qt::blue, 15, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),                // Pen: blue, width 15
+            QBrush(Qt::green, Qt::SolidPattern), // Brush: green
+            50                                 // Ellipse size
+        };
+        state_associated_style[VertexState::end] = {
+            QPen(Qt::blue, 15, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),                // Pen: blue, width 15
+            QBrush(Qt::red, Qt::SolidPattern), // Brush: red
+            50                                 // Ellipse size
+        };
+        state_associated_style[VertexState::deadend] = {
+            QPen(Qt::blue, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin),                    // Pen: blue
+            QBrush(Qt::blue, Qt::SolidPattern), // Brush: blue
+            10                               // Ellipse size
+        };
+        initialized = true;
+    }
 
-    //green circle filled green
-    QPen* visited_pen = new QPen(Qt::green);
-    QBrush* visited_brush = new QBrush(Qt::SolidLine);
-    // visited_pen->setWidth(5);
-    visited_brush->setColor(Qt::green);
-    state_associated_pen[VertexState::visited] = visited_pen;
-    state_associated_brush[VertexState::visited] = visited_brush;
-    state_associated_ellipse_size[VertexState::visited] = 5;
-
-    //Red circle filled red
-    QPen* mainpath_pen = new QPen(Qt::red);
-    QBrush* mainpath_brush = new QBrush(Qt::SolidLine);
-    // mainpath_pen->setWidth(5);
-    mainpath_brush->setColor(Qt::red);
-    state_associated_pen[VertexState::mainpath] = mainpath_pen;
-    state_associated_brush[VertexState::mainpath] = mainpath_brush;
-    state_associated_ellipse_size[VertexState::visited] = 20;
-
-    //blue circle filled green
-    QPen* start_pen = new QPen(Qt::blue);
-    QBrush* start_brush = new QBrush(Qt::SolidLine);
-    start_pen->setWidth(15);
-    start_brush->setColor(Qt::green);
-    state_associated_pen[VertexState::start] = start_pen;
-    state_associated_brush[VertexState::start] = start_brush;
-    state_associated_ellipse_size[VertexState::visited] = 50;
-
-    //blue circle filled red
-    QPen* end_pen = new QPen(Qt::blue);
-    QBrush* end_brush = new QBrush(Qt::SolidLine);
-    end_pen->setWidth(15);
-    end_brush->setColor(Qt::red);
-    state_associated_pen[VertexState::end] = end_pen;
-    state_associated_brush[VertexState::end] = end_brush;
-    state_associated_ellipse_size[VertexState::visited] = 50;
-
-    //blue circle filled blue
-    QPen* deadend_pen = new QPen(Qt::blue);
-    QBrush* deadend_brush = new QBrush(Qt::SolidLine);
-    // deadend_pen->setWidth(15);
-    deadend_brush->setColor(Qt::blue);
-    state_associated_pen[VertexState::deadend] = deadend_pen;
-    state_associated_brush[VertexState::deadend] = deadend_brush;
-    state_associated_ellipse_size[VertexState::visited] = 20;
-
-    this->pen = state_associated_pen.at(state);
-    this->brush = state_associated_brush.at(state);
-    this->ellipse_size = state_associated_ellipse_size.at(state);
+    // Assign the pen, brush, and ellipse size for the current state
+    const VertexStyle& style = state_associated_style[state];
+    pen = style.pen;
+    brush = style.brush;
+    ellipse_size = style.ellipse_size;
 }
 
 

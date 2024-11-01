@@ -31,7 +31,31 @@
 
 using namespace std;
 
+void drawFlag(QPainter* painter, int x, int y, int pole_height, QColor flag_color) {
+    // Define the scaling factor based on the pole height
+    float scale = pole_height / 100.0f;  // 100 is the base height for reference
 
+    // Calculate the pole width and flag dimensions based on the scale
+    int pole_width = static_cast<int>(5 * scale);
+    int flag_width = static_cast<int>(40 * scale);
+    int flag_height = static_cast<int>(25 * scale);
+    int wave_offset = static_cast<int>(10 * scale);
+
+    // Draw the pole
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(Qt::black);
+    painter->drawRect(x, y - pole_height, pole_width, pole_height);
+
+    // Draw the flag with waving effect
+    QPolygon flag_shape;
+    flag_shape << QPoint(x + pole_width, y - pole_height)
+               << QPoint(x + pole_width + flag_width, y - pole_height + wave_offset)
+               << QPoint(x + pole_width + flag_width, y - pole_height + flag_height - wave_offset)
+               << QPoint(x + pole_width, y - pole_height + flag_height);
+
+    painter->setBrush(flag_color);
+    painter->drawPolygon(flag_shape);
+}
 
 Graph::Graph(QString graph_data_file) {
     setFlags(ItemIsSelectable | ItemIsMovable);
@@ -182,80 +206,20 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     for (const auto pair : vertices_map) {
         Vertex* v = pair.second;
-        painter->setPen(*v->getPen());
-        painter->setBrush(*v->getBrush());
+        painter->setPen(v->getPen());
+        painter->setBrush(v->getBrush());
         painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
 
-
         if (v->getState() == VertexState::start) {
-            // Draw pole
-            QPen polePen(Qt::black, 3);  // Black color, thicker line for pole
-            painter->setPen(polePen);
             int x = v->getCoordinate()->x();
             int y = v->getCoordinate()->y();
-            int poleHeight = 100;
-            painter->drawLine(x, y, x, y + poleHeight);
-
-            // Set color and brush for the flag
-            QPen flagPen(Qt::green);
-            QBrush flagBrush(Qt::green, Qt::SolidPattern);
-            painter->setPen(flagPen);
-            painter->setBrush(flagBrush);
-
-            // Draw the flag shape
-            QPainterPath flagPath;
-            flagPath.moveTo(x, y);                    // Start of the flag at the top of the pole
-            flagPath.lineTo(x + 40, y + 15);          // Top wave outward
-            flagPath.lineTo(x + 30, y + 30);          // Curve inward
-            flagPath.lineTo(x + 40, y + 45);          // Bottom wave outward
-            flagPath.lineTo(x, y + 30);               // Attach back to the pole
-            painter->drawPath(flagPath);
+            drawFlag(painter, x, y, 600, Qt::green);
         }
         else if (v->getState() == VertexState::end) {
-            // Draw pole
-            QPen polePen(Qt::black, 3);  // Black color, thicker line for pole
-            painter->setPen(polePen);
             int x = v->getCoordinate()->x();
             int y = v->getCoordinate()->y();
-            int poleHeight = 100;
-            painter->drawLine(x, y, x, y + poleHeight);
-
-            // Set color and brush for the flag
-            QPen flagPen(Qt::red);
-            QBrush flagBrush(Qt::red, Qt::SolidPattern);
-            painter->setPen(flagPen);
-            painter->setBrush(flagBrush);
-
-            // Draw the flag shape
-            QPainterPath flagPath;
-            flagPath.moveTo(x, y);                    // Start of the flag at the top of the pole
-            flagPath.lineTo(x + 40, y + 15);          // Top wave outward
-            flagPath.lineTo(x + 30, y + 30);          // Curve inward
-            flagPath.lineTo(x + 40, y + 45);          // Bottom wave outward
-            flagPath.lineTo(x, y + 30);               // Attach back to the pole
-            painter->drawPath(flagPath);
+            drawFlag(painter, x, y, 600, Qt::red);
         }
-        // if (v->getState() == VertexState::start) {
-        //     // QPen p(Qt::yellow);
-        //     // QBrush b(Qt::SolidLine);
-        //     // painter->setPen(p);
-        //     // painter->setBrush(b);
-        //     // painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
-
-        //     QImage start_flag(":/end_flag.png");
-        //     // start_flag.fill(Qt::transparent);
-        //     // painter->setCompositionMode(QPainter::CompositionMode_Clear);
-        //     painter->drawImage(*v->getCoordinate(), start_flag);
-        //     // painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
-
-        // }
-        // else if (v->getState() == VertexState::end) {
-        //     QPen p(Qt::blue);
-        //     QBrush b(Qt::SolidLine);
-        //     painter->setPen(p);
-        //     painter->setBrush(b);
-        //     painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
-        // }
     }
     //Draw the selection of the graph
     painter->setBrush(QBrush());
@@ -270,7 +234,9 @@ void Graph::reset(){
         pair.second->setState(EdgeState::normal);
     }
     for (const auto pair : vertices_map) {
-        pair.second->setState(VertexState::normal);
+        if (pair.second->getState() != VertexState::start or pair.second->getState() != VertexState::end) {
+            pair.second->setState(VertexState::normal);
+        }
     }
 }
 void Graph::addVertex(Vertex* v){

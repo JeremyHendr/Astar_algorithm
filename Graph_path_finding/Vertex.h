@@ -19,6 +19,12 @@ using namespace std;
 
 enum class VertexState {normal, visited, mainpath, deadend, start, end};
 
+struct VertexStyle {
+    QPen pen;
+    QBrush brush;
+    int ellipse_size;
+};
+
 class Vertex {
     public :
         Vertex(uint32_t id, float longitude, float latitude);
@@ -29,16 +35,16 @@ class Vertex {
         inline static double* getLongitudeZeroReference() {return longitude_zero_reference;}
         inline static double* getLatitudeZeroReference() {return latitude_zero_reference;}
         inline VertexState getState() const {return state;};
-        inline QPen* getPen() const {return pen;};
-        inline QBrush* getBrush() const {return brush;};
+        inline QPen getPen() const {return pen;};
+        inline QBrush getBrush() const {return brush;};
         inline int getEllipseSize() const {return ellipse_size;};
-
-        void inline setState(VertexState s){
-            state=s;
-            pen=state_associated_pen.at(s);
-            brush=state_associated_brush.at(s);
-            ellipse_size=state_associated_ellipse_size.at(s);
-        };
+        inline void setState(VertexState s) {
+            state = s;
+            const VertexStyle& style = state_associated_style.at(s);
+            pen = style.pen;
+            brush = style.brush;
+            ellipse_size = style.ellipse_size;
+        }
 
 
         // Manage the neighbors for each vertex object
@@ -57,13 +63,13 @@ class Vertex {
         QPoint* coordinate;
         vector< pair<Vertex*, Edge*> > neighbors; // Pair of vertex that can be reached and with the edge with which it can be reached
 
-        //Members needed to draw the Vertex
-        static unordered_map<VertexState, QPen*> state_associated_pen;
-        static unordered_map<VertexState, QBrush*> state_associated_brush;
-        static unordered_map<VertexState, int> state_associated_ellipse_size;
+
+
+        // Members needed to draw the Vertex
+        static std::unordered_map<VertexState, VertexStyle> state_associated_style;
         VertexState state = VertexState::normal;
-        QPen* pen;
-        QBrush* brush;
+        QPen pen;
+        QBrush brush;
         int ellipse_size;
 };
 

@@ -63,6 +63,7 @@ class View : public QFrame {
     private slots:
         void calculate_path();
         void reset_graph();
+        void change_selection();
 
 
     private:

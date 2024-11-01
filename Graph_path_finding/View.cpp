@@ -156,10 +156,14 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
 
     connect(reset_graph_button, &QAbstractButton::clicked, this, &View::reset_graph);
     connect(calculate_path_button, &QAbstractButton::clicked, this, &View::calculate_path);
-    // connect(origin_selection_button, &QAbstractButton::clicked, this, &View::calculate_path);
-    // connect(destination_selection_button, &QAbstractButton::clicked, this, &View::calculate_path);
+    connect(origin_selection_button, &QAbstractButton::clicked, this, &View::change_selection);
+    connect(destination_selection_button, &QAbstractButton::clicked, this, &View::change_selection);
 }
 
+void View::change_selection(){
+    origin_selection_button->setChecked(!origin_selection_button->isChecked());
+    destination_selection_button->setChecked(!destination_selection_button->isChecked());
+}
 
 void View::calculate_path() {
     if (origin_input->hasAcceptableInput() && destination_input->hasAcceptableInput()) {
@@ -207,6 +211,7 @@ void View::reset_graph(){
     qInfo()<<"Reset graph";
     displayed_graph->reset();
     displayed_graph->update();
+    graphicsView->update();
     reset_graph_button->setChecked(false);
 }
 
