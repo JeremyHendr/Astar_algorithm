@@ -203,7 +203,8 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
          painter->drawLine(*e);
     }
 
-
+    Vertex* start=nullptr;
+    Vertex* end=nullptr;
     for (const auto pair : vertices_map) {
         Vertex* v = pair.second;
         painter->setPen(v->getPen());
@@ -211,18 +212,26 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
 
         if (v->getState() == VertexState::start) {
-            int x = v->getCoordinate()->x();
-            int y = v->getCoordinate()->y();
-            drawFlag(painter, x, y, 600, Qt::green);
+            start = v;
         }
         else if (v->getState() == VertexState::end) {
-            int x = v->getCoordinate()->x();
-            int y = v->getCoordinate()->y();
-            drawFlag(painter, x, y, 600, Qt::red);
+            end = v;
         }
     }
+    if (start!=nullptr) {
+        int x = start->getCoordinate()->x();
+        int y = start->getCoordinate()->y();
+        drawFlag(painter, x, y, 600, Qt::green);
+    }
+    if (end!=nullptr) {
+        int x = end->getCoordinate()->x();
+        int y = end->getCoordinate()->y();
+        drawFlag(painter, x, y, 600, Qt::red);
+    }
+
     //Draw the selection of the graph
     painter->setBrush(QBrush());
+    painter->setPen(QPen(Qt::white, 10));
     painter->drawRect(  top_left_coord->x(),
                         top_left_coord->y(),
                         bottom_right_coord->x()-top_left_coord->x(),
@@ -234,7 +243,7 @@ void Graph::reset(){
         pair.second->setState(EdgeState::normal);
     }
     for (const auto pair : vertices_map) {
-        if (pair.second->getState() != VertexState::start or pair.second->getState() != VertexState::end) {
+        if (pair.second->getState() != VertexState::start and pair.second->getState() != VertexState::end) {
             pair.second->setState(VertexState::normal);
         }
     }
