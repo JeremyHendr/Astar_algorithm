@@ -54,6 +54,7 @@ class Graph : public QGraphicsItem {
 
         // A*
         void A_star(uint32_t start, uint32_t end);
+        void A_star_IPQ(uint32_t start, uint32_t end);
         double heuristic(uint32_t a, uint32_t b);
         vector<Vertex*> getAStarPath();
 
