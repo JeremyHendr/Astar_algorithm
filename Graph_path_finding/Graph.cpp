@@ -186,24 +186,76 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         painter->setBrush(*v->getBrush());
         painter->drawEllipse(*v->getCoordinate(),v->getEllipseSize(),v->getEllipseSize());
 
+
         if (v->getState() == VertexState::start) {
-            // QPen p(Qt::yellow);
-            // QBrush b(Qt::SolidLine);
-            // painter->setPen(p);
-            // painter->setBrush(b);
-            // painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
+            // Draw pole
+            QPen polePen(Qt::black, 3);  // Black color, thicker line for pole
+            painter->setPen(polePen);
+            int x = v->getCoordinate()->x();
+            int y = v->getCoordinate()->y();
+            int poleHeight = 100;
+            painter->drawLine(x, y, x, y + poleHeight);
 
-            QPixmap start_flag(":/start_flag.jpg");
-            painter->drawPixmap(*v->getCoordinate(), start_flag);
+            // Set color and brush for the flag
+            QPen flagPen(Qt::green);
+            QBrush flagBrush(Qt::green, Qt::SolidPattern);
+            painter->setPen(flagPen);
+            painter->setBrush(flagBrush);
 
+            // Draw the flag shape
+            QPainterPath flagPath;
+            flagPath.moveTo(x, y);                    // Start of the flag at the top of the pole
+            flagPath.lineTo(x + 40, y + 15);          // Top wave outward
+            flagPath.lineTo(x + 30, y + 30);          // Curve inward
+            flagPath.lineTo(x + 40, y + 45);          // Bottom wave outward
+            flagPath.lineTo(x, y + 30);               // Attach back to the pole
+            painter->drawPath(flagPath);
         }
         else if (v->getState() == VertexState::end) {
-            QPen p(Qt::blue);
-            QBrush b(Qt::SolidLine);
-            painter->setPen(p);
-            painter->setBrush(b);
-            painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
+            // Draw pole
+            QPen polePen(Qt::black, 3);  // Black color, thicker line for pole
+            painter->setPen(polePen);
+            int x = v->getCoordinate()->x();
+            int y = v->getCoordinate()->y();
+            int poleHeight = 100;
+            painter->drawLine(x, y, x, y + poleHeight);
+
+            // Set color and brush for the flag
+            QPen flagPen(Qt::red);
+            QBrush flagBrush(Qt::red, Qt::SolidPattern);
+            painter->setPen(flagPen);
+            painter->setBrush(flagBrush);
+
+            // Draw the flag shape
+            QPainterPath flagPath;
+            flagPath.moveTo(x, y);                    // Start of the flag at the top of the pole
+            flagPath.lineTo(x + 40, y + 15);          // Top wave outward
+            flagPath.lineTo(x + 30, y + 30);          // Curve inward
+            flagPath.lineTo(x + 40, y + 45);          // Bottom wave outward
+            flagPath.lineTo(x, y + 30);               // Attach back to the pole
+            painter->drawPath(flagPath);
         }
+        // if (v->getState() == VertexState::start) {
+        //     // QPen p(Qt::yellow);
+        //     // QBrush b(Qt::SolidLine);
+        //     // painter->setPen(p);
+        //     // painter->setBrush(b);
+        //     // painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
+
+        //     QImage start_flag(":/end_flag.png");
+        //     // start_flag.fill(Qt::transparent);
+        //     // painter->setCompositionMode(QPainter::CompositionMode_Clear);
+        //     painter->drawImage(*v->getCoordinate(), start_flag);
+        //     // painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+        // }
+        // else if (v->getState() == VertexState::end) {
+        //     QPen p(Qt::blue);
+        //     QBrush b(Qt::SolidLine);
+        //     painter->setPen(p);
+        //     painter->setBrush(b);
+        //     painter->drawRect(v->getCoordinate()->x(),v->getCoordinate()->y(),200,200);
+        // }
     }
     //Draw the selection of the graph
     painter->setBrush(QBrush());

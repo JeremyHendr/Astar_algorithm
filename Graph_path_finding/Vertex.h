@@ -37,6 +37,7 @@ class Vertex {
             state=s;
             pen=state_associated_pen.at(s);
             brush=state_associated_brush.at(s);
+            ellipse_size=state_associated_ellipse_size.at(s);
         };
 
 
@@ -59,6 +60,7 @@ class Vertex {
         //Members needed to draw the Vertex
         static unordered_map<VertexState, QPen*> state_associated_pen;
         static unordered_map<VertexState, QBrush*> state_associated_brush;
+        static unordered_map<VertexState, int> state_associated_ellipse_size;
         VertexState state = VertexState::normal;
         QPen* pen;
         QBrush* brush;
