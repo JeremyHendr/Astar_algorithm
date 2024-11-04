@@ -110,12 +110,14 @@ Vertex::Vertex(uint32_t id, float longitude, float latitude){
 }
 
 
-Vertex::Vertex(uint32_t id, int x, int y){
+Vertex::Vertex(uint32_t id, float longitude, float latitude, int x, int y){
     /* Constructor for the vertex class with x and y
      *
-     * @param uint32_t id, int x, int y
+     * @param uint32_t id, float longitude, float latitude, int x, int y
      */
     this->id = id;
+    this->latitude = latitude;
+    this->longitude = longitude;
     this->coordinate = new QPoint(x,y);
 }
 

@@ -22,7 +22,6 @@
 #include <chrono>
 #include <cstdint>
 #include <set>
-#include <unordered_set>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -77,9 +76,11 @@ Graph::Graph(QString graph_data_file) {
             const uint32_t ID = fields[1].toUInt();
             Vertex* v;
             if (fields[4] != ""){ // Check if we have values for x and y
+                const float longitude = fields[2].toFloat();
+                const float latitude = fields[3].toFloat();
                 const int x = fields[4].toInt();
                 const int y = fields[5].toInt();
-                v = new Vertex(ID, x, y);
+                v = new Vertex(ID, longitude, latitude, x, y);
                 addVertex(v);
 
             }
@@ -371,11 +372,9 @@ void Graph::BFS(uint32_t start, uint32_t end){
     queue<Vertex*> active_queue; // Active queue of nodes to visit ( O(1) complexity for insertion)
     unordered_map<uint32_t, bool> visited; // Unordered map with vertex id and bool to indicate visitation status
     unordered_map<uint32_t, uint32_t> parent; // Parent map to store the parent of each visited vertex
-    parent[start] = -1;
 
     for (const auto& elem: vertices_map){ // Construct the visited vector with the id of a vertex and set the status for each vector to false
         visited[elem.first] = false;
-        //parent[elem.first] = -1;
         parent[elem.first] = numeric_limits<uint32_t>::infinity();
     }
 
