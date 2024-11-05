@@ -28,7 +28,7 @@ struct VertexStyle {
 class Vertex {
     public :
         Vertex(uint32_t id, float longitude, float latitude);
-        Vertex(uint32_t id, int x, int y);
+        Vertex(uint32_t id, float longitude, float latitude, int x, int y);
 
         inline const uint32_t getID() const {return id;};
         inline QPoint* getCoordinate() const {return coordinate;};
