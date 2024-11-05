@@ -1,4 +1,4 @@
-# Install script for directory: D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding
+# Install script for directory: D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project.exe")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project.exe")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/Graph_finding_project.exe" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/Graph_finding_project.exe")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -48,7 +48,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/deploy_Graph_finding_project_8a76feb0c5.cmake")
+  include("D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/deploy_Graph_finding_project_8a76feb0c5.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -59,5 +59,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

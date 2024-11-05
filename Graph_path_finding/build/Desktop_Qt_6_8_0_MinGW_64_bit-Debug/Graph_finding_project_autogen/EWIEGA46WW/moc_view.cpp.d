@@ -1,15 +1,18 @@
-D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/EWIEGA46WW/moc_view.cpp: D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/view.h \
-  D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/moc_predefs.h \
+D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/EWIEGA46WW/moc_View.cpp: D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/View.h \
+  D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/moc_predefs.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/QList \
   C:/Qt/6.8.0/mingw_64/include/QtCore/QObject \
+  C:/Qt/6.8.0/mingw_64/include/QtCore/QPoint \
   C:/Qt/6.8.0/mingw_64/include/QtCore/QRect \
   C:/Qt/6.8.0/mingw_64/include/QtCore/QSize \
   C:/Qt/6.8.0/mingw_64/include/QtCore/QSizeF \
+  C:/Qt/6.8.0/mingw_64/include/QtCore/QString \
   C:/Qt/6.8.0/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/q20iterator.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/q20type_traits.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/q23utility.h \
+  C:/Qt/6.8.0/mingw_64/include/QtCore/qabstractitemmodel.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qalgorithms.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qanystringview.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qarraydata.h \
@@ -85,6 +88,7 @@ D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Deskto
   C:/Qt/6.8.0/mingw_64/include/QtCore/qprocessordetection.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qrect.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qrefcount.h \
+  C:/Qt/6.8.0/mingw_64/include/QtCore/qregularexpression.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qscopedpointer.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qscopeguard.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qset.h \
@@ -135,7 +139,9 @@ D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Deskto
   C:/Qt/6.8.0/mingw_64/include/QtCore/qversiontagging.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qxptype_traits.h \
   C:/Qt/6.8.0/mingw_64/include/QtCore/qyieldcpu.h \
+  C:/Qt/6.8.0/mingw_64/include/QtGui/QIntValidator \
   C:/Qt/6.8.0/mingw_64/include/QtGui/QKeyEvent \
+  C:/Qt/6.8.0/mingw_64/include/QtGui/QPen \
   C:/Qt/6.8.0/mingw_64/include/QtGui/QTransform \
   C:/Qt/6.8.0/mingw_64/include/QtGui/QWheelEvent \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qaction.h \
@@ -169,25 +175,45 @@ D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Deskto
   C:/Qt/6.8.0/mingw_64/include/QtGui/qrgba64.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qscreen.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qscreen_platform.h \
+  C:/Qt/6.8.0/mingw_64/include/QtGui/qtextcursor.h \
+  C:/Qt/6.8.0/mingw_64/include/QtGui/qtextdocument.h \
+  C:/Qt/6.8.0/mingw_64/include/QtGui/qtextformat.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qtextoption.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qtgui-config.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qtguiexports.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qtguiglobal.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qtransform.h \
+  C:/Qt/6.8.0/mingw_64/include/QtGui/qvalidator.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qvector2d.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qvectornd.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.8.0/mingw_64/include/QtGui/qwindowdefs_win.h \
-  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QGraphicsPixmapItem \
-  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QGraphicsScene \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QApplication \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QComboBox \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QFrame \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QGraphicsItem \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/QGraphicsView \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QLineEdit \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/QWidget \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qabstractslider.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qapplication.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qcombobox.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qframe.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qgraphicsitem.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qgraphicsscene.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qgraphicsview.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qlineedit.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qrubberband.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qscrollarea.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qsizepolicy.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qslider.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qstyle.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qstyleoption.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qtabbar.h \
+  C:/Qt/6.8.0/mingw_64/include/QtWidgets/qtabwidget.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qtwidgets-config.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.8.0/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -397,4 +423,7 @@ D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Deskto
   C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sys/types.h \
   C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/time.h \
   C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h \
-  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
+  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h \
+  D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Edge.h \
+  D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Graph.h \
+  D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Vertex.h
