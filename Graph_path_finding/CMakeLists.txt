@@ -14,19 +14,12 @@ qt_standard_project_setup()
 qt_add_executable(Graph_finding_project
     main.cpp
     View.cpp View.h
-    Graph.h
-    Edge.h
-    Vertex.h
-    Edge.cpp
-    Graph.cpp
-    Vertex.cpp
-
-    Window.h
-    Window.cpp
-
+    Edge.cpp Edge.h
+    Vertex.cpp Vertex.h
+    Graph.cpp Graph.h
+    Window.cpp Window.h
     Commify.h Commify.cpp
     Ipq.h Ipq.cpp
-
 )
 
 set_target_properties(Graph_finding_project PROPERTIES
@@ -38,23 +31,6 @@ target_link_libraries(Graph_finding_project PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
-)
-
-# Resources:
-set(images_resource_files
-    "fileprint.png"
-    "rotateleft.png"
-    "rotateright.png"
-    "zoomin.png"
-    "zoomout.png"
-    "end_flag.png"
-)
-
-qt_add_resources(Graph_finding_project "images"
-    PREFIX
-        "/"
-    FILES
-        ${images_resource_files}
 )
 
 # Resources:

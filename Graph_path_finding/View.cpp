@@ -5,52 +5,42 @@
 #include "Graph.h"
 
 
-QValidator::State VertexValidator::validate(QString &input, int &pos) const {
-    // qInfo() << input <<  "  "  << input.toUInt();
-    if (graph == nullptr) {
-        qInfo() << "Graph was not initialized in Validator";
-        return Invalid;
-    }
-    else {
-        if (input.toUInt() and graph->getVertex(input.toUInt()) != nullptr){
-            qInfo() << "acceptable";
-            return Acceptable;
-        }
-        qInfo() << "not acceptable";
-        return Intermediate;
-    }
-}
 
+//--------------------------------------- user input handling ---------------------------------------//
 void GraphicsView::wheelEvent(QWheelEvent *event) {
+    /* handles the zoom
+     *
+     * @param event
+    */
     if(event->angleDelta().y() > 0)
         scale(1.10, 1.10);
     else
         scale(0.9, 0.9);
 }
 
-void GraphicsView::keyPressEvent(QKeyEvent *event) {
-    if(event->key() == Qt::Key_Left)
-        rotate(3);
-    else if(event->key() == Qt::Key_Right)
-        rotate(-3);
-}
-
 void GraphicsView::mousePressEvent(QMouseEvent *event) {
+    /* handle the mouse click event
+     * Left click is the basic QGraphicsItem event
+     * Right click has been reimplemented to select start and end nodes
+     *
+     *@param event
+     */
     if (event->button() == Qt::RightButton) {
-        qInfo() << "Mouse position:" << QCursor::pos();
 
-        QPoint mouse_pos_screen = QCursor::pos() - QPoint(20,70);
-        // mouse_pos_screen -= QPoint(20,70); //correction applied to the position
-        QPoint mouse_pos_graph = displayed_graph->deviceTransform(viewportTransform()).inverted().map(mouse_pos_screen);
-        qInfo() << "Corresponding graph position:" << mouse_pos_graph;
-        Vertex* vertex_at_mouse = displayed_graph->getVertex(mouse_pos_graph);
+        QPoint mouse_pos_screen = QCursor::pos() - QPoint(20,70); //we apply a correction to have the true position
+        QPoint mouse_pos_graph = displayed_graph->deviceTransform(viewportTransform()).inverted().map(mouse_pos_screen); //map the mouse position to the graph position
+        // qInfo() << "Mouse position:" << QCursor::pos();
+        // qInfo() << "Corresponding graph position:" << mouse_pos_graph;
+
+        Vertex* vertex_at_mouse = displayed_graph->getClosestVertex(mouse_pos_graph);
+
         if (vertex_at_mouse != nullptr) {
             if (view->getOriginSelectionButton()->isChecked()) {
-                qInfo() << "origin selection";
-                QString previous_origin  = view->getOriginInput()->text();
+                QString previous_origin  = view->getOriginInput()->text(); //storing the last selected origin
                 if (previous_origin != "") {
                     displayed_graph->getVertex(previous_origin.toUInt())->setState(VertexState::normal);
                 }
+                //change the start vertex state and wirte its ID in the start input
                 vertex_at_mouse->setState(VertexState::start);
                 view->getOriginInput()->clear();
                 view->getOriginInput()->insert(QString::number(vertex_at_mouse->getID()));
@@ -58,7 +48,6 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
                 view->getDestinationSelectionButton()->setChecked(true);
             }
             else {
-                qInfo() << "destination selection";
                 QString previous_destination  = view->getDestinationInput()->text();
                 if (previous_destination != "") {
                     displayed_graph->getVertex(previous_destination.toUInt())->setState(VertexState::normal);
@@ -69,29 +58,43 @@ void GraphicsView::mousePressEvent(QMouseEvent *event) {
                 view->getOriginSelectionButton()->setChecked(true);
                 view->getDestinationSelectionButton()->setChecked(false);
             }
+            // update the graph to show the flag
             displayed_graph->update();
             update();
         }
-        else {
-            qInfo() << "no vertex at this pos";
-        }
     }
     else {
-         QGraphicsView::mousePressEvent(event);
+        //This is the left click event
+        QGraphicsView::mousePressEvent(event);
     }
 }
 
+//--------------------------------------- Input Validator ---------------------------------------//
+QValidator::State VertexValidator::validate(QString &input, int &pos) const {
+    /* Creates a list of all the vertices ID to later verify the inputs
+     * See the QValidator for further informations */
+    if (graph == nullptr) {
+        // qInfo() << "Graph was not initialized in Validator";
+        return Invalid;
+    }
+    else {
+        if (input.toUInt() and graph->getVertex(input.toUInt()) != nullptr){
+            // qInfo() << "acceptable";
+            return Acceptable;
+        }
+        // qInfo() << "not acceptable";
+        return Intermediate;
+    }
+}
 
+//--------------------------------------- View class definition ---------------------------------------//
 View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     setFrameStyle(Panel | Plain);
     graphicsView = new GraphicsView(this);
     graphicsView->setRenderHint(QPainter::Antialiasing);
     graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-    // graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-
 
     QHBoxLayout *vertex_selection = new QHBoxLayout;
 
@@ -110,7 +113,6 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     vertex_selection->addWidget(calculate_path_button);
 
     //VERTEX INPUT
-    // input_range = new QIntValidator(0,999999);
     input_range = new VertexValidator();
     origin_input = new QLineEdit;
     origin_input->setPlaceholderText("Origin");
@@ -142,16 +144,15 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
     algorithm_selection = new QComboBox;
     algorithm_selection->addItem(tr("BFS"));
     algorithm_selection->addItem(tr("Dijkstra"));
+    algorithm_selection->addItem(tr("Dijkstra_IPQ"));
     algorithm_selection->addItem(tr("Astar"));
+    algorithm_selection->addItem(tr("Astar_IPQ"));
     vertex_selection->addWidget(algorithm_selection);
 
 
     QGridLayout *topLayout = new QGridLayout;
     topLayout->addLayout(vertex_selection, 0, 0);
     topLayout->addWidget(graphicsView, 1, 0);
-    // // topLayout->addLayout(zoomSliderLayout, 1, 1);
-    // // topLayout->addLayout(rotateSliderLayout, 2, 0);
-    // topLayout->addWidget(resetButton, 2, 1);
     setLayout(topLayout);
 
     connect(reset_graph_button, &QAbstractButton::clicked, this, &View::reset_graph);
@@ -161,43 +162,49 @@ View::View(const QString &name, QWidget *parent) : QFrame(parent) {
 }
 
 void View::change_selection(){
+    /* change the if we are selecting start or end node */
     origin_selection_button->setChecked(!origin_selection_button->isChecked());
     destination_selection_button->setChecked(!destination_selection_button->isChecked());
 }
 
 void View::calculate_path() {
+    /* Call the selected algorithm if the inputs are valids */
     if (origin_input->hasAcceptableInput() && destination_input->hasAcceptableInput()) {
-        qInfo()<<"Acceptable input";
+        // qInfo()<<"Acceptable input";
     }
     else {
-        qInfo()<<"Not acceptable input";
+        // qInfo()<<"Not acceptable input";
         calculate_path_button->setChecked(false);
         return;
     }
 
-    uint32_t start = origin_input->text().toUInt(); //86771;
-    uint32_t end = destination_input->text().toUInt(); //110636;81615
-
+    uint32_t start = origin_input->text().toUInt();
+    uint32_t end = destination_input->text().toUInt();
+    reset_graph();
     switch(algorithm_selection->currentIndex()) {
         case 0: // Call BFS algorithm
             qInfo() << "Algorithm: BFS, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
             displayed_graph->BFS(start,end);
-
-
             break;
 
         case 1: // Call Dijkstra algorithm
             qInfo() << "Algorithm: Dijkstra, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
             displayed_graph->Dijkstra(start,end);
-
-
             break;
 
         case 2: // Call Astar algotithm
+            qInfo() << "Algorithm: Dijkstra_IPQ, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
+            displayed_graph->Dijkstra_IPQ(start,end);
+            break;
+
+        case 3: // Call Astar algotithm
             qInfo() << "Algorithm: Astar, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
             displayed_graph->A_star(start,end);
+            break;
 
-
+        case 4: // Call Astar algotithm
+            qInfo() << "Algorithm: A_star_IPQ, source:"<<origin_input->text()<<", destination:"<<destination_input->text();
+            displayed_graph->A_star_IPQ(start,end);
             break;
 
         default:
@@ -207,8 +214,8 @@ void View::calculate_path() {
     calculate_path_button->setChecked(false);
 }
 void View::reset_graph(){
-    //Rest the graph to its original state
-    qInfo()<<"Reset graph";
+    //Reset the graph to its original state
+    // qInfo()<<"Reset graph";
     displayed_graph->reset();
     displayed_graph->update();
     graphicsView->update();
@@ -218,101 +225,4 @@ void View::reset_graph(){
 QGraphicsView *View::view() const {
     return static_cast<QGraphicsView *>(graphicsView);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// #include <QGraphicsView>
-// #include <QGraphicsScene>
-// #include <QWheelEvent>
-// #include <QKeyEvent>
-// #include <QToolButton>
-// #include <QGridLayout>
-
-// #include "View.h"
-
-
-// View::View(QGraphicsScene* scene, QWidget *parent) : QGraphicsView(parent) {
-//     setRenderHint(QPainter::Antialiasing);
-//     setDragMode(QGraphicsView::RubberBandDrag);
-//     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-//     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-//     setInteractive(true);
-//     setWindowTitle(tr("Graph"));
-
-//     setScene(scene);
-
-//     // resetButton = new QToolButton;
-//     // resetButton->setText(tr("0"));
-//     // resetButton->setEnabled(false);
-
-//     // QGridLayout *topLayout = new QGridLayout;
-//     // topLayout->addWidget(resetButton, 2, 1);
-//     // setLayout(topLayout);
-
-//     // connect(resetButton, &QAbstractButton::clicked, this, &View::resetView);
-
-//     QHBoxLayout *layout = new QHBoxLayout;
-//     resetButton = new QToolButton;
-//     resetButton->setText(tr("0"));
-//     resetButton->setEnabled(false);
-//     layout->addWidget(resetButton);
-
-//     QGridLayout *topLayout = new QGridLayout;
-//     topLayout->addLayout(layout, 0, 0);
-//     // topLayout->addWidget(this, 1, 0);
-
-
-//     setLayout(topLayout);
-
-// }
-
-// void View::resetView()
-// {
-//     // zoomSlider->setValue(250);
-//     // rotateSlider->setValue(0);
-//     setupMatrix();
-//     ensureVisible(QRectF(0, 0, 0, 0));
-
-//     resetButton->setEnabled(false);
-// }
-// void View::setResetButtonEnabled()
-// {
-//     resetButton->setEnabled(true);
-// }
-// void View::setupMatrix()
-// {
-//     qreal scale = qPow(qreal(2), (0 - 250) / qreal(50));
-
-//     QTransform matrix;
-//     matrix.scale(scale, scale);
-//     matrix.rotate(0);
-
-//     setTransform(matrix);
-//     setResetButtonEnabled();
-// }
-
-// void View::wheelEvent(QWheelEvent *event) {
-//     if(event->angleDelta().y() > 0)
-//         scale(1.10, 1.10);
-//     else
-//         scale(0.9, 0.9);
-// }
-
-// void View::keyPressEvent(QKeyEvent *event) {
-//     if(event->key() == Qt::Key_Left)
-//         rotate(3);
-//     else if(event->key() == Qt::Key_Right)
-//         rotate(-3);
-// }
 

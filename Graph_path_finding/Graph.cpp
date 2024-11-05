@@ -35,8 +35,8 @@ void drawFlag(QPainter* painter, QPoint* pos, int pole_height, QColor flag_color
     /* This function is provided for conveniency,
      * it draws a flag that scales in size proportionnaly to the pole size
      *
-     * @param painter used to draw the flag
-     * @param pos start coordinates of the pole
+     * @param painter  : QPainter used to draw the flag
+     * @param pos : start coordinates of the pole
      * @param pole_height
      * @param flag_color
      */
@@ -69,8 +69,16 @@ void drawFlag(QPainter* painter, QPoint* pos, int pole_height, QColor flag_color
 }
 
 Graph::Graph(QString graph_data_file) {
+    /* Constructor using the txt data file passed in parameters to create the map with all veertices and edges
+     *
+     * @param graph_data_file : path to a txt file where the data is stored
+     */
+
+    //set the flags of the QGraphicsItem to be able to move it around in the scene
     setFlags(ItemIsSelectable | ItemIsMovable);
     graph_name = graph_data_file;
+
+    //Reading the file
     QFile file(graph_data_file);
     if(!file.open(QIODevice::ReadOnly)) {
         qInfo() << "Could not open file";
@@ -79,28 +87,32 @@ Graph::Graph(QString graph_data_file) {
 
     QTextStream in(&file);
 
+    //Iterating over the data and creating the associated vertex and edge objects
     while(!in.atEnd()) {
         QString line = in.readLine();
         QStringList fields = line.split(",");
-
-        if (fields[0] == "V") { //V,vertexid,longitude,latitude,x*,y*
+        //if the data is a vertex: V,vertexid,longitude,latitude,x*,y*
+        if (fields[0] == "V") {
             const uint32_t ID = fields[1].toUInt();
             Vertex* v;
-            if (fields[4] != ""){ // Check if we have values for x and y
+            // Check if we have values for x and y
+            if (fields[4] != ""){
                 const float longitude = fields[2].toFloat();
                 const float latitude = fields[3].toFloat();
                 const int x = fields[4].toInt();
                 const int y = fields[5].toInt();
                 v = new Vertex(ID, longitude, latitude, x, y);
                 addVertex(v);
-
             }
+            // If we only have lattitude and longitude, the mercators projection is done in the vertex constructor
             else{
                 const float longitude = fields[2].toFloat();
                 const float latitude = fields[3].toFloat();
                 v = new Vertex(ID, longitude, latitude);
                 addVertex(v);
             }
+
+            // we need to store the top left and bottom right coordinates that will enable to create a rectangle to contain the whole graph
             if (v->getCoordinate()->x() < top_left_coord->x()) {
                 top_left_coord->setX(v->getCoordinate()->x());
             }
@@ -114,8 +126,8 @@ Graph::Graph(QString graph_data_file) {
                 bottom_right_coord->setY(v->getCoordinate()->y());
             }
         }
-
-        else if (fields[0] == "E") { //E,source_id,dest_id,length,name
+        //if the data is an edge: E,source_id,dest_id,length,name
+        else if (fields[0] == "E") {
             uint32_t source_ID = fields[1].toUInt();
             uint32_t dest_ID = fields[2].toUInt();
             string name = fields[4].toStdString();
@@ -151,7 +163,6 @@ Graph::Graph(QString graph_data_file) {
             addEdge(e);
         }
     }
-
     file.close();
 
     // Read the edge_map and add the neighbors to the corresponding vertices
@@ -167,31 +178,42 @@ Graph::Graph(QString graph_data_file) {
         std::pair<Vertex*, Edge*> neighbor(dest_v, e);
         source_v->addNeighbor(neighbor);
     }
-
     print();
 }
 
 
+//--------------------------------------- QGraphicsItem necessary methods ---------------------------------------//
 QRectF Graph::boundingRect() const {
+    /* defines the selection zone of the graph */
     return QRectF(  top_left_coord->x(),
                     top_left_coord->y(),
                     bottom_right_coord->x()-top_left_coord->x(),
                     bottom_right_coord->y()-top_left_coord->y());
 }
 
-
 void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    Q_UNUSED(widget);
+    /* This is an overriden method from QGraphicsItem, it is called every time we have to redraw the graph
+     * We browse the edge and vertex list and draw them according to their current state
+     *
+     * @param painter : QPainter used to draw
+     * @param option
+     * @param widget
+     */
     //We first draw the standard lines and finally
     //the visited one and then the mainpath.
     //this is done to avoid white lines overlaying the red or green ones
+    //same process for he start and end flags
+
+    Q_UNUSED(widget);
+
+    //draw all the edges
     QList<Edge*> mainpath_edges;
     QList<Edge*> visited_edges;
     for (const auto &pair : edges_map) {
         Edge* e = pair.second;
         switch (e->getState()) {
             case EdgeState::normal:
-                painter->setPen(*e->getPen());
+                painter->setPen(e->getPen());
                 painter->drawLine(*e);
                 break;
             case EdgeState::visited:
@@ -203,14 +225,15 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         }
     }
     for (const auto e : visited_edges) {
-        painter->setPen(*e->getPen());
+        painter->setPen(e->getPen());
         painter->drawLine(*e);
     }
     for (const auto e : mainpath_edges) {
-         painter->setPen(*e->getPen());
+         painter->setPen(e->getPen());
          painter->drawLine(*e);
     }
 
+    //draw all the vertices
     Vertex* start=nullptr;
     Vertex* end=nullptr;
     for (const auto pair : vertices_map) {
@@ -226,6 +249,7 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
             end = v;
         }
     }
+    //Finally draw start and end flags
     if (start!=nullptr) {
         drawFlag(painter, start->getCoordinate(), 600, Qt::green);
     }
@@ -233,7 +257,7 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         drawFlag(painter, end->getCoordinate(), 600, Qt::red);
     }
 
-    //Draw the selection of the graph
+    //Draw the selection zone of the graph
     painter->setBrush(QBrush());
     painter->setPen(QPen(Qt::white, 10));
     painter->drawRect(  top_left_coord->x(),
@@ -242,8 +266,8 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
                         bottom_right_coord->y()-top_left_coord->y());
 }
 
-
 void Graph::reset(){
+    /* Reset all the edge and vertices to their normal default state except for the start and end points */
     for (const auto& pair : edges_map) {
         pair.second->setState(EdgeState::normal);
     }
@@ -253,6 +277,9 @@ void Graph::reset(){
         }
     }
 }
+
+
+//--------------------------------------- get and add methods ---------------------------------------//
 void Graph::addVertex(Vertex* v){
     /* Add vertices to the vertices_map
      *
@@ -262,7 +289,6 @@ void Graph::addVertex(Vertex* v){
     vertices_map.insert({v->getID(), v});
 }
 
-
 void Graph::addEdge(Edge* e){
     /* Add edges to the edges_map
      *
@@ -271,14 +297,6 @@ void Graph::addEdge(Edge* e){
      */
     edges_map.insert({e->getID(), e});
 }
-
-
-void Graph::print() const{
-    /* Print graph description
-     */
-    qInfo() << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges";
-}
-
 
 Vertex* Graph::getVertex(uint32_t id) {
     /* Retrieve vertex by id
@@ -294,8 +312,12 @@ Vertex* Graph::getVertex(uint32_t id) {
     return vertices_map.at(id);
 }
 
-
-Vertex* Graph::getVertex(QPoint p) {
+Vertex* Graph::getClosestVertex(QPoint p) {
+    /* Looks for the closest vertex to the given point in a maximum 500px range
+     *
+     * @param p : point in the graph reference
+     * @return Vertex* closest vertex to the point or nullptr if none has been found
+     */
     QPoint z;
     Vertex* closestVertex = nullptr;
     int minDistanceSquared = 500 * 500; // Square of the range limit to avoid calculating square roots
@@ -318,7 +340,6 @@ Vertex* Graph::getVertex(QPoint p) {
     return closestVertex;
 }
 
-
 Edge* Graph::getEdge(string id) {
     /* Retrieve edge by id
      *
@@ -332,6 +353,12 @@ Edge* Graph::getEdge(string id) {
     else {
         return nullptr; // Return nullptr if the edge is not found
     }
+}
+
+void Graph::print() const{
+    /* Print graph description
+     */
+    qInfo() << "Graph with " << vertices_map.size() << " vertices and " << edges_map.size() << " edges";
 }
 
 //--------------------------------------- Custom Comparator for Min-Heap ---------------------------------------//
@@ -980,38 +1007,3 @@ void Graph::printShortestPath(vector<Vertex*> path,int total_visited_vertex, chr
     cout << "Path total length: " << length << " m" << endl;
     cout << "INFO: path calculated in " << Commify(duration.count()) << "us" << endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event)
-// {
-//     QGraphicsItem::mousePressEvent(event);
-//     update();
-// }
-
-// void Graph::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-// {
-//     if (event->modifiers() & Qt::ShiftModifier) {
-//         stuff << event->pos();
-//         update();
-//         return;
-//     }
-//     QGraphicsItem::mouseMoveEvent(event);
-// }
-
-// void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-// {
-//     QGraphicsItem::mouseReleaseEvent(event);
-//     update();
-// }
-
-

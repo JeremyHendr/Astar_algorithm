@@ -35,7 +35,7 @@ class Graph : public QGraphicsItem {
 
         // Retrieve element by id
         Vertex* getVertex(uint32_t id);
-        Vertex* getVertex(QPoint p);
+        Vertex* getClosestVertex(QPoint p);
         Edge* getEdge(string id);
 
         // Print graph description
@@ -86,10 +86,10 @@ class Graph : public QGraphicsItem {
         QList<QPointF> stuff;
         QString graph_name;
 
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    // protected:
+    //     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    //     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    //     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 };
 

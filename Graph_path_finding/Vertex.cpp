@@ -14,10 +14,6 @@
 
 using namespace std;
 
-// unordered_map<VertexState, QPen> Vertex::state_associated_pen;
-// unordered_map<VertexState, QBrush> Vertex::state_associated_brush;
-// unordered_map<VertexState, int> Vertex::state_associated_ellipse_size;
-
 unordered_map<VertexState, VertexStyle> Vertex::state_associated_style;
 
 double degreesToRadians(double degrees) {

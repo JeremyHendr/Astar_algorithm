@@ -20,23 +20,27 @@ using namespace std;
 
 enum class EdgeState {normal, visited, mainpath};
 
+struct EdgeStyle {
+    QPen pen;
+};
 
 class Edge : public QLine {
     public :
-    Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
+        Edge(uint32_t source_id, uint32_t dest_id, double length, string name, bool name_given=false);
 
         inline const uint32_t getSourceId() const {return source_id;};
         inline const uint32_t getDestinationId() const {return destination_id;};
         inline const double getLength()const {return length;};
         inline const string getName() const {return name;};
         inline const string getID() const {return id;};
-        // inline QPoint* getSourceCoordinate() const {return source_coordinate;};
-        // inline QPoint* getDestinationCoordinate() const {return destination_coordinate;};
         inline EdgeState getState(){return state;};
-        inline QPen* getPen(){return pen;};
+        inline QPen getPen(){return pen;};
 
-        // void setCoordinates(QPoint* source, QPoint* destination);
-        void inline setState(EdgeState s){state=s;pen=state_associated_pen.at(s);};
+        void inline setState(EdgeState s){
+            state=s;
+            const EdgeStyle& style = state_associated_style.at(s);
+            pen=style.pen;
+        }
         void print() const;
 
 
@@ -46,14 +50,11 @@ class Edge : public QLine {
         int destination_id;
         double length;
         string name;
-        // QPoint* source_coordinate;
-        // QPoint* destination_coordinate;
-
 
         //Members needed to draw the Edge
-        static unordered_map<EdgeState, QPen*> state_associated_pen;
+        static unordered_map<EdgeState, EdgeStyle> state_associated_style;
         EdgeState state = EdgeState::normal;
-        QPen* pen;
+        QPen pen;
 
 };
 

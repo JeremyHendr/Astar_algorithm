@@ -41,7 +41,6 @@ class GraphicsView : public QGraphicsView {
 
     protected Q_SLOTS:
         void wheelEvent(QWheelEvent *event);
-        void keyPressEvent(QKeyEvent *event);
         void mousePressEvent(QMouseEvent *event);
 
     private:
