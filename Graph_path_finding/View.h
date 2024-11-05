@@ -65,7 +65,6 @@ class View : public QFrame {
         void reset_graph();
         void change_selection();
 
-
     private:
         Graph* displayed_graph;
         GraphicsView *graphicsView;
@@ -77,54 +76,6 @@ class View : public QFrame {
         QComboBox *algorithm_selection;
         QToolButton *origin_selection_button;
         QToolButton *destination_selection_button;
-
-
-        QLabel *label;
-        QLabel *label2;
-        QToolButton *selectModeButton;
-        QToolButton *dragModeButton;
-        QToolButton *antialiasButton;
-        QToolButton *printButton;
-        QToolButton *resetButton;
-        QSlider *zoomSlider;
-        QSlider *rotateSlider;
-
 };
 
 #endif // VIEW_H
-
-
-
-
-
-
-// #ifndef VIEW_H
-// #define VIEW_H
-
-// #include <QGraphicsView>
-// #include <QGraphicsScene>
-// #include <QGraphicsPixmapItem>
-// #include <QWheelEvent>
-// #include <QKeyEvent>
-// #include <QToolButton>
-
-// class View : public QGraphicsView {
-//     Q_OBJECT
-//     public:
-//         View(QGraphicsScene* scene, QWidget *parent = nullptr);
-
-//     protected Q_SLOTS:
-//         void wheelEvent(QWheelEvent *event);
-//         void keyPressEvent(QKeyEvent *event);
-
-//     private:
-//         QToolButton *resetButton;
-//         QToolButton *pushButton;
-
-//     private slots:
-//         void resetView();
-//         void setResetButtonEnabled();
-//         void setupMatrix();
-// };
-
-// #endif // VIEW_H

@@ -12,7 +12,7 @@
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     ,scene(new QGraphicsScene(this)) {
 
-    view = new View("Top left view");
+    view = new View("Graph");
     view->view()->setScene(scene);
 
     QHBoxLayout *layout = new QHBoxLayout;

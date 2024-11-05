@@ -22,7 +22,6 @@
 #include <chrono>
 #include <cstdint>
 #include <set>
-#include <unordered_set>
 
 #include "Graph.h"
 #include "Vertex.h"
@@ -32,7 +31,18 @@
 
 using namespace std;
 
-void drawFlag(QPainter* painter, int x, int y, int pole_height, QColor flag_color) {
+void drawFlag(QPainter* painter, QPoint* pos, int pole_height, QColor flag_color) {
+    /* This function is provided for conveniency,
+     * it draws a flag that scales in size proportionnaly to the pole size
+     *
+     * @param painter used to draw the flag
+     * @param pos start coordinates of the pole
+     * @param pole_height
+     * @param flag_color
+     */
+    int x = pos->x();
+    int y = pos->y();
+
     // Define the scaling factor based on the pole height
     float scale = pole_height / 100.0f;  // 100 is the base height for reference
 
@@ -159,11 +169,6 @@ Graph::Graph(QString graph_data_file) {
     print();
 }
 
-// void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-//     QGraphicsItem::mousePressEvent(event);
-//     qInfo() << deviceTransform(viewportTransform()).inverted().map(QPointF(100, 100));
-
-// }
 
 QRectF Graph::boundingRect() const {
     return QRectF(  top_left_coord->x(),
@@ -220,14 +225,10 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         }
     }
     if (start!=nullptr) {
-        int x = start->getCoordinate()->x();
-        int y = start->getCoordinate()->y();
-        drawFlag(painter, x, y, 600, Qt::green);
+        drawFlag(painter, start->getCoordinate(), 600, Qt::green);
     }
     if (end!=nullptr) {
-        int x = end->getCoordinate()->x();
-        int y = end->getCoordinate()->y();
-        drawFlag(painter, x, y, 600, Qt::red);
+        drawFlag(painter, end->getCoordinate(), 600, Qt::red);
     }
 
     //Draw the selection of the graph
@@ -238,6 +239,7 @@ void Graph::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
                         bottom_right_coord->x()-top_left_coord->x(),
                         bottom_right_coord->y()-top_left_coord->y());
 }
+
 
 void Graph::reset(){
     for (const auto& pair : edges_map) {
@@ -314,18 +316,6 @@ Vertex* Graph::getVertex(QPoint p) {
     return closestVertex;
 }
 
-// Vertex* Graph::getVertex(QPoint p){
-//     QPoint z;
-//     for (auto pair : vertices_map) {
-//         z  = *pair.second->getCoordinate();
-//         z -= p;
-//         if (abs(z.x()) < 100 and abs(z.y()) < 100) {
-//             qInfo() << "z=" << z;
-//             return pair.second;
-//         }
-//     }
-//     return nullptr;
-// }
 
 Edge* Graph::getEdge(string id) {
     /* Retrieve edge by id
@@ -1002,50 +992,26 @@ void Graph::printShortestPath(vector<Vertex*> path,int total_visited_vertex, chr
 
 
 
-void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsItem::mousePressEvent(event);
-    update();
-}
-
-void Graph::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (event->modifiers() & Qt::ShiftModifier) {
-        stuff << event->pos();
-        update();
-        return;
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsItem::mouseReleaseEvent(event);
-    update();
-}
-
-
-
-// void Graph::populateScene() {
-//     GraphPath* g = new GraphPath(&edges_map);
-//     addItem(g);
-
-
-//     // QList<QGraphicsItem*> edge_list;
-//     // for (const auto pair : edges_map) {
-//     //     edge_list.append(pair.second);
-//     // }
-//     // QGraphicsItemGroup *group = createItemGroup(edge_list);
-
-
-
-//     // for (const auto pair : vertices_map){
-//     //     addItem(pair.second);
-//     // }
-
-//     // for (const auto pair : edges_map) {
-//     //     addItem(pair.second);
-//     // }
-
-//     qInfo() << "Finished populating scene.";
+// void Graph::mousePressEvent(QGraphicsSceneMouseEvent *event)
+// {
+//     QGraphicsItem::mousePressEvent(event);
+//     update();
 // }
+
+// void Graph::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+// {
+//     if (event->modifiers() & Qt::ShiftModifier) {
+//         stuff << event->pos();
+//         update();
+//         return;
+//     }
+//     QGraphicsItem::mouseMoveEvent(event);
+// }
+
+// void Graph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+// {
+//     QGraphicsItem::mouseReleaseEvent(event);
+//     update();
+// }
+
+
