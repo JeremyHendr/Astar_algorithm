@@ -598,7 +598,7 @@ void Graph::Dijkstra_IPQ(uint32_t start, uint32_t end){
     for (const auto& elem: vertices_map){
         visited[elem.first] = false; // Set the visited status of all vertices in the graph to false
         dist[elem.first] = numeric_limits<double>::infinity(); // Set the distance/weight to infinity for each vertex
-        parent[elem.first] = -1; // Initialize parent to -1 (undefined)
+        parent[elem.first] = numeric_limits<uint32_t>::infinity();; // Initialize parent to infinity (undefined)
     }
 
     dist[start] = 0; // Set the distance for the start vertex to 0

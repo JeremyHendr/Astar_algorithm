@@ -1,18 +1,71 @@
 {
 	"AUTOGEN_COMMAND_LINE_LENGTH_MAX" : 32000,
-	"BUILD_DIR" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen",
-	"CMAKE_BINARY_DIR" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug",
-	"CMAKE_CURRENT_BINARY_DIR" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug",
-	"CMAKE_CURRENT_SOURCE_DIR" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding",
+	"BUILD_DIR" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen",
+	"CMAKE_BINARY_DIR" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding",
 	"CMAKE_EXECUTABLE" : "C:/Qt/Tools/CMake_64/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
 	[
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/CMakeLists.txt",
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake",
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeSystem.cmake",
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/CMakeLists.txt",
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeSystem.cmake.in",
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeSystem.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeNinjaFindMake.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeSystemSpecificInitialize.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-Initialize.cmake",
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-Determine-CXX.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCompilerIdDetection.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/ADSP-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/ARMCC-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/ARMClang-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/AppleClang-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Clang-DetermineCompilerInternal.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Borland-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Clang-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Clang-DetermineCompilerInternal.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Cray-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/CrayClang-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Embarcadero-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Fujitsu-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GHS-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/HP-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IAR-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Intel-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/MSVC-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/NVHPC-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/NVIDIA-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/OrangeC-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/PGI-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/PathScale-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/SCO-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/TI-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/TIClang-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Tasking-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Watcom-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/XL-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeFindBinUtils.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GNU-FindBinUtils.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXCompiler.cmake.in",
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeSystemSpecificInformation.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeGenericSystem.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeInitializeConfigs.cmake",
@@ -25,11 +78,27 @@
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU-CXX.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU.cmake",
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeRCCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineRCCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeRCCompiler.cmake.in",
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeRCCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeRCInformation.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-windres.cmake",
-		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestRCCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCommonLanguageInclude.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestCompilerCommon.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseImplicitIncludeInfo.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseImplicitLinkInfo.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseLibraryArchitecture.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestCompilerCommon.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXCompilerABI.cpp",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompileFeatures.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/FeatureTesting.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXCompiler.cmake.in",
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake",
+		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
 		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/Qt6ConfigVersion.cmake",
 		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
 		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6/Qt6Config.cmake",
@@ -223,43 +292,60 @@
 		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6PrintSupport/Qt6PrintSupportPlugins.cmake",
 		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6PrintSupport/Qt6PrintSupportVersionlessAliasTargets.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/GNUInstallDirs.cmake",
-		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfigureFileTemplate.in",
 		"C:/Qt/6.8.0/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfigureFileTemplate.in"
 	],
-	"CMAKE_SOURCE_DIR" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding",
+	"CMAKE_SOURCE_DIR" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/deps",
+	"DEP_FILE" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "Graph_finding_project_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Edge.h",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Commify.h",
+			"MU",
+			"EWIEGA46WW/moc_Commify.cpp",
+			null
+		],
+		[
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Edge.h",
 			"MU",
 			"EWIEGA46WW/moc_Edge.cpp",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Graph.h",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Graph.h",
 			"MU",
 			"EWIEGA46WW/moc_Graph.cpp",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Vertex.h",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Ipq.h",
+			"MU",
+			"EWIEGA46WW/moc_Ipq.cpp",
+			null
+		],
+		[
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Vertex.h",
 			"MU",
 			"EWIEGA46WW/moc_Vertex.cpp",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/view.h",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/View.h",
 			"MU",
-			"EWIEGA46WW/moc_view.cpp",
+			"EWIEGA46WW/moc_View.cpp",
+			null
+		],
+		[
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Window.h",
+			"MU",
+			"EWIEGA46WW/moc_Window.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/include",
-	"MOC_COMPILATION_FILE" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/include",
+	"MOC_COMPILATION_FILE" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"MINGW_HAS_SECURE_API=1",
@@ -316,45 +402,59 @@
 		"-c",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/Graph_finding_project_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : 
 	[
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/rcc/qrc_gps_data.cpp",
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/rcc/qrc_images.cpp"
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/rcc/qrc_gps_data.cpp"
 	],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 8,
-	"PARSE_CACHE_FILE" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/Graph_finding_project_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/Graph_finding_project_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "C:/Qt/6.8.0/mingw_64/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "C:/Qt/6.8.0/mingw_64/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 8,
-	"SETTINGS_FILE" : "D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/Graph_finding_project_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CMakeFiles/Graph_finding_project_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Edge.cpp",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Commify.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Graph.cpp",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Edge.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/Vertex.cpp",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Graph.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/main.cpp",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Ipq.cpp",
 			"MU",
 			null
 		],
 		[
-			"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/view.cpp",
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Vertex.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/View.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/Window.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/main.cpp",
 			"MU",
 			null
 		]
@@ -363,8 +463,7 @@
 	"UIC_SEARCH_PATHS" : [],
 	"UIC_SKIP" : 
 	[
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/rcc/qrc_gps_data.cpp",
-		"D:/Programmieren/Qt/Robo4/A_star/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/rcc/qrc_images.cpp"
+		"D:/Programmieren/Qt/Robo4/A_star_project/Astar_algorithm/Graph_path_finding/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/.qt/rcc/qrc_gps_data.cpp"
 	],
 	"UIC_UI_FILES" : [],
 	"USE_BETTER_GRAPH" : true,
